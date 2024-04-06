@@ -324,7 +324,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         setPlaying(true)
     }
     return (
-        <div id='player' className={cn('relative w-full h-full',!Fullscreen&&"rotate-90")}>
+        <div id='player' className={cn('relative w-full h-full',isFullScreen&&"rotate-90 sm:rotate-0")}>
             <ReactPlayer
                 ref={player}
                 volume={volume}
