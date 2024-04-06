@@ -37,18 +37,18 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
         setCurrentEpPage(page);
     };
     useEffect(() => {
-            const element = document.getElementById(currentEp?.episodeId);
-            if (element) {
-                element.scrollIntoView();
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'instant',
-                });
-            }
+        const element = document.getElementById(currentEp?.episodeId);
+        if (element) {
+            element.scrollIntoView();
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant',
+            });
+        }
     }, [currentEp]);
     const [openEps, setOpenEps] = useState(true)
     return (
-        <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll", !openEps && "h-12 lg:right-10 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-50 lg:hover:opacity-90")}>
+        <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-12 lg:right-10 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-50 lg:hover:opacity-90")}>
             <div className="flex justify-between items-center z-20">
                 <h2 className={cn("text-xl font-semibold mb-2 text-secondary", bakbak_one.className)}>Episodes</h2>
                 <Button onClick={() => { setOpenEps(!openEps) }} variant="outline"
@@ -62,7 +62,7 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
                     !openEps &&
                     <div className='absolute hidden dark:block inset-0 bg-gradient-to-b from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-10'></div>
                 }
-                <ul className="space-y-2 p-1 max-h-full overflow-y-scroll" >
+                <ul className="space-y-2 p-1 max-h-full overflow-y-scroll no-scrollbar" >
                     {
                         currentEpisodes?.map((episode) =>
                             <Link scroll={false} className='scroll-smooth' id={episode.episodeId} key={episode.episodeId} href={`/watch/${encodeURI(animeId)}?ep=${episode.number}`}>
