@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { useAppContext } from "@/context/page";
-const AnimesCarousel = React.lazy(() => import('@/components/AnimesCarousel'));
-const CarouselBanner = React.lazy(() => import('@/components/CarouselBanner'));
-const AnimeVerticalCarousel = React.lazy(() => import('@/components/AnimeVerticalCarousel'));
-const AnimeGrid = React.lazy(() => import('@/components/AnimeGrid'));
-const ScrollTopButton = React.lazy(() => import('@/components/ScrollTopButton'));
+import AnimesCarousel from '@/components/AnimesCarousel';
+import CarouselBanner from '@/components/CarouselBanner';
+import AnimeVerticalCarousel from '@/components/AnimeVerticalCarousel';
+import AnimeGrid from '@/components/AnimeGrid';
+import ScrollTopButton from '@/components/ScrollTopButton';
 export default function Home() {
   let {
     spotlightAnimes,

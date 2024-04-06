@@ -13,7 +13,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50 text-black dark:bg-[#100b25] dark:text-white overflow-x-hidden w-screen">
+      <body className="bg-gray-50 text-black dark:bg-[#100b25] dark:text-white overflow-x-hidden w-screen ">
         <AppWrapper>
           <ThemeProvider
             attribute="class"
@@ -34,7 +34,9 @@ export default async function RootLayout({ children }) {
               shadow="0 0 10px #2299DD,0 0 5px #2299DD"
             />
             <Header />
-            <div className="min-h-screen">{children}</div>
+            <div className="min-h-screen no-scrollbar scrollbar scrollbar-thumb-secondary/80 scrollbar-track-primary/50 ">
+              {children}
+            </div>
             <Footer />
           </ThemeProvider>
         </AppWrapper>
