@@ -110,7 +110,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
   return (
 
     <div className="px-2 min-h-screen md:space-x-2 grid grid-cols-1 mt-16  lg:grid-cols-4 items-start">
-      <div className={cn("col-span-1 lg:col-span-3 py-2")}>
+      <div className={cn("col-span-1 h-full lg:col-span-3 py-2")}>
         <div className='flex items-center space-x-4'>
           <p className={cn("text-secondary ml-2 font-bold text-lg sm:text-xl lg:text-2xl select-none", bakbak_one.className)}>Results for </p>
           <p className='text-lg font-semibold'>"{termToUse}"</p>
@@ -190,7 +190,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
             </Button>
           }
         </div >
-        <div className={cn('md:h-[165vh] lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar', (type == "genre" || type == "category") && "md:h-screen")}>
+        <div className={cn('md:h-[165vh] min-h-full border lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar', (type == "genre" || type == "category") && "md:h-screen")}>
           <AnimeGrid animes={filterdResults ? filterdResults : searchResults?.animes} type={""} />
         </div>
         {

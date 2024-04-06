@@ -44,7 +44,7 @@ export default function EpDetail({ epInfo, animeExtraInfo, title, animeInfo }) {
           </div>
         </div>
         <div className="">
-          <p className="text-sm max-h-60 overflow-y-scroll text-gray-600 dark:text-gray-400">
+          <p className="text-sm max-h-60 overflow-y-scroll no-scrollbar text-gray-600 dark:text-gray-400">
             {epInfo?.description ? epInfo.description : animeExtraInfo?.description ? animeExtraInfo?.description : animeInfo?.anime?.info?.description ? animeInfo?.anime?.info?.description : "?"}
           </p>
         </div>

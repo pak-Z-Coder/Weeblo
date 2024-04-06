@@ -40,7 +40,7 @@ export default function MiniInfoCard({ anime, type }) {
   }, [anime])
   return (
 
-    (<div className="w-full max-h-full ">
+    (<div className="w-full max-h-full hidden sm:inline-block">
       <AspectRatio className={cn("hidden overflow-hidden ", animeExtraInfo?.youtubeVideoId && "flex items-center justify-center")} ratio={animeExtraInfo?.youtubeVideoId ? 100 / 57 : null}>
         <ReactPlayer
           playing={animeExtraInfo?.youtubeVideoId && true}

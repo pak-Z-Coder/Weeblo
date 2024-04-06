@@ -27,7 +27,7 @@ const AnimeGrid = ({ animes, type }) => {
                 </div> :
                 <div className='flex items-center h-full justify-center'>
                     <p className='text-xl mt-5 text-red-500/50'>
-                        {animes && animes.length != 0 ? "No Results Found!" : "Empty List"}
+                        {animes && animes.length != 0 ? "No Results Found!" : "Nothing to show!"}
                     </p>
                 </div>
             }

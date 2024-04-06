@@ -17,6 +17,7 @@ import {
     ToggleGroupItem,
 } from "@/components/ui/toggle-group"
 import Link from "next/link"
+import { Separator } from "@/components/ui/separator";
 const VideoPlayer = React.lazy(() => import('@/components/VideoPlayer'));
 const AnimeVerticalCarousel = React.lazy(() => import('@/components/AnimeVerticalCarousel'));
 const EpisodesList = React.lazy(() => import('@/components/EpisodesList'));
@@ -157,28 +158,20 @@ export default function WatchPage({ params: { id } }) {
                     name: continueWatchingData.name,
                     poster: continueWatchingData.poster,
                 };
-
-                // Find the index of the anime in the continueWatching array
                 const index = user.continueWatching.findIndex(
                     (anime) => anime.animeId === continueWatchingData.animeId
                 );
-
-                // Create a copy of the user object with updated continueWatching array
                 const updatedUser = {
                     ...user,
-                    continueWatching: [...user.continueWatching], // Create a shallow copy of the array
+                    continueWatching: [...user.continueWatching],
                 };
 
                 if (index !== -1) {
                     updatedUser.continueWatching.splice(index, 1);
-                    // Add the updated anime back to the beginning of the array
                     updatedUser.continueWatching.unshift(updatedAnime);
                 } else {
-                    // Add the new anime to the beginning of the continueWatching array
                     updatedUser.continueWatching.unshift(updatedAnime);
                 }
-
-                // Update the user state with the updated user object
                 setUser(updatedUser);
             }
             else {
@@ -335,6 +328,7 @@ export default function WatchPage({ params: { id } }) {
                                     <EpDetail epInfo={epInfo} animeInfo={animeInfo} animeExtraInfo={animeExtraInfo} title={animeInfo?.anime?.info?.stats?.type != "TV" ? animeInfo?.anime?.info?.name : currentEp?.title} />
                             }
                         </div>
+                        <Separator className="my-2" />
                         <div className="rounded-lg mt-5 overflow-hidden z-0">
                             {currentEp && <DisqusComments episode={{ title: currentEp?.title, animeId: animeId, epNumber: currentEp?.number }} />}
                         </div>

@@ -4,7 +4,7 @@ import { ChevronUp, Pause, Play, RedoDot, Subtitles, UndoDot, Fullscreen, Minimi
 import ReactPlayer from 'react-player';
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
-import { debounce } from 'lodash'; // Import debounce function from lodash
+import { debounce } from 'lodash';
 import { Separator } from './ui/separator';
 import { Kanit } from 'next/font/google';
 const kanit = Kanit({
@@ -44,7 +44,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                     src: track.file,
                     label: track.label,
                     default: track.default || false,
-                    index: index // Add index to track object
+                    index: index
                 }))
         );
         setSelectedTrack(defaultTrackIndex !== -1 ? defaultTrackIndex : 0);
@@ -207,6 +207,32 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         }
     }, [showCursor])
     useEffect(() => {
+        const handleFullScreenChange = () => {
+            if (
+                document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement
+            ) {
+                setIsFullScreen(true);
+            } else {
+                setIsFullScreen(false);
+            }
+        };
+
+        document.addEventListener('fullscreenchange', handleFullScreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullScreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullScreenChange);
+
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullScreenChange);
+            document.removeEventListener('webkitfullscreenchange', handleFullScreenChange);
+            document.removeEventListener('mozfullscreenchange', handleFullScreenChange);
+            document.removeEventListener('MSFullscreenChange', handleFullScreenChange);
+        };
+    }, []);
+    useEffect(() => {
         const p = document.querySelector("#player")
         if (p && !document.fullscreenElement) {
             isFullScreen && p.requestFullscreen();
@@ -298,7 +324,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         setPlaying(true)
     }
     return (
-        <div id='player' className='relative w-full h-full'>
+        <div id='player' className={cn('relative w-full h-full')}>
             <ReactPlayer
                 ref={player}
                 volume={volume}
@@ -343,16 +369,10 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                         <p>{player?.current?.getDuration() ? formatTime(player?.current?.getDuration()) : "00:00:00"}</p>
                     </div>
                     <div className="flex items-center gap-0 lg:gap-2 ">
-                        <div className="lg:ml-5 text-white flex items-center sm:space-x-2">
+                        <div className="lg:ml-5 text-white">
                             <Button onClick={() => setPlaying(!playing)} className="hidden sm:inline-block p-2 bg-transparent border-none" variant="outline">
                                 {playing ?
                                     <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                            </Button>
-                            <Button size="sm" onClick={() => skipTime(-10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
-                                <UndoDot className="w-6 h-4" />
-                            </Button>
-                            <Button size="sm" onClick={() => skipTime(10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
-                                <RedoDot className="w-6 h-4" />
                             </Button>
                         </div>
                         <div className="relative text-white flex items-center">
@@ -365,6 +385,12 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                             }} step={0.1} className="w-10 sm:w-20" />
                         </div>
                         <div className="flex text-white relative items-center ml-auto mr-4">
+                            <Button size="sm" onClick={() => skipTime(-10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
+                                <UndoDot className="w-6 h-4" />
+                            </Button>
+                            <Button size="sm" onClick={() => skipTime(10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
+                                <RedoDot className="w-6 h-4" />
+                            </Button>
                             <Button onClick={() => { setIsOpen(!isOpen); setIsOpen1(false) }} className="bg-transparent border-none p-0 sm:p-2" size="sm" variant="outline">
                                 {currentQuality !== -1 ? qualities && qualities[currentQuality]?.height + "p" : "Auto"}
                                 <ChevronUp className="w-4 h-4 inline-block" />
@@ -374,11 +400,10 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                                 <Separator />
                                 {qualities?.map((q, i) => <Button variant="outline" size="sm" onClick={() => { setCurrentQuality(i); changeQuality(i); setIsOpen(!isOpen) }} key={i} className={cn("bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0", currentQuality == i && "bg-white text-secondary")}>{q.height}p</Button>)}
                             </div>
-                            {/*  */}
                             <Button size="sm" variant="ghost" className={cn(selectedTrack != "off" && "text-secondary")} onClick={() => { setIsOpen1(!isOpen1); setIsOpen(false) }}>
                                 <Subtitles className="inline-block w-4 sm:w-6" />
                             </Button>
-                            <div className={cn("w-fit h-36 overflow-y-scroll rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden", isOpen1 && " flex flex-col items-center")}>
+                            <div className={cn("w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden", isOpen1 && " flex flex-col items-center")}>
                                 <Button variant="outline" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack("off") }} className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs">Off</Button>
                                 <Separator />
                                 {captions?.map((c, i) => <Button variant="outline" size="sm" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack(i) }} key={c.label} className={cn("bg-transparent hover:bg-secondary/20 w-full border-none leading-none text-xs p-1", selectedTrack == i && "text-secondary bg-white")}>{c.label}</Button>)}

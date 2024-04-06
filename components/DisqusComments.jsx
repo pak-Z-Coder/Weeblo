@@ -35,7 +35,7 @@ const DisqusComments = ({ episode }) => {
                 </Button>
             </div>
             <div className=' z-0 '>
-                <div className={cn('bg-inherit max-h-[50vh] md:max-h-[75vh] overflow-scroll no-scrollbar opacity-0 h-5 space-y-2 relative transition-opacity duration-200 ease-in', !openEps && "opacity-100 h-fit transition-opacity duration-200 ease-out")}>
+                <div className={cn('bg-inherit max-h-[60vh] md:max-h-[80vh] overflow-scroll no-scrollbar opacity-0 h-5 space-y-2 relative transition-opacity duration-200 ease-in', !openEps && "opacity-100 h-fit transition-opacity duration-200 ease-out")}>
                     <DiscussionEmbed
                         className="p-0 text-secondary"
                         shortname={disqusShortname}
