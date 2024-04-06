@@ -235,7 +235,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     useEffect(() => {
         const p = document.querySelector("#player")
         if (p && !document.fullscreenElement) {
-            isFullScreen && p.requestFullscreen("landscape");
+            isFullScreen && p.requestFullscreen();
         } else if (document.exitFullscreen) {
             document.exitFullscreen();
         }
