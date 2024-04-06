@@ -186,7 +186,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     }, [player.current]);
     useEffect(() => {
         const videoElement = document.querySelector("#player");
-        const handleMouseMove = (e) => {
+        const handleMouseMove = () => {
             clearTimeout(cursorTimeout);
             setShowCursor(true)
             cursorTimeout = setTimeout(() => {
@@ -235,7 +235,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     useEffect(() => {
         const p = document.querySelector("#player")
         if (p && !document.fullscreenElement) {
-            isFullScreen && p.requestFullscreen();
+            isFullScreen && p.requestFullscreen("landscape");
         } else if (document.exitFullscreen) {
             document.exitFullscreen();
         }
@@ -324,7 +324,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         setPlaying(true)
     }
     return (
-        <div id='player' className={cn('relative w-full h-full',isFullScreen&&"rotate-90 sm:rotate-0")}>
+        <div id='player' className={cn('relative w-full h-full')}>
             <ReactPlayer
                 ref={player}
                 volume={volume}
