@@ -65,7 +65,7 @@ export default function MiniInfoCard({ anime, type }) {
             }</div>
             <div className="border-none flex space-x-1">
               {anime?.info?.stats?.episodes &&
-                Object.entries(anime?.info?.stats?.episodes).map(([type, eps]) => <Badge variant="secondary" className="px-2 py-0 text-white leading-none max-w-xs flex items-center">
+                Object.entries(anime?.info?.stats?.episodes).map(([type, eps],i) => <Badge key={i} variant="secondary" className="px-2 py-0 text-white leading-none max-w-xs flex items-center">
                   {type == "sub" ? <Subtitles className="w-4" /> : <Mic className="w-4" />}
                   <p className="text-xs">{eps ? eps : 0}</p>
                 </Badge>)
@@ -76,7 +76,7 @@ export default function MiniInfoCard({ anime, type }) {
         <div className="p-0">
           <div className="grid gap-1.5">
             <div className="space-x-1">
-              {anime?.moreInfo?.genres?.slice(0, 3)?.map((genre) => <Badge variant="outline" className="text-white text-sm leading-none border-secondary">{genre}</Badge>)}
+              {anime?.moreInfo?.genres?.slice(0, 3)?.map((genre) => <Badge key={genre} variant="outline" className="text-white text-sm leading-none border-secondary">{genre}</Badge>)}
             </div>
             <p className="text-sm leading-none text-white">
               {anime?.info?.description?.slice(0, 156) + "..."}

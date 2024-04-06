@@ -82,7 +82,7 @@ const LoginForm = () => {
                 </form>
                 {loginError && <div className="mt-1 text-red-500">{
                     loginError?.map((e) =>
-                        <p className="text-xs">{e.message}</p>
+                        <p key={e.message} className="text-xs">{e.message}</p>
                     )
                 }</div>}
             </CardContent>

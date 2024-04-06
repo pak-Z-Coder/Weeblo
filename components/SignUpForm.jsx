@@ -87,7 +87,7 @@ const SignUpForm = () => {
                 </form>
                 {signUpError && <div className="mt-1 text-red-500">{
                     signUpError?.map((e) =>
-                        <p className="text-xs">{e.message}</p>
+                        <p key={e.message} className="text-xs">{e.message}</p>
                     )
                 }</div>}
             </CardContent>

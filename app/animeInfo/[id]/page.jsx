@@ -167,7 +167,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                                     <Film className="w-5 h-5" />
                                     {
                                         animeInfo?.anime?.moreInfo?.genres?.map((genre, i) =>
-                                            <Link href={`/search/${genre}?type=search`}>
+                                            <Link key={i} href={`/search/${genre}?type=search`}>
                                                 <span className="cursor-pointer hover:text-secondary font-semibold">{genre + (i == animeInfo.anime?.moreInfo.genres.length - 1 ? "" : ",")}</span>
                                             </Link>
                                         )
@@ -253,7 +253,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                         <div className="flex flex-col flex-wrap sm:flex-row items-center gap-1 sm:gap-1">
                             <p className="font-semibold sm:text-lg text-secondary">Producers </p>
                             {
-                                animeInfo?.anime?.moreInfo?.producers?.map((p, i) => <Link href={`/search/${p}?type=producer`}>
+                                animeInfo?.anime?.moreInfo?.producers?.map((p, i) => <Link key={i} href={`/search/${p}?type=producer`}>
                                     <span className="text-sm hover:text-primary leading-none">{p + (i == animeInfo?.anime?.moreInfo?.producers?.length - 1 ? "" : ",")}</span>
                                 </Link>)
 
