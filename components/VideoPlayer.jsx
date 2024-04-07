@@ -359,7 +359,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 </p>
             </div>
             {loading && <Loader2 className="absolute h-8 w-8 animate-spin text-white left-[45%] top-[40%] sm:left-[49%] sm:top-[47%]" />}
-            <Button onClick={() => setPlaying(!playing)} className={cn("z-20 inset-x-1/3 inset-y-1/3 absolute inline-block opacity-100 text-white bg-black bg-opacity-50 rounded-full w-fit mx-auto my-auto py-1 px-4 sm:px-8 sm:py-2", loading && "hidden", !showControls && !isOpen && !isOpen1 && "opacity-0 hidden transition-opacity ease-out")} size="lg" variant="ghost">
+            <Button onClick={() => setPlaying(!playing)} className={cn("z-20 inset-x-1/3 inset-y-1/3 absolute inline-block opacity-100 text-white bg-black bg-opacity-50 rounded-full w-fit mx-auto my-auto py-1 px-4 sm:px-8 sm:py-2", loading && "hidden", !showControls && !isOpen && !isOpen1 && "hidden opacity-0 transition-opacity ease-out")} size="lg" variant="ghost">
                 {playing ?
                     <Pause className="max-w-6 max-h-6" /> : <Play className="w-6 h-6" />}
             </Button>
@@ -379,8 +379,8 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                         </div>
                         <div className="relative ml-1 text-white flex items-center">
                             {volume == 0 && <Volume />}
-                            {volume > 0 && volume <= 50 && <Volume1 />}
-                            {volume > 50 && <Volume2 />}
+                            {volume > 0 && volume <= 0.5 && <Volume1 />}
+                            {volume > 0.5 && <Volume2 />}
                             <Slider volumeBar={true} value={[volume]} min={0} max={1} onValueChange={(e) => {
                                 setVolume(e);
                                 setUserPreferences(prevState => ({ ...prevState, volumeLevel: e }));
