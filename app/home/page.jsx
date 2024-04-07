@@ -4,19 +4,19 @@ import dynamic from 'next/dynamic'
 import { useAppContext } from "@/context/page";
 const CarouselBanner = dynamic(() => import("@/components/CarouselBanner"),
   {
-    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    loading: () => <Loader className="mx-auto my-[12rem] relative bottom-0 w-6 animate-spin text-primary" />
   })
 const AnimesCarousel = dynamic(() => import("@/components/AnimesCarousel"),
   {
-    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    loading: () => <Loader className="mx-auto my-[120px] relative bottom-0 w-6 animate-spin text-primary" />
   })
 const AnimeVerticalCarousel = dynamic(() => import("@/components/AnimeVerticalCarousel"),
   {
-    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    loading: () => <Loader className="mx-auto  my-[9.4rem] relative bottom-0 w-6 animate-spin text-primary" />
   })
 const AnimeGrid = dynamic(() => import("@/components/AnimeGrid"),
   {
-    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    loading: () => <Loader className="mx-auto my-10 relative bottom-0 w-6 animate-spin text-primary" />
   })
 const ScrollTopButton = dynamic(() => import("@/components/ScrollTopButton"),
   {

@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
+import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -18,11 +19,26 @@ import {
 } from "@/components/ui/toggle-group"
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator";
-const VideoPlayer = React.lazy(() => import('@/components/VideoPlayer'));
-const AnimeVerticalCarousel = React.lazy(() => import('@/components/AnimeVerticalCarousel'));
-const EpisodesList = React.lazy(() => import('@/components/EpisodesList'));
-const EpDetail = React.lazy(() => import('@/components/EpDetail'));
-const DisqusComments = React.lazy(() => import('@/components/DisqusComments'));
+const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"),
+    {
+        loading: () => <Loader className="mx-auto  my-[9.4rem] relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const AnimeVerticalCarousel = dynamic(() => import("@/components/AnimeVerticalCarousel"),
+    {
+        loading: () => <Loader className="mx-auto  my-[9.4rem] relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const EpisodesList = dynamic(() => import("@/components/EpisodesList"),
+    {
+        loading: () => <Loader className="mx-auto my-[47vh] relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const EpDetail = dynamic(() => import("@/components/EpDetail"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const DisqusComments = dynamic(() => import("@/components/DisqusComments"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
 const ScrollTopButton = React.lazy(() => import('@/components/ScrollTopButton'));
 import { useAppContext } from '@/context/page'
 
@@ -293,9 +309,6 @@ export default function WatchPage({ params: { id } }) {
                         <h1 className={cn("text-2xl md:text-3xl font-bold", bebas_nueue.className)}>
                             {animeInfo?.anime?.info?.stats?.type != "TV" ? animeInfo?.anime?.info?.name + " - " + currentEp?.title : currentEp?.number + " - " + currentEp?.title}
                         </h1>
-                        {/* {animeExtraInfo?.favoritesCount &&
-                            <p className="text-gray-600">{animeExtraInfo.favoritesCount} views</p>
-                        } */}
                         <div className="flex justify-between items-centers space-x-4 my-4">
                             <div>
                                 <Button variant="ghost">Share</Button>
@@ -314,7 +327,7 @@ export default function WatchPage({ params: { id } }) {
                                 </ToggleGroup>
                             </div>
                         </div>
-                        <div >
+                        <div className="my-4">
                             <Link className="flex items-center space-x-2 my-2" href={`/animeInfo/${encodeURIComponent(id)}`} >
                                 <Avatar className="">
                                     <AvatarImage alt={animeInfo?.anime?.info?.name[0]} src={animeInfo?.anime?.info?.poster} />
