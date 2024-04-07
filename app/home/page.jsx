@@ -35,7 +35,7 @@ export default function Home() {
   } = useAppContext();
   const [topTypeValue, setTopTypeValue] = useState("week");
   return (
-    user ? <main className="relative flex flex-col overflow-x-hidden w-screen no-scrollbar">
+    spotlightAnimes ? <main className="relative flex flex-col overflow-x-hidden w-screen no-scrollbar">
       <CarouselBanner animes={spotlightAnimes} />
       <div className="grid grid-cols-1  sm:min-h-screen">
         <AnimesCarousel
