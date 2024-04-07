@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { cn } from '@/lib/utils';
 import { getCategoryResults, getGenreResults, getProducerResults, getSearchResults, getSearchSuggestions } from '@/app/api/getSearchResults';
@@ -17,8 +18,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import AnimeGrid from '@/components/AnimeGrid';
-import AnimeVerticalCarousel from '@/components/AnimeVerticalCarousel';
+const AnimeGrid = dynamic(() => import("@/components/AnimeGrid"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
+const AnimeVerticalCarousel = dynamic(() => import("@/components/AnimeVerticalCarousel"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
 import { Separator } from "@/components/ui/separator";
 import { Button } from '@/components/ui/button';
 import { ChevronDown, FilterX, Loader } from 'lucide-react';
@@ -190,7 +197,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
             </Button>
           }
         </div >
-        <div className={cn('md:h-[165vh] min-h-full border lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar', (type == "genre" || type == "category") && "md:h-screen")}>
+        <div className={cn('min-h-[80%] border lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar', (type == "genre" || type == "category") && "md:h-screen")}>
           <AnimeGrid animes={filterdResults ? filterdResults : searchResults?.animes} type={""} />
         </div>
         {

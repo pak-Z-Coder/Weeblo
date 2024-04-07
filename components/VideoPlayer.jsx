@@ -139,6 +139,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     }, []);
     useEffect(() => {
         const p = document.querySelector("#player")
+        const pA = document.querySelector("#playerAbsolute")
         if (!p) return;
         const handleKeyDown = (e) => {
             switch (e.key) {
@@ -173,12 +174,12 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
             }, 3000);
         }
         p.addEventListener('keydown', handleKeyDown);
-        p.addEventListener('dblclick', handleDoubleClick);
+        pA.addEventListener('dblclick', handleDoubleClick);
         p.addEventListener('mousemove', handleMouseMove);
         p.addEventListener('mouseleave', () => setShowControls(false));
         return () => {
             p.removeEventListener('keydown', handleKeyDown);
-            p.removeEventListener('dblclick', handleDoubleClick);
+            pA.removeEventListener('dblclick', handleDoubleClick);
             p.addEventListener('mousemove', handleMouseMove);
             p.addEventListener('mouseleave', () => setShowControls(false));
 
@@ -324,7 +325,8 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         setPlaying(true)
     }
     return (
-        <div id='player' className={cn('relative w-full h-full')}>
+        <div id="player" className={cn('z-0 relative w-full h-full')}>
+            <div id="playerAbsolute" className='z-10 absolute h-[85%] w-full'></div>
             <ReactPlayer
                 ref={player}
                 volume={volume}
@@ -347,7 +349,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 width="100%"
                 height="100%"
             />
-            <div className='z-10 absolute bottom-20 right-2 w-fit ml-auto mr-2 '>
+            <div className='z-20 absolute bottom-20 right-2 w-fit ml-auto mr-2 '>
                 <Button onClick={() => player.current.seekTo(intro.end)} variant="outline" className={cn("drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1", currentTime >= intro?.start && currentTime <= intro?.end && currentTime != 0 && "flex")}>Skip<SkipForward /></Button>
                 <Button onClick={() => player.current.seekTo(outro.end)} variant="outline" className={cn("drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1", currentTime >= outro?.start && currentTime <= outro?.end && currentTime != 0 && "flex")}>Skip<SkipForward /></Button>
             </div>
@@ -357,11 +359,11 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 </p>
             </div>
             {loading && <Loader2 className="absolute h-8 w-8 animate-spin text-white left-[45%] top-[40%] sm:left-[49%] sm:top-[47%]" />}
-            <div className={cn("z-0 absolute h-full w-full inset-0 opacity-100 flex flex-col justify-between ", !showControls && !isOpen && !isOpen1 && "opacity-0 transition-opacity ease-out")} >
-                <Button onClick={() => setPlaying(!playing)} className={cn("opacity-100 text-white bg-black bg-opacity-50 rounded-full w-fit mx-auto my-auto py-1 px-4 sm:px-8 sm:py-2", loading && "opacity-0")} size="lg" variant="ghost">
-                    {playing ?
-                        <Pause className="max-w-6 max-h-6" /> : <Play className="w-6 h-6" />}
-                </Button>
+            <Button onClick={() => setPlaying(!playing)} className={cn("z-20 inset-x-1/3 inset-y-1/3 absolute inline-block opacity-100 text-white bg-black bg-opacity-50 rounded-full w-fit mx-auto my-auto py-1 px-4 sm:px-8 sm:py-2", loading && "hidden", !showControls && !isOpen && !isOpen1 && "opacity-0 hidden transition-opacity ease-out")} size="lg" variant="ghost">
+                {playing ?
+                    <Pause className="max-w-6 max-h-6" /> : <Play className="w-6 h-6" />}
+            </Button>
+            <div className={cn("z-0 absolute h-full w-full inset-0 opacity-100 flex flex-col justify-end ", !showControls && !isOpen && !isOpen1 && "opacity-0 hidden transition-opacity ease-out")} >
                 <div className="w-full bg-black/20">
                     <div className="mb-2 pb-2 relative flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-3 overflow-hidden">
                         <p>{currentTime ? formatTime(currentTime) : "00:00:00"}</p>
@@ -375,7 +377,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                                     <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                             </Button>
                         </div>
-                        <div className="relative text-white flex items-center">
+                        <div className="relative ml-1 text-white flex items-center">
                             {volume == 0 && <Volume />}
                             {volume > 0 && volume <= 50 && <Volume1 />}
                             {volume > 50 && <Volume2 />}
@@ -395,7 +397,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                                 {currentQuality !== -1 ? qualities && qualities[currentQuality]?.height + "p" : "Auto"}
                                 <ChevronUp className="w-4 h-4 inline-block" />
                             </Button>
-                            <div className={cn("rounded-sm py-1 px-2 absolute bottom-5 md:bottom-7 lg:bottom-18 bg-gray-900/70 text-white hidden", isOpen && "flex flex-col items-center")}>
+                            <div className={cn("rounded-sm py-1 px-2 absolute ml-20 bottom-5 md:bottom-7 lg:bottom-18 bg-gray-900/70 text-white hidden", isOpen && "flex flex-col items-center")}>
                                 <Button variant="outline" onClick={() => { setCurrentQuality(-1); changeQuality(-1); setIsOpen(!isOpen) }} className={cn("bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs", currentQuality == -1 && "bg-white text-secondary")}>Auto</Button>
                                 <Separator />
                                 {qualities?.map((q, i) => <Button variant="outline" size="sm" onClick={() => { setCurrentQuality(i); changeQuality(i); setIsOpen(!isOpen) }} key={i} className={cn("bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0", currentQuality == i && "bg-white text-secondary")}>{q.height}p</Button>)}

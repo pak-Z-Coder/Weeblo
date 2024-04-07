@@ -41,7 +41,7 @@ const AnimesCarousel = ({ animes, type, setTopTypeValue, topTypeValue }) => {
         });
     };
     return (
-        <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} className='overflow-hidden relative'>
+        <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} className='overflow-hidden relative min-h-[120px]'>
             <div className='flex items-center justify-between  space-x-2'>
                 <p className={cn('text-secondary ml-2 font-bold text-lg sm:text-xl lg:text-2xl', bakbak_one.className)}>{animes?.length != 0 && type}</p>
                 {type == "Top 10" && <DropdownMenu >

@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react'
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAppContext } from '@/context/page';
@@ -7,10 +8,20 @@ import { cn } from '@/lib/utils';
 import { Bebas_Neue, Oswald } from 'next/font/google';
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogTrigger } from '../../components/ui/dialog'
-import { Edit } from 'lucide-react';
-const EditForm = React.lazy(() => import('@/components/EditForm'));
-const AnimeGrid = React.lazy(() => import('@/components/AnimeGrid'));
-const ContinueCard = React.lazy(() => import('@/components/ContinueCard'));
+import { Edit, Loader } from 'lucide-react';
+const EditForm = dynamic(() => import("@/components/EditForm"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const AnimeGrid = dynamic(() => import("@/components/AnimeGrid"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const ContinueCard = dynamic(() => import("@/components/ContinueCard"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+
 const bebas_nueue = Bebas_Neue({
     weight: ['400'],
     style: 'normal',

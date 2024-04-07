@@ -1,17 +1,30 @@
 "use client"
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { getAnimeInfo } from "@/app/api/getAnimeInfo";
 import { getAnimeExtraInfo } from "@/app/api/getAnimeExtraInfo";
 import { Star, StarHalf, StarOff, Sprout, FileVideo, Video, Captions, Mic, Clock, Calendar, Film, Loader, Play, SquarePlay, Users, Heart, CalendarClock, TriangleAlert, } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from '@/lib/utils'
-import AnimesCarousel from "@/components/AnimesCarousel";
+const AnimesCarousel = dynamic(() => import("@/components/AnimesCarousel"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const AnimeVerticalCarousel = dynamic(() => import("@/components/AnimeVerticalCarousel"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const SaveAnimeButton = dynamic(() => import("@/components/SaveAnimeButton"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
+const ScrollTopButton = dynamic(() => import("@/components/ScrollTopButton"),
+    {
+        loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    })
 import { Button } from "@/components/ui/button";
-import AnimeVerticalCarousel from "@/components/AnimeVerticalCarousel";
 import { Separator } from "@/components/ui/separator";
-import SaveAnimeButton from "@/components/SaveAnimeButton";
-import ScrollTopButton from "@/components/ScrollTopButton";
 import {
     Dialog,
     DialogContent,
@@ -80,7 +93,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                 <div className="relative sm:max-w-[85%]">
                     <div className='absolute inset-0 bg-gradient-to-tl from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-10'></div>
                     <Image alt="Banner"
-                        className="aspect-square md:aspect-video  z-0 object-cover h-[40vh] lg:h-[45vh] w-full"
+                        className="aspect-square md:aspect-video  z-0 object-scale-down md:object-cover h-[40vh] lg:h-[45vh] w-full"
                         width={3360}
                         height={800}
                         src={animeExtraInfo?.coverImage ? animeExtraInfo.coverImage : animeInfo?.anime?.info?.poster} />
@@ -97,6 +110,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                                         url={`https://www.youtube.com/watch?v=${animeExtraInfo?.youtubeVideoId}`}
                                         controls={false}
                                         className="w-screen aspect-square  md:aspect-video"
+                                        config={{ playerVars: { cc_lang_pref: 'en', cc_load_policy: 1 } }}
                                     />
                                 </DialogContent>
                             </Dialog>
@@ -156,7 +170,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Calendar className="w-7 sm:w-5" />
+                                    <Calendar className="min-w-5 sm:w-5" />
                                     <span>{animeInfo?.anime?.moreInfo.aired}</span>
                                 </div>
                                 <div className="flex items-center gap-2">

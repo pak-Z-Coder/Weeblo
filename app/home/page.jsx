@@ -1,12 +1,29 @@
 "use client";
 import React, { useState } from "react";
+import dynamic from 'next/dynamic'
 import { useAppContext } from "@/context/page";
-import AnimesCarousel from '@/components/AnimesCarousel';
-import CarouselBanner from '@/components/CarouselBanner';
-import AnimeVerticalCarousel from '@/components/AnimeVerticalCarousel';
-import AnimeGrid from '@/components/AnimeGrid';
-import ScrollTopButton from '@/components/ScrollTopButton';
+const CarouselBanner = dynamic(() => import("@/components/CarouselBanner"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
+const AnimesCarousel = dynamic(() => import("@/components/AnimesCarousel"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
+const AnimeVerticalCarousel = dynamic(() => import("@/components/AnimeVerticalCarousel"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
+const AnimeGrid = dynamic(() => import("@/components/AnimeGrid"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
+const ScrollTopButton = dynamic(() => import("@/components/ScrollTopButton"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
 import { Separator } from "@/components/ui/separator";
+import { Loader } from "lucide-react";
 export default function Home() {
   let {
     spotlightAnimes,
@@ -18,7 +35,7 @@ export default function Home() {
   } = useAppContext();
   const [topTypeValue, setTopTypeValue] = useState("week");
   return (
-    <main className="relative flex flex-col overflow-x-hidden w-screen no-scrollbar">
+    user ? <main className="relative flex flex-col overflow-x-hidden w-screen no-scrollbar">
       <CarouselBanner animes={spotlightAnimes} />
       <div className="grid grid-cols-1  sm:min-h-screen">
         <AnimesCarousel
@@ -32,7 +49,7 @@ export default function Home() {
         <Separator className="my-2 md:hidden" />
         <AnimesCarousel animes={topAiringAnimes} type="Top Airing" />
         {
-          user && 
+          user &&
           <Separator className="my-2" />
         }
         {user &&
@@ -51,5 +68,5 @@ export default function Home() {
       </div>
       <ScrollTopButton />
     </main>
-  );
+      : <Loader className="mx-auto relative top-48 h-12 w-12 animate-spin text-primary" />)
 }

@@ -22,7 +22,7 @@ const CarouselBanner = ({ animes }) => {
     const [emblaRef] = useEmblaCarousel({ loop: true, duration: 50 }, [Autoplay()])
     return (
         <div ref={emblaRef} className='overflow-hidden relative group'>
-            <div className='flex h-[12rem] sm:h-[18rem] md:h-[25rem] lg:h-[30rem]'>
+            <div className='flex min-h-[12rem] h-[12rem] sm:h-[18rem] md:h-[25rem] lg:h-[30rem]'>
                 {
                     animes?.map((anime) => (
                         <div className='flex-full min-w-0 relative' key={anime.id}>
