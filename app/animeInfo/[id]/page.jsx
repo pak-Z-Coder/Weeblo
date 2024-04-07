@@ -93,7 +93,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                 <div className="relative sm:max-w-[85%]">
                     <div className='absolute inset-0 bg-gradient-to-tl from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-10'></div>
                     <Image alt="Banner"
-                        className="aspect-square md:aspect-video  z-0 object-scale-down md:object-cover h-[40vh] lg:h-[45vh] w-full"
+                        className="aspect-square md:aspect-video  z-0 object-cover h-[40vh] lg:h-[45vh] w-full"
                         width={3360}
                         height={800}
                         src={animeExtraInfo?.coverImage ? animeExtraInfo.coverImage : animeInfo?.anime?.info?.poster} />
