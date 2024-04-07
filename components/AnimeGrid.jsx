@@ -11,7 +11,7 @@ const bakbak_one = Bakbak_One({
 })
 const AnimeGrid = ({ animes, type }) => {
     return (
-        <div className='min-h-full max-h-[70vh] overflow-y-scroll no-scrollbar'>
+        <div className='min-h-full max-h-[70vh] md:max-h-full overflow-y-scroll no-scrollbar'>
             <p className={cn("text-secondary h-full ml-2 font-bold text-lg sm:text-xl lg:text-2xl select-none", bakbak_one.className)}>{type}</p>
             {!animes && <Loader className="mx-auto mt-5 w-6 h-6 animate-spin text-primary" />}
             {animes?.length > 0 ?
