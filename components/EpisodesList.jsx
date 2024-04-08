@@ -38,6 +38,8 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
     };
     useEffect(() => {
         setCurrentEpPage(currentEp?.number ? Math.floor(currentEp.number / episodesPerPage) : 0);
+    }, [currentEp]);
+    useEffect(() => {
         const element = document.getElementById(currentEp?.episodeId);
         if (element) {
             element.scrollIntoView();
@@ -46,7 +48,7 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
                 behavior: 'instant',
             });
         }
-    }, [currentEp]);
+    }, [currentEpPage])
     const [openEps, setOpenEps] = useState(true)
     return (
         <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-12 lg:right-10 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-50 lg:hover:opacity-90")}>
