@@ -334,7 +334,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 qualityLevel: qualities[qIndex]?.height
             }));
         }
-
+        setPlaying((prevPlaying) => { return prevPlaying});
     }
     return (
         <div id="player" className={cn('z-0 relative w-full h-full')}>
