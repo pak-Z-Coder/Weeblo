@@ -14,7 +14,7 @@ const kanit = Kanit({
 })
 const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferences, setUserPreferences, setPlayedTime, setTotalTime, continueWatchTime }) => {
     const player = useRef()
-    const [showControls, setShowControls] = useState(false)
+    const [showControls, setShowControls] = useState(true)
     const [showCursor, setShowCursor] = useState(false)
     const [currentTime, setCurrentTime] = useState(0);
     const [loadedTime, setLoadedTime] = useState(0);
@@ -143,6 +143,10 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         if (!p) return;
         const handleKeyDown = (e) => {
             switch (e.key) {
+                case ' ':
+                    e.preventDefault();
+                    setPlaying((prevPlaying) => !prevPlaying);
+                    break;
                 case 'ArrowLeft':
                     e.preventDefault();
                     skipTime(-10)
@@ -165,26 +169,34 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 setIsFullScreen(false)
             }
         };
+        const handleClick = () => {
+            setShowControls((prevShowControls) => !prevShowControls);
+            clearTimeout(controlsTimeout)
+            controlsTimeout = setTimeout(() => {
+                setShowControls(false)
+            }, 2000);
+        }
         const handleMouseMove = () => {
-
             clearTimeout(controlsTimeout);
             setShowControls(true)
             controlsTimeout = setTimeout(() => {
                 setShowControls(false)
-            }, 3000);
+            }, 2000);
         }
-        p.addEventListener('keydown', handleKeyDown);
+        document.body.addEventListener('keydown', handleKeyDown);
         pA.addEventListener('dblclick', handleDoubleClick);
+        pA.addEventListener('click', handleClick);
         p.addEventListener('mousemove', handleMouseMove);
         p.addEventListener('mouseleave', () => setShowControls(false));
         return () => {
-            p.removeEventListener('keydown', handleKeyDown);
+            document.body.removeEventListener('keydown', handleKeyDown);
             pA.removeEventListener('dblclick', handleDoubleClick);
+            pA.removeEventListener('click', handleClick);
             p.addEventListener('mousemove', handleMouseMove);
             p.addEventListener('mouseleave', () => setShowControls(false));
 
         };
-    }, [player.current]);
+    }, []);
     useEffect(() => {
         const videoElement = document.querySelector("#player");
         const handleMouseMove = () => {
@@ -279,7 +291,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         setLoading(false)
         setCurrentTime(progress.playedSeconds);
         setLoadedTime(progress.loadedSeconds);
-        setTotalTime(player?.current.getDuration())
+        setTotalTime(player?.current?.getDuration())
         setPlayedTime(progress.playedSeconds);
     };
     const handleDuration = (duration) => {
@@ -322,7 +334,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 qualityLevel: qualities[qIndex]?.height
             }));
         }
-        
+
     }
     return (
         <div id="player" className={cn('z-0 relative w-full h-full')}>
@@ -337,7 +349,6 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 onDuration={handleDuration}
                 onReady={() => { getQuality(); setLoading(false); setTotalTime(player?.current.getDuration()); player?.current.seekTo(continueWatchTime ? continueWatchTime : 0) }}
                 onEnded={() => { userPreferences?.AutoNext && setEpEnded(true) }}
-                // onError={() => setError(true)}
                 url={Url}
                 controls={false}
                 config={{
@@ -364,60 +375,60 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                     <Pause className="max-w-6 max-h-6" /> : <Play className="w-6 h-6" />}
             </Button>
             <div className={cn("w-full absolute opacity-100 block bottom-0 z-20 bg-black/20", !showControls && !isOpen && !isOpen1 && "opacity-0 hidden transition-opacity ease-out")}>
-                    <div className="mb-2 pb-2 relative flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-3 overflow-hidden">
-                        <p>{currentTime ? formatTime(currentTime) : "00:00:00"}</p>
-                        <Slider value={[currentTime]} min={0} max={duration} loadedTime={loadedTime} onValueChange={(e) => handleSeek(e)} step={10} className="w-[90%]" />
-                        <p>{player?.current?.getDuration() ? formatTime(player?.current?.getDuration()) : "00:00:00"}</p>
+                <div className="mb-2 pb-2 relative flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-3 overflow-hidden">
+                    <p>{currentTime ? formatTime(currentTime) : "00:00:00"}</p>
+                    <Slider value={[currentTime]} min={0} max={duration} loadedTime={loadedTime} onValueChange={(e) => handleSeek(e)} step={10} className="w-[90%]" />
+                    <p>{player?.current?.getDuration() ? formatTime(player?.current?.getDuration()) : "00:00:00"}</p>
+                </div>
+                <div className="flex items-center gap-0 lg:gap-2 ">
+                    <div className="lg:ml-5 text-white">
+                        <Button onClick={() => setPlaying(!playing)} className="hidden sm:inline-block p-2 bg-transparent border-none" variant="outline">
+                            {playing ?
+                                <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        </Button>
                     </div>
-                    <div className="flex items-center gap-0 lg:gap-2 ">
-                        <div className="lg:ml-5 text-white">
-                            <Button onClick={() => setPlaying(!playing)} className="hidden sm:inline-block p-2 bg-transparent border-none" variant="outline">
-                                {playing ?
-                                    <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                            </Button>
+                    <div className="relative ml-1 text-white flex items-center">
+                        {volume == 0 && <Volume />}
+                        {volume > 0 && volume <= 0.5 && <Volume1 />}
+                        {volume > 0.5 && <Volume2 />}
+                        <Slider volumeBar={true} value={[volume]} min={0} max={1} onValueChange={(e) => {
+                            setVolume(e);
+                            setUserPreferences(prevState => ({ ...prevState, volumeLevel: e }));
+                        }} step={0.1} className="w-10 sm:w-20" />
+                    </div>
+                    <div className="flex text-white relative items-center ml-auto mr-4">
+                        <Button size="sm" onClick={() => skipTime(-10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
+                            <UndoDot className="w-6 h-4" />
+                        </Button>
+                        <Button size="sm" onClick={() => skipTime(10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
+                            <RedoDot className="w-6 h-4" />
+                        </Button>
+                        <Button onClick={() => { setIsOpen(!isOpen); setIsOpen1(false) }} className="bg-transparent border-none p-0 sm:p-2" size="sm" variant="outline">
+                            {currentQuality !== -1 ? qualities && qualities[currentQuality]?.height + "p" : "Auto"}
+                            <ChevronUp className="w-4 h-4 inline-block" />
+                        </Button>
+                        <div className={cn("rounded-sm py-1 px-2 absolute ml-20 bottom-5 md:bottom-7 lg:bottom-18 bg-gray-900/70 text-white hidden", isOpen && "flex flex-col items-center")}>
+                            <Button variant="outline" onClick={() => { setCurrentQuality(-1); changeQuality(-1); setIsOpen(!isOpen) }} className={cn("bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs", currentQuality == -1 && "bg-white text-secondary")}>Auto</Button>
+                            <Separator />
+                            {qualities?.map((q, i) => <Button variant="outline" size="sm" onClick={() => { setCurrentQuality(i); changeQuality(i); setIsOpen(!isOpen) }} key={i} className={cn("bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0", currentQuality == i && "bg-white text-secondary")}>{q.height}p</Button>)}
                         </div>
-                        <div className="relative ml-1 text-white flex items-center">
-                            {volume == 0 && <Volume />}
-                            {volume > 0 && volume <= 0.5 && <Volume1 />}
-                            {volume > 0.5 && <Volume2 />}
-                            <Slider volumeBar={true} value={[volume]} min={0} max={1} onValueChange={(e) => {
-                                setVolume(e);
-                                setUserPreferences(prevState => ({ ...prevState, volumeLevel: e }));
-                            }} step={0.1} className="w-10 sm:w-20" />
+                        <Button size="sm" variant="ghost" className={cn(selectedTrack != "off" && "text-secondary")} onClick={() => { setIsOpen1(!isOpen1); setIsOpen(false) }}>
+                            <Subtitles className="inline-block w-4 sm:w-6" />
+                        </Button>
+                        <div className={cn("w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden", isOpen1 && " flex flex-col items-center")}>
+                            <Button variant="outline" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack("off") }} className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs">Off</Button>
+                            <Separator />
+                            {captions?.map((c, i) => <Button variant="outline" size="sm" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack(i) }} key={c.label} className={cn("bg-transparent hover:bg-secondary/20 w-full border-none leading-none text-xs p-1", selectedTrack == i && "text-secondary bg-white")}>{c.label}</Button>)}
                         </div>
-                        <div className="flex text-white relative items-center ml-auto mr-4">
-                            <Button size="sm" onClick={() => skipTime(-10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
-                                <UndoDot className="w-6 h-4" />
-                            </Button>
-                            <Button size="sm" onClick={() => skipTime(10)} className="text-xs p-2 bg-transparent border-none" variant="outline">
-                                <RedoDot className="w-6 h-4" />
-                            </Button>
-                            <Button onClick={() => { setIsOpen(!isOpen); setIsOpen1(false) }} className="bg-transparent border-none p-0 sm:p-2" size="sm" variant="outline">
-                                {currentQuality !== -1 ? qualities && qualities[currentQuality]?.height + "p" : "Auto"}
-                                <ChevronUp className="w-4 h-4 inline-block" />
-                            </Button>
-                            <div className={cn("rounded-sm py-1 px-2 absolute ml-20 bottom-5 md:bottom-7 lg:bottom-18 bg-gray-900/70 text-white hidden", isOpen && "flex flex-col items-center")}>
-                                <Button variant="outline" onClick={() => { setCurrentQuality(-1); changeQuality(-1); setIsOpen(!isOpen) }} className={cn("bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs", currentQuality == -1 && "bg-white text-secondary")}>Auto</Button>
-                                <Separator />
-                                {qualities?.map((q, i) => <Button variant="outline" size="sm" onClick={() => { setCurrentQuality(i); changeQuality(i); setIsOpen(!isOpen) }} key={i} className={cn("bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0", currentQuality == i && "bg-white text-secondary")}>{q.height}p</Button>)}
-                            </div>
-                            <Button size="sm" variant="ghost" className={cn(selectedTrack != "off" && "text-secondary")} onClick={() => { setIsOpen1(!isOpen1); setIsOpen(false) }}>
-                                <Subtitles className="inline-block w-4 sm:w-6" />
-                            </Button>
-                            <div className={cn("w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden", isOpen1 && " flex flex-col items-center")}>
-                                <Button variant="outline" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack("off") }} className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs">Off</Button>
-                                <Separator />
-                                {captions?.map((c, i) => <Button variant="outline" size="sm" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack(i) }} key={c.label} className={cn("bg-transparent hover:bg-secondary/20 w-full border-none leading-none text-xs p-1", selectedTrack == i && "text-secondary bg-white")}>{c.label}</Button>)}
-                            </div>
-                            <Button onClick={() => setIsFullScreen(!isFullScreen)} size="sm" className="p-2 bg-transparent border-none" variant="outline">
-                                {isFullScreen && <Minimize className='w-4 sm:w-6' />}
-                                {!isFullScreen && <Fullscreen className='w-4 sm:w-6' />}
-                            </Button>
-                        </div>
-
+                        <Button onClick={() => setIsFullScreen(!isFullScreen)} size="sm" className="p-2 bg-transparent border-none" variant="outline">
+                            {isFullScreen && <Minimize className='w-4 sm:w-6' />}
+                            {!isFullScreen && <Fullscreen className='w-4 sm:w-6' />}
+                        </Button>
                     </div>
 
                 </div>
+
+            </div>
         </div >
     )
 }

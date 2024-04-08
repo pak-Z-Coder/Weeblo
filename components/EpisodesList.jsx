@@ -24,8 +24,8 @@ const bebas_nueue = Bebas_Neue({
 })
 
 const EpisodesList = ({ episodes, currentEp, animeId }) => {
-    const [currentEpPage, setCurrentEpPage] = useState(0);
     const episodesPerPage = 100;
+    const [currentEpPage, setCurrentEpPage] = useState(0);
 
     const startIndex = currentEpPage * episodesPerPage;
     const endIndex = Math.min(startIndex + episodesPerPage, episodes?.length);
@@ -37,6 +37,7 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
         setCurrentEpPage(page);
     };
     useEffect(() => {
+        setCurrentEpPage(currentEp?.number ? Math.floor(currentEp.number / episodesPerPage) : 0);
         const element = document.getElementById(currentEp?.episodeId);
         if (element) {
             element.scrollIntoView();
@@ -90,10 +91,10 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
                             {episodes && [...Array(Math.min(3, totalPages - currentEpPage))].map((_, i) => {
                                 const pageNumber = currentEpPage + i;
                                 return (
-                                    <PaginationItem key={pageNumber}>
+                                    <PaginationItem onClick={() => handlePageChange(pageNumber)} key={pageNumber}>
                                         <Button
-                                            onClick={() => handlePageChange(pageNumber)}
-                                            className={cn("text-white", pageNumber === currentEpPage && 'bg-secondary')}
+
+                                            className={cn("text-white bg-primary/50 hover:bg-secondary/50", pageNumber === currentEpPage && 'bg-secondary hover:bg-secondary')}
                                         >
                                             {pageNumber + 1}
                                         </Button>

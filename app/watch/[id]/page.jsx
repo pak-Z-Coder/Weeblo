@@ -346,7 +346,7 @@ export default function WatchPage({ params: { id } }) {
                             {currentEp && <DisqusComments episode={{ title: currentEp?.title, animeId: animeId, epNumber: currentEp?.number }} />}
                         </div>
                     </div>
-                    <Separator className="my-2" />
+                    <Separator className="my-2 lg:hidden" />
                     <div className="w-full lg:w-80 p-4">
                         <div>
                             <AnimeVerticalCarousel animes={animeInfo?.relatedAnimes} type={"Related"} page="info" />
