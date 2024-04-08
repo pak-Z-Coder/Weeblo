@@ -169,13 +169,6 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 setIsFullScreen(false)
             }
         };
-        const handleClick = () => {
-            setShowControls((prevShowControls) => !prevShowControls);
-            clearTimeout(controlsTimeout)
-            controlsTimeout = setTimeout(() => {
-                setShowControls(false)
-            }, 2000);
-        }
         const handleMouseMove = () => {
             clearTimeout(controlsTimeout);
             setShowControls(true)
@@ -185,13 +178,11 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         }
         document.body.addEventListener('keydown', handleKeyDown);
         pA.addEventListener('dblclick', handleDoubleClick);
-        pA.addEventListener('click', handleClick);
         p.addEventListener('mousemove', handleMouseMove);
         p.addEventListener('mouseleave', () => setShowControls(false));
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
             pA.removeEventListener('dblclick', handleDoubleClick);
-            pA.removeEventListener('click', handleClick);
             p.addEventListener('mousemove', handleMouseMove);
             p.addEventListener('mouseleave', () => setShowControls(false));
 
@@ -334,7 +325,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 qualityLevel: qualities[qIndex]?.height
             }));
         }
-        setPlaying((prevPlaying) => { return prevPlaying});
+        setPlaying((prevPlaying) => { return prevPlaying });
     }
     return (
         <div id="player" className={cn('z-0 relative w-full h-full')}>
@@ -375,7 +366,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                     <Pause className="max-w-6 max-h-6" /> : <Play className="w-6 h-6" />}
             </Button>
             <div className={cn("w-full absolute opacity-100 block bottom-0 z-20 bg-black/20", !showControls && !isOpen && !isOpen1 && "opacity-0 hidden transition-opacity ease-out")}>
-                <div className="mb-2 pb-2 relative flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-3 overflow-hidden">
+                <div className="mb-2 relative pb-1 flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-2 overflow-hidden">
                     <p>{currentTime ? formatTime(currentTime) : "00:00:00"}</p>
                     <Slider value={[currentTime]} min={0} max={duration} loadedTime={loadedTime} onValueChange={(e) => handleSeek(e)} step={10} className="w-[90%]" />
                     <p>{player?.current?.getDuration() ? formatTime(player?.current?.getDuration()) : "00:00:00"}</p>
