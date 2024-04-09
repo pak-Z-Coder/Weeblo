@@ -2,7 +2,7 @@
 import React from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { Bebas_Neue } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'

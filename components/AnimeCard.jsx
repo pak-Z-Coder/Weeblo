@@ -1,4 +1,4 @@
-import Image from 'next/image';
+// import Image from 'next/image';
 import React, { useState } from 'react'
 import {
     HoverCard,
@@ -45,7 +45,7 @@ const AnimeCard = ({ anime, type }) => {
                             }
                             <p className={cn('absolute z-20', type == "season" ? "text-sm bottom-2 left-2 sm:left-3 " : "md:text-lg text-xs max-w-full max-h-[80%] overflow-hidden bottom-2 left-1 sm:bottom-4 sm:left-3")}>{type !== "season" ? name.length > 25 ? name.slice(0, 25) + "..." : name : name.slice(0, 22) + "..."}</p>
                         </div>
-                        <img  loading="lazy" quality={100} placeholder='empty' key={id} className={cn('w-fit min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center rounded-sm', type == "season" ? "min-h-[50px] max-h-[50px] min-w-[150px] sm:max-h-[70px] sm:min-h-[70px] sm:min-w-[200px] object-center " : "w-fit min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center shadow-sm hover:shadow-md drop-shadow-md hover:shadow-gray-950")} alt={`${name}`} width={type == "season" ? 100 : 300} height={type == "season" ? 200 : 400} layout="responsive" src={`${poster ? poster : ""}`} />
+                        <img loading="lazy" quality={100} placeholder='empty' key={id} className={cn('w-fit min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center rounded-sm', type == "season" ? "min-h-[50px] max-h-[50px] min-w-[150px] sm:max-h-[70px] sm:min-h-[70px] sm:min-w-[200px] object-center " : "w-fit min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center shadow-sm hover:shadow-md drop-shadow-md hover:shadow-gray-950")} alt={`${name}`} width={type == "season" ? 100 : 300} height={type == "season" ? 200 : 400} layout="responsive" src={`${poster ? poster : ""}`} />
                     </div></Link></HoverCardTrigger>
             <HoverCardContent className="p-0 min-w-80">
                 {

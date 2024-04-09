@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+// import Image from 'next/image';
 import SaveAnimeButton from './SaveAnimeButton';
 import RemoveAnimeButton from './RemoveAnimeButton';
 import { History } from 'lucide-react';
@@ -17,7 +17,7 @@ const CustomAnimeCard = ({ anime, type }) => {
                 <div className="text-white z-20 w-fit font-semibold">
                     <p className={cn("absolute z-20 md:text-lg text-xs max-w-full max-h-[80%] overflow-hidden bottom-2 left-1 sm:bottom-4 sm:left-3")}>{name.length > 25 ? name.slice(0, 25) + "..." : name}</p>
                 </div>
-                <Image
+                <img
                     className={cn("w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-cover rounded-sm lg:hover:drop-shadow-lg")}
                     alt={name}
                     width={300}
@@ -37,8 +37,8 @@ const CustomAnimeCard = ({ anime, type }) => {
                 <div className="text-white z-20 w-fit font-semibold">
                     <p className={cn("absolute z-20 md:text-lg text-xs max-w-full max-h-[80%] overflow-hidden bottom-2 left-1 sm:bottom-4 sm:left-3")}>{name.length > 25 ? name.slice(0, 25) + "..." : name}</p>
                 </div>
-                <Image
-                    className={cn("min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-cover rounded-t-sm lg:hover:drop-shadow-lg")}
+                <img
+                    className={cn("w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-cover  rounded-t-sm lg:hover:drop-shadow-lg")}
                     alt={name}
                     width={300}
                     height={400}
