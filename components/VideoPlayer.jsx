@@ -31,6 +31,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     const [isOpen1, setIsOpen1] = useState(false);
     let controlsTimeout;
     let cursorTimeout;
+    let lastTouchTime = 0;
     const [captions, setCaptions] = useState(null);
     const [captionsToUse, setCaptionsToUse] = useState([]);
     const [currentCaption, setCurrentCaption] = useState('');
@@ -137,7 +138,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         };
     }, []);
     useEffect(() => {
-        
+
         const p = document.querySelector("#player")
         const pA = document.querySelector("#playerAbsolute")
         if (!p) return;
@@ -183,14 +184,19 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         };
 
         const handleTap = (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // Stop event from propagating further
-            console.log('Tap event detected!');
-            setShowControls((prevShowControls) => !prevShowControls);
-            clearTimeout(controlsTimeout);
-            controlsTimeout = setTimeout(() => {
-                setShowControls(false);
-            }, 2000);
+            const currentTime = new Date().getTime();
+            const timeSinceLastTouch = currentTime - lastTouchTime;
+            if (timeSinceLastTouch < 300) { // Adjust this threshold for your needs
+                setIsFullScreen((prevIsFullScreen) => !prevIsFullScreen);
+            } else {
+                e.preventDefault();
+                e.stopPropagation(); // Stop event from propagating further
+                setShowControls((prevShowControls) => !prevShowControls);
+                clearTimeout(controlsTimeout);
+                controlsTimeout = setTimeout(() => {
+                    setShowControls(false);
+                }, 2000);
+            }
         };
         const handleMouseMove = () => {
             clearTimeout(controlsTimeout);
