@@ -31,7 +31,6 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     const [isOpen1, setIsOpen1] = useState(false);
     let controlsTimeout;
     let cursorTimeout;
-    let lastTouchTime = 0;
     const [captions, setCaptions] = useState(null);
     const [captionsToUse, setCaptionsToUse] = useState([]);
     const [currentCaption, setCurrentCaption] = useState('');
@@ -142,6 +141,20 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         const p = document.querySelector("#player")
         const pA = document.querySelector("#playerAbsolute")
         if (!p) return;
+        const rotateToLandscape = () => {
+            if (screen.orientation && screen.orientation.lock) {
+              screen.orientation.lock('landscape')
+                .then(() => console.log('Screen locked to landscape'))
+                .catch((error) => console.error('Failed to lock screen to landscape:', error));
+            } else if (screen.lockOrientation) {
+              screen.lockOrientation('landscape')
+                .then(() => console.log('Screen locked to landscape'))
+                .catch((error) => console.error('Failed to lock screen to landscape:', error));
+            } else {
+              console.warn('Screen orientation lock not supported on this device.');
+              // Handle gracefully for devices that do not support screen orientation locking
+            }
+          };
         const handleKeyDown = (e) => {
             switch (e.key) {
                 case ' ':
@@ -160,7 +173,6 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                     break;
             }
         };
-
         const handleDoubleClick = () => {
             if (p && !document.fullscreenElement) {
                 p.requestFullscreen();
@@ -171,32 +183,20 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
             }
         };
         const handleClick = () => {
-            console.log('Clicked pA');
             setShowControls((prevShowControls) => !prevShowControls);
-            // setShowControls((prevShowControls) => console.log(prevShowControls));
-            // if (!showControls) {
             clearTimeout(controlsTimeout);
             controlsTimeout = setTimeout(() => {
-                console.log('Hiding controls');
                 setShowControls(false);
             }, 3000);
-            // }
         };
-
         const handleTap = (e) => {
-            const currentTime = new Date().getTime();
-            const timeSinceLastTouch = currentTime - lastTouchTime;
-            if (timeSinceLastTouch < 300) { // Adjust this threshold for your needs
-                setIsFullScreen((prevIsFullScreen) => !prevIsFullScreen);
-            } else {
-                e.preventDefault();
-                e.stopPropagation(); // Stop event from propagating further
-                setShowControls((prevShowControls) => !prevShowControls);
-                clearTimeout(controlsTimeout);
-                controlsTimeout = setTimeout(() => {
-                    setShowControls(false);
-                }, 2000);
-            }
+            e.preventDefault();
+            setShowControls((prevShowControls) => !prevShowControls);
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                setShowControls(false);
+            }, 2000);
+
         };
         const handleMouseMove = () => {
             clearTimeout(controlsTimeout);
@@ -205,25 +205,74 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 setShowControls(false)
             }, 3000);
         }
+        const handleTouchStart = (e) => {
+            e.preventDefault();
+            const touchStartY = e.touches[0].clientY;
+            pA.dataset.touchStartY = touchStartY;
+        };
+        const handleTouchMove = (e) => {
+            e.preventDefault();
+            if (!pA.dataset.touchStartY) return;
+            const touchEndY = e.touches[0].clientY;
+            const touchStartY = parseInt(pA.dataset.touchStartY, 10);
+
+            const deltaY = touchEndY - touchStartY;
+
+            if (deltaY > 1) {
+                // Swipe down, exit full screen
+                exitFullScreen();
+            } else if (deltaY < -1) {
+                // Swipe up, enter full screen
+                enterFullScreen();
+            }
+
+            delete pA.dataset.touchStartY;
+        };
+        const enterFullScreen = () => {
+
+            if (p && !document.fullscreenElement) {
+                p.requestFullscreen();
+                setIsFullScreen(true);
+                rotateToLandscape();
+            }
+        };
+        const exitFullScreen = () => {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+                setIsFullScreen(false);
+            }
+        };
         document.body.addEventListener('keydown', handleKeyDown);
         pA.addEventListener('dblclick', handleDoubleClick);
         pA.addEventListener('click', handleClick);
-        pA.addEventListener('touchstart', handleTap);
+        pA.addEventListener('touchend', handleTap);
+        pA.addEventListener('touchstart', handleTouchStart);
+        pA.addEventListener('touchmove', handleTouchMove);
         p.addEventListener('mousemove', handleMouseMove);
-        p.addEventListener('mouseleave', () => setShowControls(false));
+        p.addEventListener('mouseleave', () => {
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                setShowControls(false)
+            }, 1000);
+        });
+
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
             pA.removeEventListener('dblclick', handleDoubleClick);
             pA.removeEventListener('click', handleClick);
-            pA.removeEventListener('touchstart', handleTap);
+            pA.removeEventListener('touchend', handleTap);
+            pA.removeEventListener('touchstart', handleTouchStart);
+            pA.removeEventListener('touchmove', handleTouchMove);
             p.addEventListener('mousemove', handleMouseMove);
-            p.addEventListener('mouseleave', () => setShowControls(false));
+            p.addEventListener('mouseleave', () => {
+                clearTimeout(controlsTimeout);
+                controlsTimeout = setTimeout(() => {
+                    setShowControls(false)
+                }, 1000);
+            });
 
         };
     }, []);
-    useEffect(() => {
-        console.log(showControls)
-    }, [showControls])
     useEffect(() => {
         const videoElement = document.querySelector("#player");
         const handleMouseMove = () => {
