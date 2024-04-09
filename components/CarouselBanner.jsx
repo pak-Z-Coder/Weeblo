@@ -26,7 +26,7 @@ const CarouselBanner = ({ animes }) => {
                 {
                     animes?.map((anime) => (
                         <div className='flex-full min-w-0 relative' key={anime.id}>
-                            <Image alt='Banner' width={"1366"} height={"768"} className='object-cover ml-auto lg:h-[30rem] lg:w-[75rem]' src={anime?.poster} />
+                            <img alt='Banner' width={"1366"} height={"768"} className='object-cover ml-auto lg:h-[30rem] lg:w-[75rem]' src={anime?.poster} />
                             <div className='absolute inset-0 bg-gradient-to-bl from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-20'></div>
                             <div className='absolute hidden dark:block inset-0 bg-gradient-to-br from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-20'></div>
                             <div className='absolute inset-0 bg-gradient-to-l from-gray-50/0 via-gray-900/60 to-black z-20'></div>
