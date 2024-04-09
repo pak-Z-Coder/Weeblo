@@ -75,6 +75,7 @@ export default function DetailedInfoCard({ params: { id } }) {
         setfetchLoading2(false)
     }
     useEffect(() => {
+        
         fetchInfo()
     }, [])
     useEffect(() => {

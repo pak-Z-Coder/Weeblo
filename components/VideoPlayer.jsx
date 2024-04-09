@@ -137,6 +137,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         };
     }, []);
     useEffect(() => {
+        
         const p = document.querySelector("#player")
         const pA = document.querySelector("#playerAbsolute")
         if (!p) return;
@@ -168,25 +169,55 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 setIsFullScreen(false)
             }
         };
+        const handleClick = () => {
+            console.log('Clicked pA');
+            setShowControls((prevShowControls) => !prevShowControls);
+            // setShowControls((prevShowControls) => console.log(prevShowControls));
+            // if (!showControls) {
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                console.log('Hiding controls');
+                setShowControls(false);
+            }, 3000);
+            // }
+        };
+
+        const handleTap = (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Stop event from propagating further
+            console.log('Tap event detected!');
+            setShowControls((prevShowControls) => !prevShowControls);
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                setShowControls(false);
+            }, 2000);
+        };
         const handleMouseMove = () => {
             clearTimeout(controlsTimeout);
             setShowControls(true)
             controlsTimeout = setTimeout(() => {
                 setShowControls(false)
-            }, 2000);
+            }, 3000);
         }
         document.body.addEventListener('keydown', handleKeyDown);
         pA.addEventListener('dblclick', handleDoubleClick);
+        pA.addEventListener('click', handleClick);
+        pA.addEventListener('touchstart', handleTap);
         p.addEventListener('mousemove', handleMouseMove);
         p.addEventListener('mouseleave', () => setShowControls(false));
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
             pA.removeEventListener('dblclick', handleDoubleClick);
+            pA.removeEventListener('click', handleClick);
+            pA.removeEventListener('touchstart', handleTap);
             p.addEventListener('mousemove', handleMouseMove);
             p.addEventListener('mouseleave', () => setShowControls(false));
 
         };
     }, []);
+    useEffect(() => {
+        console.log(showControls)
+    }, [showControls])
     useEffect(() => {
         const videoElement = document.querySelector("#player");
         const handleMouseMove = () => {
@@ -350,7 +381,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 width="100%"
                 height="100%"
             />
-            <div className='z-20 absolute bottom-20 right-2 w-fit ml-auto mr-2 '>
+            <div className='z-30 absolute bottom-20 right-2 w-fit ml-auto mr-2 '>
                 <Button onClick={() => player.current.seekTo(intro.end)} variant="outline" className={cn("drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1", currentTime >= intro?.start && currentTime <= intro?.end && currentTime != 0 && "flex")}>Skip<SkipForward /></Button>
                 <Button onClick={() => player.current.seekTo(outro.end)} variant="outline" className={cn("drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1", currentTime >= outro?.start && currentTime <= outro?.end && currentTime != 0 && "flex")}>Skip<SkipForward /></Button>
             </div>

@@ -34,7 +34,7 @@ export default async function RootLayout({ children }) {
               shadow="0 0 10px #2299DD,0 0 5px #2299DD"
             />
             <Header />
-            <div className="min-h-screen no-scrollbar scrollbar scrollbar-thumb-secondary/80 scrollbar-track-primary/50 ">
+            <div className="min-h-screen no-scrollbar">
               {children}
             </div>
             <Footer />

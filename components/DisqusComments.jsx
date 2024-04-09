@@ -2,15 +2,10 @@ import React, { useState } from 'react';
 import { DiscussionEmbed } from 'disqus-react';
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from '@/lib/utils';
-import { Bakbak_One, Bebas_Neue } from 'next/font/google';
+import { Bakbak_One } from 'next/font/google';
 import { Button } from './ui/button';
 import { useTheme } from 'next-themes';
 const bakbak_one = Bakbak_One({
-    weight: ['400'],
-    style: 'normal',
-    subsets: ['latin'],
-})
-const bebas_nueue = Bebas_Neue({
     weight: ['400'],
     style: 'normal',
     subsets: ['latin'],
