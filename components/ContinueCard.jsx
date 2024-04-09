@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import { CardContent, Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils";
 import { History } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import RemoveAnimeButton from "./RemoveAnimeButton";
 
@@ -27,7 +26,7 @@ export default function ContinueCard({ anime, user }) {
       <div style={{ backgroundImage: `url(${poster})` }} className={cn("relative bg-cover md:h-[50%] flex items-center justify-center z-0")}>
         <div className="absolute inset-0 h-full rounded-lg bg-gradient-to-b from-gray-200/0 via-gray-900/20 hover:via-gray-900/50 to-gray-950/70 hover:to-gray-950/90 z-10"></div>
         <div className="absolute inset-0 h-full backdrop-blur-sm z-10"></div>
-        <Image
+        <img
           alt="Anime Poster"
           className="bg-transparent z-20 rounded-sm drop-shadow-md max-h-[150px] min-w-[120px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-contain"
           height="400"

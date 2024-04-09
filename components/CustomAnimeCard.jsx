@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/utils';
-// import Image from 'next/image';
 import SaveAnimeButton from './SaveAnimeButton';
 import RemoveAnimeButton from './RemoveAnimeButton';
 import { History } from 'lucide-react';
@@ -40,8 +39,8 @@ const CustomAnimeCard = ({ anime, type }) => {
                 <img
                     className={cn("w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-cover  rounded-t-sm lg:hover:drop-shadow-lg")}
                     alt={name}
-                    width={300}
-                    height={400}
+                    // width={300}
+                    // height={400}
                     layout="responsive"
                     src={poster ? poster : ""}
                 />

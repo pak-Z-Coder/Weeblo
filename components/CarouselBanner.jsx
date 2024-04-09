@@ -2,7 +2,6 @@
 import React from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
-// import Image from 'next/image'
 import { Bebas_Neue } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
@@ -22,11 +21,11 @@ const CarouselBanner = ({ animes }) => {
     const [emblaRef] = useEmblaCarousel({ loop: true, duration: 50 }, [Autoplay()])
     return (
         <div ref={emblaRef} className='overflow-hidden relative group'>
-            <div className='flex min-h-[12rem] h-[12rem] sm:h-[18rem] md:h-[25rem] lg:h-[30rem]'>
+            <div className='flex min-h-[15rem] h-[15rem] sm:h-[18rem] md:h-[25rem] lg:h-[30rem]'>
                 {
                     animes?.map((anime) => (
                         <div className='flex-full min-w-0 relative' key={anime.id}>
-                            <img alt='Banner' width={"1366"} height={"768"} className='object-cover ml-auto lg:h-[30rem] lg:w-[75rem]' src={anime?.poster} />
+                            <img alt='Banner' width={"1366"} height={"768"} className='object-cover ml-auto lg:h-[32rem] lg:w-[75rem]' src={anime?.poster} />
                             <div className='absolute inset-0 bg-gradient-to-bl from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-20'></div>
                             <div className='absolute hidden dark:block inset-0 bg-gradient-to-br from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-20'></div>
                             <div className='absolute inset-0 bg-gradient-to-l from-gray-50/0 via-gray-900/60 to-black z-20'></div>

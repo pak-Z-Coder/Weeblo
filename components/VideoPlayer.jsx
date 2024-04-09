@@ -19,7 +19,6 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     const [currentTime, setCurrentTime] = useState(0);
     const [loadedTime, setLoadedTime] = useState(0);
     const [loading, setLoading] = useState(false);
-    // const [error, setError] = useState(false);
     const [playing, setPlaying] = useState(userPreferences?.AutoPlay)
     const [duration, setDuration] = useState(0);
     const [qualities, setQualities] = useState(null);

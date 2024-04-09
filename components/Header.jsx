@@ -113,13 +113,13 @@ const Header = () => {
                         <AvatarFallback>{user?.username[0]}</AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-fit mr-2 p-0">
+                    <DropdownMenuContent className="w-fit mr-2 p-0 text-white">
                       <DropdownMenuItem className="cursor-pointer font-semibold" onClick={() => { }}>
                         {
                           user &&
                           <Link href="/user">
                             <Button variant="ghost" className="w-full flex items-center space-x-2">
-                              <p>Account</p><User className='border border-black dark:border-white rounded-full max-w-6' />
+                              <p>Account</p><User className='border rounded-full max-w-6' />
                             </Button>
                           </Link>
                         }

@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { getAnimeInfo } from "@/app/api/getAnimeInfo";
 import { getAnimeExtraInfo } from "@/app/api/getAnimeExtraInfo";
 import { Star, StarHalf, StarOff, Sprout, FileVideo, Video, Captions, Mic, Clock, Calendar, Film, Loader, Play, SquarePlay, Users, Heart, CalendarClock, TriangleAlert, } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { cn } from '@/lib/utils'
 const AnimesCarousel = dynamic(() => import("@/components/AnimesCarousel"),
@@ -126,7 +125,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                 </div>
                 <div className="flex flex-col gap-4">
                     <div className="flex space-x-2">
-                        <Image
+                        <img
                             alt="Poster"
                             className="aspect-[3/4] rounded-md sm:rounded-lg object-cover border border-gray-200 w-36 dark:border-gray-800"
                             height={400}
