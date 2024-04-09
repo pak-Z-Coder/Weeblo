@@ -205,49 +205,10 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                 setShowControls(false)
             }, 3000);
         }
-        const handleTouchStart = (e) => {
-            e.preventDefault();
-            const touchStartY = e.touches[0].clientY;
-            pA.dataset.touchStartY = touchStartY;
-        };
-        const handleTouchMove = (e) => {
-            e.preventDefault();
-            if (!pA.dataset.touchStartY) return;
-            const touchEndY = e.touches[0].clientY;
-            const touchStartY = parseInt(pA.dataset.touchStartY, 10);
-
-            const deltaY = touchEndY - touchStartY;
-
-            if (deltaY > 0) {
-                // Swipe down, exit full screen
-                exitFullScreen();
-            } else if (deltaY < 0) {
-                // Swipe up, enter full screen
-                enterFullScreen();
-            }
-
-            delete pA.dataset.touchStartY;
-        };
-        const enterFullScreen = () => {
-
-            if (p && !document.fullscreenElement) {
-                p.requestFullscreen();
-                setIsFullScreen(true);
-                rotateToLandscape();
-            }
-        };
-        const exitFullScreen = () => {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-                setIsFullScreen(false);
-            }
-        };
         document.body.addEventListener('keydown', handleKeyDown);
         pA.addEventListener('dblclick', handleDoubleClick);
         pA.addEventListener('click', handleClick);
         pA.addEventListener('touchend', handleTap);
-        pA.addEventListener('touchstart', handleTouchStart);
-        pA.addEventListener('touchmove', handleTouchMove);
         p.addEventListener('mousemove', handleMouseMove);
         p.addEventListener('mouseleave', () => {
             clearTimeout(controlsTimeout);
@@ -261,8 +222,6 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
             pA.removeEventListener('dblclick', handleDoubleClick);
             pA.removeEventListener('click', handleClick);
             pA.removeEventListener('touchend', handleTap);
-            pA.removeEventListener('touchstart', handleTouchStart);
-            pA.removeEventListener('touchmove', handleTouchMove);
             p.addEventListener('mousemove', handleMouseMove);
             p.addEventListener('mouseleave', () => {
                 clearTimeout(controlsTimeout);
