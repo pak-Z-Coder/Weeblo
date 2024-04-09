@@ -143,18 +143,18 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         if (!p) return;
         const rotateToLandscape = () => {
             if (screen.orientation && screen.orientation.lock) {
-              screen.orientation.lock('landscape')
-                .then(() => console.log('Screen locked to landscape'))
-                .catch((error) => console.error('Failed to lock screen to landscape:', error));
+                screen.orientation.lock('landscape')
+                    .then(() => console.log('Screen locked to landscape'))
+                    .catch((error) => console.error('Failed to lock screen to landscape:', error));
             } else if (screen.lockOrientation) {
-              screen.lockOrientation('landscape')
-                .then(() => console.log('Screen locked to landscape'))
-                .catch((error) => console.error('Failed to lock screen to landscape:', error));
+                screen.lockOrientation('landscape')
+                    .then(() => console.log('Screen locked to landscape'))
+                    .catch((error) => console.error('Failed to lock screen to landscape:', error));
             } else {
-              console.warn('Screen orientation lock not supported on this device.');
-              // Handle gracefully for devices that do not support screen orientation locking
+                console.warn('Screen orientation lock not supported on this device.');
+                // Handle gracefully for devices that do not support screen orientation locking
             }
-          };
+        };
         const handleKeyDown = (e) => {
             switch (e.key) {
                 case ' ':
@@ -218,10 +218,10 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
 
             const deltaY = touchEndY - touchStartY;
 
-            if (deltaY > 1) {
+            if (deltaY > 0) {
                 // Swipe down, exit full screen
                 exitFullScreen();
-            } else if (deltaY < -1) {
+            } else if (deltaY < 0) {
                 // Swipe up, enter full screen
                 enterFullScreen();
             }
