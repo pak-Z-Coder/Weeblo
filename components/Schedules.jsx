@@ -24,6 +24,7 @@ const Schedules = () => {
     }, [])
     useEffect(() => {
         if (!animes) return
+        console.log(animes)
         setDays(Object.keys(animes));
         setSelectedDay(Object.keys(animes)[0]);
     }, [animes])
