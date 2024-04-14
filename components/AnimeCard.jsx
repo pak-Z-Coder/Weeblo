@@ -15,7 +15,7 @@ const AnimeCard = ({ anime, type }) => {
     const { rank, name, id, poster } = anime;
     const [animeInfo, setAnimeInfo] = useState({})
     const [fetchLoading, setfetchLoading] = useState(null);
-    const handleHover = async (e) => {
+    const handleHover = async () => {
         if (type != "season") {
             setfetchLoading(true)
             await getAnimeInfo(anime.id).then(
@@ -24,12 +24,11 @@ const AnimeCard = ({ anime, type }) => {
             setfetchLoading(false)
         }
     }
-
     return (
 
         <HoverCard className="inline-block">
             <HoverCardTrigger className="inline-block min-w-fit z-0">
-                <Link href={`/animeInfo/${encodeURIComponent(id)}`} className='w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px]'>
+                <Link href={type != "Latest Episodes" ? `/animeInfo/${encodeURIComponent(id)}` : `/watch/${encodeURIComponent(id)}?ep=${anime.episodes.sub}`} className='w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px]'>
                     <div onMouseEnter={handleHover} className=' group rounded-sm ml-1 sm:mb-[0.50rem] mb-1 mt-1 sm:mt-2 cursor-pointer transition-all transform md:hover:scale-105 ease-in-out duration-200 hover:drop-shadow-lg flex items-center justify-center relative'>
                         <div className='absolute h-auto rounded-sm inset-0 bg-gradient-to-b from-gray-200/0 via-gray-900/20 hover:via-gray-900/50 to-gray-950/70 hover:to-gray-950/90 z-20'></div>
                         {type == "season" && <div className='absolute h-auto rounded-sm inset-0 group-hover:backdrop-blur-0 backdrop-blur-sm z-10'></div>}

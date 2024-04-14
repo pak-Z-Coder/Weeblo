@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import dynamic from 'next/dynamic'
+import { usePathname, useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -68,6 +69,8 @@ const setUserPreferencesToLocalStorage = (preferences) => {
 };
 export default function WatchPage({ params: { id } }) {
     let { user, setUser } = useAppContext();
+    const router = useRouter();
+    const pathname = usePathname();
     const searchParams = useSearchParams();
     const animeId = decodeURI(id)
     const [fetchLoading, setfetchLoading] = useState(null);
@@ -212,9 +215,9 @@ export default function WatchPage({ params: { id } }) {
         const epNumber = searchParams?.get("ep");
         if (!epNumber) return
         if (Number(epNumber) < episodesResults?.episodes.length) {
-            setCurrentEp(episodesResults?.episodes[Number(epNumber - 1)])
+            setCurrentEp(episodesResults?.episodes[Number(epNumber) - 1])
         } else {
-            setCurrentEp(episodesResults?.episodes[Number(episodesResults?.episodes.length - 1)])
+            setCurrentEp(episodesResults?.episodes[Number(episodesResults?.episodes.length) - 1])
         }
     }, [episodesResults, searchParams])
     useEffect(() => {
@@ -223,6 +226,9 @@ export default function WatchPage({ params: { id } }) {
     useEffect(() => {
         fetchEpServerLink();
     }, [currentServerType, currentEp])
+    // useEffect(() => { //added
+    //     console.log(episodeServerLink, currentEp, episodeServers);
+    // }, [episodeServerLink])
     useEffect(() => {
         if (!animeInfo) return
         fetchExtraInfo();
@@ -241,12 +247,12 @@ export default function WatchPage({ params: { id } }) {
             setUserPreferences(JSON.parse(storedPreferences));
         }
     }, []);
-
     useEffect(() => {
         setUserPreferencesToLocalStorage(userPreferences)
     }, [userPreferences]);
     useEffect(() => {
         if (epEnded && currentEp?.number < episodesResults?.episodes.length) {
+            router.push(`${pathname}?ep=${currentEp?.number + 1}`);
             setCurrentEp(episodesResults?.episodes[currentEp?.number])
             setEpEnded(false)
         }

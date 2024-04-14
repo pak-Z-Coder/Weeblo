@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from '@/lib/utils'
@@ -27,15 +27,15 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
     const episodesPerPage = 100;
     const [currentEpPage, setCurrentEpPage] = useState(0);
 
-    const startIndex = currentEpPage * episodesPerPage;
-    const endIndex = Math.min(startIndex + episodesPerPage, episodes?.length);
+    let startIndex = currentEpPage * episodesPerPage;
+    let endIndex = Math.min(startIndex + episodesPerPage, episodes?.length);
+    if (startIndex === endIndex) {
+        startIndex = Math.max(episodes?.length - episodesPerPage, 0);
+        endIndex = episodes?.length;
+    }
     const currentEpisodes = episodes?.slice(startIndex, endIndex);
-
     const totalPages = Math.ceil(episodes?.length / episodesPerPage);
 
-    const handlePageChange = (page) => {
-        setCurrentEpPage(page);
-    };
     useEffect(() => {
         setCurrentEpPage(currentEp?.number ? Math.floor(currentEp.number / episodesPerPage) : 0);
     }, [currentEp]);
@@ -49,6 +49,9 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
             });
         }
     }, [currentEpPage])
+    const handlePageChange = (page) => {
+        setCurrentEpPage(page);
+    };
     const [openEps, setOpenEps] = useState(true)
     return (
         <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-12 lg:right-10 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-50 lg:hover:opacity-90")}>

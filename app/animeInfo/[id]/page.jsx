@@ -110,7 +110,6 @@ export default function DetailedInfoCard({ params: { id } }) {
                                         url={`https://www.youtube.com/watch?v=${animeExtraInfo?.youtubeVideoId}`}
                                         controls={false}
                                         className="w-screen aspect-square  md:aspect-video"
-                                        config={{ playerVars: { cc_lang_pref: 'en', cc_load_policy: 1 } }}
                                     />
                                 </DialogContent>
                             </Dialog>
@@ -283,11 +282,11 @@ export default function DetailedInfoCard({ params: { id } }) {
                 </div>
             </div>
             <div className="flex flex-col md:space-y-3 md:-mt-12">
-                <div className="mt-1 ">
+                <div className="sm:mt-5 mt-1 ">
                     <AnimeVerticalCarousel animes={animeInfo?.relatedAnimes} type={"Related"} page="info" />
                 </div>
                 <div className="mt-3 md:mt-1 ">
-                    <Separator className="lg:mt-10" />
+                    <Separator className="lg:mt-10 lg:-mb-2" />
                     <AnimeVerticalCarousel animes={animeInfo?.recommendedAnimes} type={"Recommended"} page="info" />
                 </div>
                 <Separator />

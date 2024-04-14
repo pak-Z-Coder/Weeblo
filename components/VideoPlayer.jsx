@@ -141,20 +141,19 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
         const p = document.querySelector("#player")
         const pA = document.querySelector("#playerAbsolute")
         if (!p) return;
-        const rotateToLandscape = () => {
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape')
-                    .then(() => console.log('Screen locked to landscape'))
-                    .catch((error) => console.error('Failed to lock screen to landscape:', error));
-            } else if (screen.lockOrientation) {
-                screen.lockOrientation('landscape')
-                    .then(() => console.log('Screen locked to landscape'))
-                    .catch((error) => console.error('Failed to lock screen to landscape:', error));
-            } else {
-                console.warn('Screen orientation lock not supported on this device.');
-                // Handle gracefully for devices that do not support screen orientation locking
-            }
-        };
+        // const rotateToLandscape = () => {
+        //     if (screen.orientation && screen.orientation.lock) {
+        //         screen.orientation.lock('landscape')
+        //             .then(() => console.log('Screen locked to landscape'))
+        //             .catch((error) => console.error('Failed to lock screen to landscape:', error));
+        //     } else if (screen.lockOrientation) {
+        //         screen.lockOrientation('landscape')
+        //             .then(() => console.log('Screen locked to landscape'))
+        //             .catch((error) => console.error('Failed to lock screen to landscape:', error));
+        //     } else {
+        //         console.warn('Screen orientation lock not supported on this device.');
+        //     }
+        // };
         const handleKeyDown = (e) => {
             switch (e.key) {
                 case ' ':
@@ -188,6 +187,11 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
             controlsTimeout = setTimeout(() => {
                 setShowControls(false);
             }, 3000);
+            setShowCursor(prevShowCursor => !prevShowCursor)
+            clearTimeout(cursorTimeout);
+            cursorTimeout = setTimeout(() => {
+                setShowCursor(false)
+            }, 3500);
         };
         const handleTap = (e) => {
             e.preventDefault();
@@ -204,6 +208,11 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
             controlsTimeout = setTimeout(() => {
                 setShowControls(false)
             }, 3000);
+            clearTimeout(cursorTimeout);
+            setShowCursor(true)
+            cursorTimeout = setTimeout(() => {
+                setShowCursor(false)
+            }, 3500);
         }
         document.body.addEventListener('keydown', handleKeyDown);
         pA.addEventListener('dblclick', handleDoubleClick);
@@ -234,21 +243,7 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
     }, []);
     useEffect(() => {
         const videoElement = document.querySelector("#player");
-        const handleMouseMove = () => {
-            clearTimeout(cursorTimeout);
-            setShowCursor(true)
-            cursorTimeout = setTimeout(() => {
-                setShowCursor(false)
-            }, 3000);
-        };
-        videoElement.addEventListener('mousemove', handleMouseMove);
-        return () => {
-            videoElement.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, [isFullScreen]);
-    useEffect(() => {
-        const videoElement = document.querySelector("#player");
-        if (playing && isFullScreen && videoElement && !showCursor) {
+        if (videoElement && !showCursor) {
             videoElement.style.cursor = 'none';
         } else {
             videoElement.style.cursor = 'auto';

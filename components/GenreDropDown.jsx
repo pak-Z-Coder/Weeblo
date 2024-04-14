@@ -23,11 +23,14 @@ const GenreDropDown = () => {
                         {
                             genres?.filter((genre) => (genre != "Harem" && genre != "Josei" && genre != "Ecchi")).map((genre) => {
                                 return (
-                                    <Link key={genre} href={`/search/${genre}?type=genre`}>
-                                        <Button variant="ghost" type="submit" value={genre} className="px-1 text-white hover:text-white sm:px-2 dark:hover:bg-primary/50 hover:bg-primary/80">
-                                            <DropdownMenuItem className="bg-transparent  text-xs sm:text-sm hover:cursor-pointer sm:px-2">{genre}</DropdownMenuItem>
-                                        </Button>
-                                    </Link>)
+                                    <DropdownMenuItem className="bg-transparent  text-xs sm:text-sm hover:cursor-pointer sm:px-2">
+                                        <Link key={genre} href={`/search/${genre}?type=genre`} className="w-full">
+                                            <Button variant="ghost" type="submit" value={genre} className="px-1 w-full text-white hover:text-white sm:px-2 dark:hover:bg-primary/50 hover:bg-primary/80">
+                                                {genre}
+                                            </Button>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                )
                             })
                         }
                     </div>

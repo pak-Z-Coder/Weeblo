@@ -23,6 +23,7 @@ const AnimeVerticalCarousel = ({ animes, type, page }) => {
         <Carousel
             opts={{
                 align: "start",
+                loop: true
             }}
             plugins={[
                 Autoplay({
@@ -33,12 +34,12 @@ const AnimeVerticalCarousel = ({ animes, type, page }) => {
             className={cn("w-full border-none", page == "info" && "md:mt-20")}
         >
             {type != "suggestions" && <p className={cn("text-secondary ml-2 font-bold text-lg sm:text-xl lg:text-2xl select-none", bakbak_one.className)}>{type}</p>}
-            <CarouselContent className={cn("max-h-[20vh] md:min-h-fit md:max-h-[70vh] z-0",type == "suggestions"&&"md:max-h-[55vh] min-w-40")}>
+            <CarouselContent className={cn("max-h-[20vh] md:min-h-fit md:max-h-[70vh] z-0", type == "suggestions" && "md:max-h-[55vh] min-w-40")}>
                 {!animes && type != "suggestions" &&
                     <Loader className="mx-auto mt-5 relative bottom-0 h-6 w-6 animate-spin text-primary" />}
                 {animes?.map((anime) => (
                     <CarouselItem key={anime.id} className="basis-1 min-h-[9.4rem] z-0">
-                        <AnimeHorizontalCard anime={anime} type={type == "suggestions"?"suggestion":""}/>
+                        <AnimeHorizontalCard anime={anime} type={type == "suggestions" ? "suggestion" : ""} />
                     </CarouselItem>
                 ))}
             </CarouselContent >

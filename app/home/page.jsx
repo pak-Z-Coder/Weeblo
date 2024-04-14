@@ -18,6 +18,10 @@ const AnimeGrid = dynamic(() => import("@/components/AnimeGrid"),
   {
     loading: () => <Loader className="mx-auto my-10 relative bottom-0 w-6 animate-spin text-primary" />
   })
+const Schedules = dynamic(() => import("@/components/Schedules"),
+  {
+    loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  })
 const ScrollTopButton = dynamic(() => import("@/components/ScrollTopButton"),
   {
     loading: () => <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
@@ -58,12 +62,18 @@ export default function Home() {
       </div>
       <Separator className="my-2" />
       <div className="px-2 md:space-x-2 grid grid-cols-1 mt-10 sm:mt-16 lg:grid-cols-4 items-start">
-        <div className="lg:border-r">
+        <div className="lg:border-r mb-2 md:mb-0">
           <AnimeVerticalCarousel animes={topUpcomingAnimes} type={"Upcoming"} />
         </div>
         <Separator className="my-2 md:hidden" />
         <div className="col-span-1 md:col-span-2 lg:col-span-3 md:h-[75vh] overflow-y-scroll no-scrollbar">
           <AnimeGrid animes={latestEpisodeAnimes} type={"Latest Episodes"} />
+        </div>
+      </div>
+      <Separator className="mt-5 md:mt-9 mb-3" />
+      <div>
+        <div>
+          <Schedules />
         </div>
       </div>
       <ScrollTopButton />

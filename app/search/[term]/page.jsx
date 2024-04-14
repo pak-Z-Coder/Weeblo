@@ -196,7 +196,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
             </Button>
           }
         </div >
-        <div className={cn('min-h-[80%] border lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar', (type == "genre" || type == "category") && "md:h-screen")}>
+        <div className={cn('min-h-[80%] sm:max-h-[110vh] border lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar', (type == "genre" || type == "category") && "md:h-screen")}>
           <AnimeGrid animes={filterdResults ? filterdResults : searchResults?.animes} type={""} />
         </div>
         {
@@ -233,7 +233,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
           </Pagination>
         }
       </div >
-      <div className='flex flex-col md:space-y-20 md:mt-10'>
+      <div className='flex flex-col md:space-y-20 mt-10 sm:mt-20 lg:mt-10'>
         <div className="border">
           {
             !fetchLoading && (type == "genre" || type == "producer") &&

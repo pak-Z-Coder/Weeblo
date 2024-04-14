@@ -20,7 +20,7 @@ const AnimeGrid = ({ animes, type }) => {
                         type != "Saved" ? <AnimeCard
                             key={anime.id}
                             anime={anime}
-                            type={""}
+                            type={type}
                         /> : <CustomAnimeCard anime={anime} key={anime.animeId} type="Saved" />
 
                     ))}

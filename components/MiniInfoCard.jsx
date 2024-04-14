@@ -47,7 +47,7 @@ export default function MiniInfoCard({ anime, type }) {
           url={`https://www.youtube.com/watch?v=${animeExtraInfo?.youtubeVideoId}`}
           config={{ playerVars: { cc_lang_pref: 'en', cc_load_policy: 1 } }}
           controls={false}
-          className={cn("aspect-square")}
+          className={cn("aspect-square hidden sm:inline-block")}
         />
       </AspectRatio>
       <div className="p-4 grid gap-2">
