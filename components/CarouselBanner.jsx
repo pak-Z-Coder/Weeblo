@@ -30,6 +30,7 @@ const CarouselBanner = ({ animes }) => {
                             <div className='absolute hidden dark:block inset-0 bg-gradient-to-br from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-20'></div>
                             <div className='absolute inset-0 bg-gradient-to-l from-gray-50/0 via-gray-900/10 to-black z-20'></div>
                             <div className='absolute inset-0 bg-gradient-to-l from-gray-50/0 via-gray-900/10 to-black z-20'></div>
+                            <div className='absolute hidden sm:block inset-0 bg-gradient-to-l from-gray-50/0 via-gray-900/0 to-black z-20'></div>
                             <div className='absolute z-20 bottom-10 sm:bottom-[2rem] md:bottom-[5rem] left-5 min-w-[60%] sm:min-w-[40%] sm:max-w-[40%] max-w-[60%] sm:w-fit'>
                                 <div className="space-x-1 mb-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                                     <Badge variant="outline" className="bg-secondary bg-opacity-50 sm:text-sm text-white border-none">{anime?.otherInfo[0]}</Badge>

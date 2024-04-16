@@ -4,10 +4,16 @@ import dynamic from 'next/dynamic'
 import { usePathname, useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { AvatarImage, Avatar } from "@/components/ui/avatar"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
-import { Loader } from "lucide-react"
+import { Download, Loader, Share2 } from "lucide-react"
 import { getAnimeEpisodes } from "@/app/api/getAnimeEpisodes"
 import { getAnimeInfo } from '@/app/api/getAnimeInfo'
 import { getEpisodeDetail } from "@/app/api/getEpisodeDetail"
@@ -89,6 +95,7 @@ export default function WatchPage({ params: { id } }) {
     const [playedTime, setPlayedTime] = useState(0);
     const [totalTime, setTotalTime] = useState(null);
     const [continueWatchTime, setContinueWatchTime] = useState(null);
+    const [shared, setShared] = useState(null);
     const fetchEpisodes = async () => {
         setfetchLoading(true)
         await getAnimeEpisodes(animeId).then((res) => setEpisodesResults(res))
@@ -270,6 +277,16 @@ export default function WatchPage({ params: { id } }) {
             setContinueWatchTime(null)
         }
     }, [user, currentEp, serverLoading])
+    const handleCopyUrl = () => {
+        const currentUrl = window.location.href;
+        navigator.clipboard.writeText(currentUrl)
+            .then(() => {
+                setShared(true);
+                setTimeout(() => {
+                    setShared(false)
+                }, 3000);
+            })
+    };
     return (
         !fetchLoading ? <div className="lg:pl-1 flex-grow-0 flex flex-col mt-10 sm:mt-16">
             <div className="relative flex flex-col">
@@ -316,9 +333,27 @@ export default function WatchPage({ params: { id } }) {
                             {animeInfo?.anime?.info?.stats?.type != "TV" ? animeInfo?.anime?.info?.name + " - " + currentEp?.title : currentEp?.number + " - " + currentEp?.title}
                         </h1>
                         <div className="flex justify-between items-centers space-x-4 my-4">
-                            <div>
-                                <Button variant="ghost">Share</Button>
-                                <Button variant="ghost">Download</Button>
+                            <div className="flex items-center">
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button variant="ghost" onClick={handleCopyUrl}><Share2 className={cn("hover:text-primary", shared && "text-secondary hover:text-secondary")} /></Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{shared ? "URL copied!" : "Share"}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button variant="ghost"><Download className="hover:text-primary" /></Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Download</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </div>
                             <div className="flex  items-center space-x-2">
                                 <ToggleGroup type="single" value={currentServerType} onValueChange={(e) => { setCurrentServerType(e) }}>

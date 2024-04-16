@@ -28,8 +28,8 @@ const Schedules = () => {
         setSelectedDay(Object.keys(animes)[0]);
     }, [animes])
     return (
-        <div>
-            <div className='mb-1'>
+        <div className='mt-4 mb-4 sm:mb-8'>
+            <div className='mb-2'>
                 <p className={cn('text-secondary ml-2 font-bold text-lg sm:text-xl lg:text-2xl', bakbak_one.className)}>Scheduled</p>
             </div>
             <Carousel className="w-[70%] sm:w-[80%] md:w-[90%] mb-2 mx-auto "
@@ -37,14 +37,14 @@ const Schedules = () => {
                 <CarouselContent className="mx-auto">
                     {days && days.map((day) =>
                     (<CarouselItem key={day} className=" basis-1/2 sm:basis-1/4 md:basis-1/5 lg:basis-[14%]">
-                        <Button onClick={() => setSelectedDay(day)} variant="ghost" className={cn("font-bold w-full tracking-wide", selectedDay == day && "bg-primary")}>
+                        <Button onClick={() => setSelectedDay(day)} variant="primary" className={cn("font-bold w-full tracking-wide", selectedDay == day && "bg-primary")}>
                             <p className='mx-auto text-xs sm:text-sm'>{day[0].toUpperCase() + day.slice(1, day.length)}</p>
                         </Button>
                     </CarouselItem >))
                     }
                 </CarouselContent >
-                <CarouselPrevious className="block md:hidden" />
-                <CarouselNext className="block md:hidden" />
+                <CarouselPrevious className="block md:hidden focus:bg-primary" />
+                <CarouselNext className="block md:hidden focus:bg-primary" />
             </Carousel >
             <Carousel className="w-[95%] sm:w-[90%] mx-auto "
                 opts={{ align: "start", loop: true, }} plugins={[Autoplay({ delay: 4000, }),]}>

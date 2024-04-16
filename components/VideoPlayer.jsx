@@ -136,8 +136,8 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
             clearInterval(progressIntervalRef.current);
         };
     }, []);
+    // Event Listerners:
     useEffect(() => {
-
         const p = document.querySelector("#player")
         const pA = document.querySelector("#playerAbsolute")
         if (!p) return;

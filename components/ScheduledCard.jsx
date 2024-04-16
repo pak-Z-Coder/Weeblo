@@ -2,13 +2,15 @@ import { CardContent, Card } from "@/components/ui/card"
 
 const ScheduledCard = ({ anime }) => {
   const { coverImage, title, airingAt, airingEpisode } = anime;
-  const getFormatedDate = (timestamp) => {
+  const getFormatedTime = (timestamp) => {
     const date = new Date(timestamp);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
 
-    return `${day}-${month}-${year}`;
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${amOrPm}`;
   }
   return (
     (
@@ -25,8 +27,8 @@ const ScheduledCard = ({ anime }) => {
           <div className="grid gap-1.5">
             <h3 className="text-sm font-bold tracking-wide line-clamp-1">{title.english}</h3>
             <div className="flex space-x-1 items-center justify-between">
-            <h4 className="text-sm font-semibold text-secondary tracking-wide">EP{airingEpisode}</h4>
-            <p className="text-xs opacity-70 font-medium line-clamp-2">{getFormatedDate(airingAt)}</p>
+              <h4 className="text-sm font-semibold text-secondary tracking-wide">EP{airingEpisode}</h4>
+              <p className="text-xs opacity-70 font-medium line-clamp-2">{getFormatedTime(airingAt)}</p>
             </div>
           </div>
         </CardContent>
