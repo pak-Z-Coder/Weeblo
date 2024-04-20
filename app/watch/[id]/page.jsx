@@ -227,9 +227,10 @@ export default function WatchPage({ params: { id } }) {
             setCurrentEp(episodesResults?.episodes[Number(episodesResults?.episodes.length) - 1])
         }
     }, [episodesResults, searchParams])
-    useEffect(() => {
-        fetchEpServers();
-    }, [currentEp])
+    // useEffect(() => {
+    //     fetchEpServers();
+    //     console.log(currentEp)
+    // }, [currentEp])
     useEffect(() => {
         fetchEpServerLink();
     }, [currentServerType, currentEp])
