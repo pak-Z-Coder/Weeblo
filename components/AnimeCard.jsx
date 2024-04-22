@@ -29,10 +29,11 @@ const AnimeCard = ({ anime, type }) => {
         <HoverCard className="inline-block">
             <HoverCardTrigger className="inline-block min-w-fit z-0">
                 <Link href={type != "Latest Episodes" ? `/animeInfo/${encodeURIComponent(id)}` : `/watch/${encodeURIComponent(id)}?ep=${anime.episodes.sub}`} className='w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px]'>
-                    <div onMouseEnter={handleHover} className=' group rounded-sm ml-1 sm:mb-[0.50rem] mb-1 mt-1 sm:mt-2 cursor-pointer transition-all transform md:hover:scale-105 ease-in-out duration-200 hover:drop-shadow-lg flex items-center justify-center relative'>
+                    <div onMouseEnter={handleHover} className=' group rounded-sm ml-1 sm:mb-[0.50rem] mb-1 mt-1 sm:mt-2 cursor-pointer transition-all transform md:hover:scale-95 ease-in-out duration-200 hover:drop-shadow-lg flex items-center justify-center relative'>
                         <div className='absolute h-auto rounded-sm inset-0 bg-gradient-to-b from-gray-200/0 via-gray-900/20 hover:via-gray-900/50 to-gray-950/70 hover:to-gray-950/90 z-20'></div>
                         {type == "season" && <div className='absolute h-auto rounded-sm inset-0 group-hover:backdrop-blur-0 backdrop-blur-sm z-10'></div>}
                         <div className='text-white z-20 w-fit font-semibold'>
+                            {type == "Latest Episodes"&&<div className='sm:text-lg text-white absolute top-1 left-2 font-semibold z-10 textStroke'>EP{anime.episodes.sub}</div>}
                             {type == "Top 10" && <p className='md:text-lg rounded-br-lg text-sm px-1 sm:px-2 bg-secondary/80 absolute top-0 left-0'>{rank}</p>}
                             {!fetchLoading && type !== "season" ?
                                 <div className="opacity-0 sm:group-hover:opacity-100 space-x-1 absolute top-3 right-1 sm:right-3">

@@ -442,14 +442,17 @@ const VideoPlayer = ({ Url, tracks, type, intro, outro, setEpEnded, userPreferen
                             <Separator />
                             {qualities?.map((q, i) => <Button variant="outline" size="sm" onClick={() => { setCurrentQuality(i); changeQuality(i); setIsOpen(!isOpen) }} key={i} className={cn("bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0", currentQuality == i && "bg-white text-secondary")}>{q.height}p</Button>)}
                         </div>
-                        <Button size="sm" variant="ghost" className={cn(selectedTrack != "off" && "text-secondary")} onClick={() => { setIsOpen1(!isOpen1); setIsOpen(false) }}>
-                            <Subtitles className="inline-block w-4 sm:w-6" />
-                        </Button>
-                        <div className={cn("w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden", isOpen1 && " flex flex-col items-center")}>
-                            <Button variant="outline" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack("off") }} className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs">Off</Button>
-                            <Separator />
-                            {captions?.map((c, i) => <Button variant="outline" size="sm" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack(i) }} key={c.label} className={cn("bg-transparent hover:bg-secondary/20 w-full border-none leading-none text-xs p-1", selectedTrack == i && "text-secondary bg-white")}>{c.label}</Button>)}
-                        </div>
+                        {captions?.length > 0 &&
+                            <Button size="sm" variant="ghost" className={cn(selectedTrack != "off" && "text-secondary")} onClick={() => { setIsOpen1(!isOpen1); setIsOpen(false) }}>
+                                <Subtitles className="inline-block w-4 sm:w-6" />
+                            </Button>}
+                        {captions?.length > 0 &&
+                            <div className={cn("w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden", isOpen1 && " flex flex-col items-center")}>
+                                <Button variant="outline" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack("off") }} className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs">Off</Button>
+                                <Separator />
+                                {captions?.map((c, i) => <Button variant="outline" size="sm" onClick={() => { setIsOpen1(!isOpen1); setSelectedTrack(i) }} key={c.label} className={cn("bg-transparent hover:bg-secondary/20 w-full border-none leading-none text-xs p-1", selectedTrack == i && "text-secondary bg-white")}>{c.label}</Button>)}
+                            </div>
+                        }
                         <Button onClick={() => setIsFullScreen(!isFullScreen)} size="sm" className="p-2 bg-transparent border-none" variant="outline">
                             {isFullScreen && <Minimize className='w-4 sm:w-6' />}
                             {!isFullScreen && <Fullscreen className='w-4 sm:w-6' />}

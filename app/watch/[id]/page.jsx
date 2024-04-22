@@ -231,6 +231,10 @@ export default function WatchPage({ params: { id } }) {
         fetchEpServers();
     }, [currentEp])
     useEffect(() => {
+        if (!episodeServers) return
+        setCurrentServerType(prevState => episodeServers?.dub?.length > 0 ? prevState : "sub")
+    }, [episodeServers])
+    useEffect(() => {
         fetchEpServerLink();
     }, [currentServerType, currentEp])
     useEffect(() => {
@@ -353,7 +357,7 @@ export default function WatchPage({ params: { id } }) {
                                 </TooltipProvider>
                             </div>
                             <div className="flex  items-center space-x-2">
-                                <ToggleGroup type="single" value={currentServerType} onValueChange={(e) => { setCurrentServerType(e) }}>
+                                <ToggleGroup defaultValue="sub" type="single" value={currentServerType} onValueChange={(e) => { setCurrentServerType(e) }}>
                                     <ToggleGroupItem value="sub" aria-label="Original" className="text-xs focus:bg-primary/50 data-[state=on]:bg-primary/50 rounded-sm">
                                         Original
                                     </ToggleGroupItem>

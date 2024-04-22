@@ -115,7 +115,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                             </Dialog>
                         }
                         {
-                            !redFlag && animeInfo?.anime?.moreInfo.status != "Not yet aired" &&
+                            animeInfo?.anime?.moreInfo.status != "Not yet aired" &&
                             <Link href={`/watch/${encodeURIComponent(id)}?ep=1`} className="w-[35%] md:w-[20%]">
                                 <Button className="w-full text-white sm:opacity-90 sm:hover:opacity-100"><Play />Watch</Button>
                             </Link>
