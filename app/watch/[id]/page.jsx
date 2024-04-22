@@ -227,16 +227,12 @@ export default function WatchPage({ params: { id } }) {
             setCurrentEp(episodesResults?.episodes[Number(episodesResults?.episodes.length) - 1])
         }
     }, [episodesResults, searchParams])
-    // useEffect(() => {
-    //     fetchEpServers();
-    //     console.log(currentEp)
-    // }, [currentEp])
+    useEffect(() => {
+        fetchEpServers();
+    }, [currentEp])
     useEffect(() => {
         fetchEpServerLink();
     }, [currentServerType, currentEp])
-    // useEffect(() => { //added
-    //     console.log(episodeServerLink, currentEp, episodeServers);
-    // }, [episodeServerLink])
     useEffect(() => {
         if (!animeInfo) return
         fetchExtraInfo();

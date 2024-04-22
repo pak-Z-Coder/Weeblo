@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Bakbak_One, Bebas_Neue } from "next/font/google";
-import Image from "next/image";
+import { Bakbak_One, Bebas_Neue } from "next/font/google";  
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -29,7 +28,7 @@ export default function EpDetail({ epInfo, animeExtraInfo, title, animeInfo }) {
       </div>
       <div className={cn("opacity-0 h-0 space-y-2 relative transition-opacity duration-200 ease-in", !openEps && "opacity-100 h-fit transition-opacity duration-200 ease-out")}>
         <div className="flex space-x-3 overflow-hidden">
-          <Image
+          <img
             alt="thumbnail"
             className="rounded w-40 max-h-48 "
             width={300}
