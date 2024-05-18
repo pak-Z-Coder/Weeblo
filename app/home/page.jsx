@@ -66,7 +66,7 @@ export default function Home() {
           <AnimeVerticalCarousel animes={topUpcomingAnimes} type={"Upcoming"} />
         </div>
         <Separator className="my-2 md:hidden" />
-        <div className="col-span-1 md:col-span-2 lg:col-span-3 md:h-[75vh] overflow-y-scroll no-scrollbar">
+        <div className="col-span-1 md:col-span-2 lg:col-span-3 md:h-[100vh] overflow-y-scroll no-scrollbar">
           <AnimeGrid animes={latestEpisodeAnimes} type={"Latest Episodes"} />
         </div>
       </div>

@@ -41,14 +41,20 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
     }, [currentEp]);
     useEffect(() => {
         const element = document.getElementById(currentEp?.episodeId);
-        if (element) {
+        if (currentEpPage == Math.floor(currentEp?.number / episodesPerPage) && element) {
             element.scrollIntoView();
             window.scrollTo({
                 top: 0,
                 behavior: 'instant',
             });
+        } else {
+            currentEpisodes && document.getElementById(currentEpisodes[0].episodeId).scrollIntoView();
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant',
+            });
         }
-    }, [currentEpPage])
+    }, [currentEpPage, currentEp])
     const handlePageChange = (page) => {
         setCurrentEpPage(page);
     };

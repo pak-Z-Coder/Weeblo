@@ -266,7 +266,7 @@ export default function WatchPage({ params: { id } }) {
         }
     }, [epEnded]);
     useEffect(() => {
-        if (!user || !playedTime || !totalTime || Math.floor(playedTime % 5) != 0 || Math.round(playedTime % 5) != 0) return
+        if (!user || !playedTime || !totalTime || Math.floor(playedTime % 2) != 0 || Math.round(playedTime % 2) != 0) return
         continueWatchingHandler();
     }, [playedTime, totalTime])
     useEffect(() => {
@@ -288,6 +288,21 @@ export default function WatchPage({ params: { id } }) {
                 }, 3000);
             })
     };
+    // const handleDownload = async () => {
+    //     try {
+    //         const response = await axios.get('/api/download', {
+    //             params: {
+    //                 m3u8Url: episodeServerLink?.sources[0]?.url,
+    //                 outputFileName: animeInfo?.anime?.info?.name,
+    //             },
+    //         });
+    //         alert(response.data.message);
+    //     } catch (error) {
+    //         console.error(error);
+    //         alert('Failed to download video');
+    //     }
+    // };
+
     return (
         !fetchLoading ? <div className="lg:pl-1 flex-grow-0 flex flex-col mt-10 sm:mt-16">
             <div className="relative flex flex-col">
