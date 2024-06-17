@@ -1,7 +1,7 @@
 "use server";
 export const getAnimeEpisodes = async (id) => {
   const resp = await fetch(
-    `https://api-aniwatch.onrender.com/anime/episodes/${id}`,
+    `https://private-aniwatch-api.vercel.app/anime/episodes/${id}`,
     {
       next: {
         revalidate: 60 * 60 * 24,

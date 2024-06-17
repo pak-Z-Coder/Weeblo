@@ -8,7 +8,7 @@ export const getAnimeInfo = async (id) => {
 
   try {
     const resp = await fetch(
-      `https://api-aniwatch.onrender.com/anime/info?id=${id}`,
+      `https://private-aniwatch-api.vercel.app/anime/info?id=${id}`,
       {
         next: {
           revalidate: 60 * 60 * 24,

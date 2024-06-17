@@ -2,7 +2,7 @@
 
 export const getSearchResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://api-aniwatch.onrender.com/anime/search?q=${prompt}&page=${page}`,
+    `https://private-aniwatch-api.vercel.app/anime/search?q=${prompt}&page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -18,7 +18,7 @@ export const getSearchSuggestions = async (prompt) => {
 
   try {
     const resp = await fetch(
-      `https://api-aniwatch.onrender.com/anime/search/suggest?q=${prompt}`,
+      `https://private-aniwatch-api.vercel.app/anime/search/suggest?q=${prompt}`,
       {
         next: {
           revalidate: 60 * 60 * 24,
@@ -40,7 +40,7 @@ export const getSearchSuggestions = async (prompt) => {
 
 export const getGenreResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://api-aniwatch.onrender.com/anime/genre/${prompt}?page=${page}`,
+    `https://private-aniwatch-api.vercel.app/anime/genre/${prompt}?page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -52,14 +52,14 @@ export const getGenreResults = async (prompt, page = 1) => {
 };
 export const getProducerResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://api-aniwatch.onrender.com/anime/producer/${prompt}?page=${page}`
+    `https://private-aniwatch-api.vercel.app/anime/producer/${prompt}?page=${page}`
   );
   const data = await resp.json();
   return data;
 };
 export const getCategoryResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://api-aniwatch.onrender.com/anime/${prompt}?page=${page}`
+    `https://private-aniwatch-api.vercel.app/anime/${prompt}?page=${page}`
   );
   const data = await resp.json();
   return data;

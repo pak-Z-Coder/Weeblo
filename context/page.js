@@ -8,7 +8,7 @@ export function AppWrapper({ children }) {
   const [homeScreenData, setHomeScreenData] = useState({});
   const [user, setUser] = useState(null);
   const fetchHomeScreenData = async () => {
-    const resp = await fetch("https://api-aniwatch.onrender.com/anime/home", {
+    const resp = await fetch("https://private-aniwatch-api.vercel.app/anime/home", {
       next: {
         revalidate: 60 * 60 * 24,
       },
