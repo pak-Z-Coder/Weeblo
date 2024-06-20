@@ -4,7 +4,7 @@ export const getAnimeEpisodes = async (id) => {
     `https://private-aniwatch-api.vercel.app/anime/episodes/${id}`,
     {
       next: {
-        revalidate: 60 * 60 * 24,
+        revalidate: 60 * 60 * 1,
       },
     }
   );

@@ -8,7 +8,7 @@ export const getScheduledAnimes = async () => {
       `https://api.anify.tv/schedule?type=anime&fields=[id,title,coverImage]&apikey=`,
       {
         next: {
-          revalidate: 60 * 60 * 24,
+          revalidate: 60 * 60 * 1,
         },
         signal,
       }
