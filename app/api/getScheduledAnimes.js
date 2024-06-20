@@ -1,11 +1,14 @@
 "use server";
-export const getScheduledAnimes = async () => {
+
+import { date } from "zod";
+
+export const getScheduledAnimes = async (date) => {
   const controller = new AbortController();
   const signal = controller.signal;
   // from anify
   try {
     const resp = await fetch(
-      `https://api.anify.tv/schedule?type=anime&fields=[id,title,coverImage]&apikey=`,
+      `https://private-aniwatch-api.vercel.app/anime/schedule?date=${date}`,
       {
         next: {
           revalidate: 60 * 60 * 1,
