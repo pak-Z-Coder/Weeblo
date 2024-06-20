@@ -15,7 +15,7 @@ const AnimeGrid = ({ animes, type }) => {
             <p className={cn("text-secondary h-full ml-2 font-bold text-lg sm:text-xl lg:text-2xl select-none", bakbak_one.className)}>{type}</p>
             {!animes && <Loader className="mx-auto mt-5 w-6 h-6 animate-spin text-primary" />}
             {animes?.length > 0 ?
-                <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-5 gap-x-0 sx:gap-x-10 lg:gap-x-1">
+                <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-5 gap-x-1 sm:gap-x-10 lg:gap-x-1">
                     {animes?.map((anime) => (
                         type != "Saved" ? <AnimeCard
                             key={anime.id}
