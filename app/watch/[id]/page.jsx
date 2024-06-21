@@ -385,11 +385,12 @@ export default function WatchPage({ params: { id } }) {
                 variant="none"
                 className="flex items-center space-x-1 p-0"
                 onClick={prevEp}
+                id="prev"
               >
                 <StepBack className="w-4" />
                 <label
-                  htmlFor="autoPlay"
-                  className=" font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  htmlFor="prev"
+                  className="cursor-pointer font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Prev
                 </label>
@@ -398,10 +399,11 @@ export default function WatchPage({ params: { id } }) {
                 variant="none"
                 className="flex items-center space-x-1 p-0"
                 onClick={nextEp}
+                id="next"
               >
                 <label
-                  htmlFor="autoPlay"
-                  className=" font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  htmlFor="next"
+                  className="cursor-pointer font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Next
                 </label>
