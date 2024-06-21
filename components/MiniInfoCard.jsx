@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "./ui/badge";
-import { Star, StarHalf, StarOff, Subtitles, Mic, Bookmark, Loader2 } from "lucide-react"
+import { Star, StarHalf, StarOff, Subtitles, Mic } from "lucide-react"
 import ReactPlayer from "react-player";
 import { AspectRatio } from "./ui/aspect-ratio";
 import { useEffect, useState } from "react";
@@ -52,13 +52,13 @@ export default function MiniInfoCard({ anime, type }) {
       </AspectRatio>
       <div className="p-4 grid gap-2">
         <div className="">
-          <h2 className="text-xl text-white font-bold leading-none">{anime?.info.name}</h2>
+          <h2 className="text-xl text-white font-bold leading-none">{anime?.info?.name}</h2>
           <div className="mt-1 pt-1 flex justify-between">
             <div>{
               anime?.moreInfo?.malscore != "?" ?
                 <div className="flex items-center">
                   {renderStars()}
-                  <p className="text-sm font-bold leading-none">{anime?.moreInfo.malscore}</p>
+                  <p className="text-sm font-bold leading-none">{anime?.moreInfo?.malscore}</p>
                 </div>
                 :
                 <div><StarOff className="w-4 text-yellow-500" /></div>

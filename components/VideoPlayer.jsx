@@ -217,12 +217,12 @@ const VideoPlayer = ({
       clearTimeout(controlsTimeout);
       controlsTimeout = setTimeout(() => {
         setShowControls(false);
-      }, 3000);
+      }, 5000);
       setShowCursor((prevShowCursor) => !prevShowCursor);
       clearTimeout(cursorTimeout);
       cursorTimeout = setTimeout(() => {
         setShowCursor(false);
-      }, 3500);
+      }, 5000);
     };
     const handleTap = (e) => {
       e.preventDefault();
@@ -230,19 +230,19 @@ const VideoPlayer = ({
       clearTimeout(controlsTimeout);
       controlsTimeout = setTimeout(() => {
         setShowControls(false);
-      }, 2000);
+      }, 5000);
     };
     const handleMouseMove = () => {
       clearTimeout(controlsTimeout);
       setShowControls(true);
       controlsTimeout = setTimeout(() => {
         setShowControls(false);
-      }, 3000);
+      }, 5000);
       clearTimeout(cursorTimeout);
       setShowCursor(true);
       cursorTimeout = setTimeout(() => {
         setShowCursor(false);
-      }, 3500);
+      }, 5000);
     };
     document.body.addEventListener("keydown", handleKeyDown);
     pA.addEventListener("dblclick", handleDoubleClick);
@@ -547,7 +547,7 @@ const VideoPlayer = ({
             max={duration}
             loadedTime={loadedTime}
             onValueChange={(e) => handleSeek(e)}
-            step={10}
+            step={1}
             className="w-[90%]"
           />
           <p>
