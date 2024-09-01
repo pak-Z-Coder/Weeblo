@@ -14,7 +14,7 @@ const Footer = () => {
             <div className="container mx-auto px-6 py-4">
                 <div className="flex justify-between items-center pb-4">
                     <div className="flex items-center space-x-2">
-                        <Link href="https://www.instagram.com/frienddayo/">
+                        <Link href="https://www.instagram.com/mzeeshan2005/">
                             <InstagramIcon className="text-pink-600 h-6 w-6" />
                         </Link>
                     </div>
@@ -22,9 +22,6 @@ const Footer = () => {
                         <Link href="/search/A-Z?type=search">
                             <Button variant="ghost" className="hover:bg-gray-400">All</Button>
                         </Link>
-                        {/* <Link href="/search/'#'?type=search">
-                            <Button variant="ghost" className="hover:bg-gray-400">#</Button>
-                        </Link> */}
                         <Link href="/search/0-9?type=search">
                             <Button variant="ghost" className="hover:bg-gray-400">0-9</Button>
                         </Link>
