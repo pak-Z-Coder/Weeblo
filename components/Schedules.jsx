@@ -24,7 +24,6 @@ const Schedules = () => {
   const today = new Date().toISOString().split("T")[0];
   const getAnimes = async () => {
     await getScheduledAnimes(today).then((res) => {
-      console.log(res);
       setAnimes(res);
     });
   };

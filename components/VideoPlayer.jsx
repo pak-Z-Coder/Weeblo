@@ -62,7 +62,7 @@ const VideoPlayer = ({
   let cursorTimeout;
   const [captions, setCaptions] = useState(null);
   const [captionsToUse, setCaptionsToUse] = useState([]);
-  const [currentCaption, setCurrentCaption] = useState("");
+  const [currentCaptions, setCurrentCaptions] = useState([]);
   const playbackSpeeds = [0.5, 1, 1.25, 2];
   const [currentSpeedIndex, setCurrentSpeedIndex] = useState(1);
   useEffect(() => {
@@ -152,7 +152,7 @@ const VideoPlayer = ({
     });
   }, [selectedTrack, captions]);
   const stripHtmlTags = (text) => {
-    return text.replace(/<[^>]*>?/gm, ""); // Remove all HTML tags
+    return text.replace(/<[^>]+>/g, ""); // Remove all HTML tags, keeping \n intact
   };
   useEffect(() => {
     if (selectedTrack == "off") return;
@@ -160,7 +160,11 @@ const VideoPlayer = ({
       (caption) =>
         caption.startTime <= currentTime && currentTime <= caption.endTime
     );
-    setCurrentCaption(caption ? stripHtmlTags(caption.text) : "");
+    if (caption) {
+      const combineCaptions = stripHtmlTags(caption.text);
+      const splitCaptions = combineCaptions.split("\n");
+      setCurrentCaptions(splitCaptions);
+    }
   }, [currentTime, captionsToUse]);
   useEffect(() => {
     return () => {
@@ -172,19 +176,6 @@ const VideoPlayer = ({
     const p = document.querySelector("#player");
     const pA = document.querySelector("#playerAbsolute");
     if (!p) return;
-    // const rotateToLandscape = () => {
-    //     if (screen.orientation && screen.orientation.lock) {
-    //         screen.orientation.lock('landscape')
-    //             .then(() => console.log('Screen locked to landscape'))
-    //             .catch((error) => console.error('Failed to lock screen to landscape:', error));
-    //     } else if (screen.lockOrientation) {
-    //         screen.lockOrientation('landscape')
-    //             .then(() => console.log('Screen locked to landscape'))
-    //             .catch((error) => console.error('Failed to lock screen to landscape:', error));
-    //     } else {
-    //         console.warn('Screen orientation lock not supported on this device.');
-    //     }
-    // };
     const handleKeyDown = (e) => {
       switch (e.key) {
         case " ":
@@ -409,7 +400,7 @@ const VideoPlayer = ({
     });
   };
   const changePlaybackSpeed = () => {
-    if (currentSpeedIndex < playbackSpeeds.length-1) {
+    if (currentSpeedIndex < playbackSpeeds.length - 1) {
       setCurrentSpeedIndex((prevSpeed) => prevSpeed + 1);
     } else {
       setCurrentSpeedIndex(0);
@@ -455,15 +446,13 @@ const VideoPlayer = ({
             !isOpen &&
             !isOpen1 &&
             "hidden opacity-0 transition-opacity ease-out"
-        )}
-      >
+        )}>
         <Button
           onClick={changePlaybackSpeed}
           variant="outline"
           className={cn(
             "drop-shadow-lg px-2 py-1 text-xs shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white mb-1"
-          )}
-        >
+          )}>
           {playbackRate}x
         </Button>
       </div>
@@ -477,8 +466,7 @@ const VideoPlayer = ({
               currentTime <= intro?.end &&
               currentTime != 0 &&
               "flex"
-          )}
-        >
+          )}>
           Skip
           <SkipForward />
         </Button>
@@ -491,22 +479,28 @@ const VideoPlayer = ({
               currentTime <= outro?.end &&
               currentTime != 0 &&
               "flex"
-          )}
-        >
+          )}>
           Skip
           <SkipForward />
         </Button>
       </div>
       <div
         className={cn(
-          "absolute w-full bottom-5 sm:bottom-10",
+          "absolute w-full bottom-5 sm:bottom-10 flex flex-col items-center",
           showControls && "bottom-8 sm:bottom-20",
           kanit.className
+        )}>
+        {selectedTrack !== "off" && currentCaptions.length > 0 ? (
+          currentCaptions.map((c) => {
+            return (
+              <p className="sm:textStroke sm:font-semibold font-sans text-white bg-black/50 sm:bg-black/40 px-1 mx-auto mb-[5px] text-sm sm:text-lg md:text-xl lg:text-2xl text-center w-fit lg:max-w-[95%] max-w-[98%] ">
+                {c}
+              </p>
+            );
+          })
+        ) : (
+          <></>
         )}
-      >
-        <p className="sm:textStroke sm:font-semibold font-sans text-white bg-black/50 sm:bg-black/40 px-1 mx-auto text-sm sm:text-lg md:text-xl lg:text-2xl text-center w-fit lg:max-w-[95%] max-w-[98%] ">
-          {selectedTrack !== "off" && currentCaption}
-        </p>
       </div>
       {loading && (
         <Loader2 className="absolute h-8 w-8 animate-spin text-white left-[45%] top-[40%] sm:left-[49%] sm:top-[47%]" />
@@ -522,8 +516,7 @@ const VideoPlayer = ({
             "hidden opacity-0 transition-opacity ease-out"
         )}
         size="lg"
-        variant="ghost"
-      >
+        variant="ghost">
         {playing ? (
           <Pause className="max-w-6 max-h-6" />
         ) : (
@@ -537,8 +530,7 @@ const VideoPlayer = ({
             !isOpen &&
             !isOpen1 &&
             "opacity-0 hidden transition-opacity ease-out"
-        )}
-      >
+        )}>
         <div className="mb-2 relative pb-1 flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-2 overflow-hidden">
           <p>{currentTime ? formatTime(currentTime) : "00:00:00"}</p>
           <Slider
@@ -561,8 +553,7 @@ const VideoPlayer = ({
             <Button
               onClick={() => setPlaying(!playing)}
               className="hidden sm:inline-block p-2 bg-transparent border-none"
-              variant="outline"
-            >
+              variant="outline">
               {playing ? (
                 <Pause className="w-4 h-4" />
               ) : (
@@ -595,16 +586,14 @@ const VideoPlayer = ({
               size="sm"
               onClick={() => skipTime(-10)}
               className="text-xs p-2 bg-transparent border-none"
-              variant="outline"
-            >
+              variant="outline">
               <UndoDot className="w-6 h-4" />
             </Button>
             <Button
               size="sm"
               onClick={() => skipTime(10)}
               className="text-xs p-2 bg-transparent border-none"
-              variant="outline"
-            >
+              variant="outline">
               <RedoDot className="w-6 h-4" />
             </Button>
             <Button
@@ -614,8 +603,7 @@ const VideoPlayer = ({
               }}
               className="bg-transparent border-none p-0 sm:p-2"
               size="sm"
-              variant="outline"
-            >
+              variant="outline">
               {currentQuality !== -1
                 ? qualities && qualities[currentQuality]?.height + "p"
                 : "Auto"}
@@ -625,8 +613,7 @@ const VideoPlayer = ({
               className={cn(
                 "rounded-sm py-1 px-2 absolute ml-20 bottom-5 md:bottom-7 lg:bottom-18 bg-gray-900/70 text-white hidden",
                 isOpen && "flex flex-col items-center"
-              )}
-            >
+              )}>
               <Button
                 variant="outline"
                 onClick={() => {
@@ -637,8 +624,7 @@ const VideoPlayer = ({
                 className={cn(
                   "bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs",
                   currentQuality == -1 && "bg-white text-secondary"
-                )}
-              >
+                )}>
                 Auto
               </Button>
               <Separator />
@@ -655,8 +641,7 @@ const VideoPlayer = ({
                   className={cn(
                     "bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0",
                     currentQuality == i && "bg-white text-secondary"
-                  )}
-                >
+                  )}>
                   {q.height}p
                 </Button>
               ))}
@@ -669,8 +654,7 @@ const VideoPlayer = ({
                 onClick={() => {
                   setIsOpen1(!isOpen1);
                   setIsOpen(false);
-                }}
-              >
+                }}>
                 <Subtitles className="inline-block w-4 sm:w-6" />
               </Button>
             )}
@@ -679,16 +663,14 @@ const VideoPlayer = ({
                 className={cn(
                   "w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden",
                   isOpen1 && " flex flex-col items-center"
-                )}
-              >
+                )}>
                 <Button
                   variant="outline"
                   onClick={() => {
                     setIsOpen1(!isOpen1);
                     setSelectedTrack("off");
                   }}
-                  className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs"
-                >
+                  className="bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs">
                   Off
                 </Button>
                 <Separator />
@@ -704,8 +686,7 @@ const VideoPlayer = ({
                     className={cn(
                       "bg-transparent hover:bg-secondary/20 w-full border-none leading-none text-xs p-1",
                       selectedTrack == i && "text-secondary bg-white"
-                    )}
-                  >
+                    )}>
                     {c.label}
                   </Button>
                 ))}
@@ -715,8 +696,7 @@ const VideoPlayer = ({
               onClick={() => setIsFullScreen(!isFullScreen)}
               size="sm"
               className="p-2 bg-transparent border-none"
-              variant="outline"
-            >
+              variant="outline">
               {isFullScreen && <Minimize className="w-4 sm:w-6" />}
               {!isFullScreen && <Fullscreen className="w-4 sm:w-6" />}
             </Button>

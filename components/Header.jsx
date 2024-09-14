@@ -64,7 +64,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   useEffect(() => {
-    if (user || pathname == "/") return
+    if (user) return
     getUser()
   }, [])
   return (
@@ -119,7 +119,7 @@ const Header = () => {
                           user &&
                           <Link href="/user">
                             <Button variant="ghost" className="w-full flex items-center space-x-2">
-                              <p>Account</p><User className='border rounded-full max-w-6' />
+                              <p>Account</p><User className='max-w-6' />
                             </Button>
                           </Link>
                         }
