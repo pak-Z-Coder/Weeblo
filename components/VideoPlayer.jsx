@@ -491,9 +491,9 @@ const VideoPlayer = ({
           kanit.className
         )}>
         {selectedTrack !== "off" && currentCaptions.length > 0 ? (
-          currentCaptions.map((c) => {
+          currentCaptions.map((c,i) => {
             return (
-              <p className="sm:textStroke sm:font-semibold font-sans text-white bg-black/50 sm:bg-black/40 px-1 mx-auto mb-[5px] text-sm sm:text-lg md:text-xl lg:text-2xl text-center w-fit lg:max-w-[95%] max-w-[98%] ">
+              <p key={i} className="sm:textStroke sm:font-semibold font-sans text-white bg-black/50 sm:bg-black/40 px-1 mx-auto mb-[5px] text-sm sm:text-lg md:text-xl lg:text-2xl text-center w-fit lg:max-w-[95%] max-w-[98%] ">
                 {c}
               </p>
             );
