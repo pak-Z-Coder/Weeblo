@@ -31,6 +31,7 @@
     "disqus-react": "^1.1.5",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "^8.0.2",
+    "hls.js": "^1.5.15",
     "lodash": "^4.17.21",
     "lucide-react": "^0.356.0",
     "mongoose": "^8.2.4",
