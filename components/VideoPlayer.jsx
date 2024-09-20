@@ -164,6 +164,8 @@ const VideoPlayer = ({
       const combineCaptions = stripHtmlTags(caption.text);
       const splitCaptions = combineCaptions.split("\n");
       setCurrentCaptions(splitCaptions);
+    }else{
+      setCurrentCaptions([]);
     }
   }, [currentTime, captionsToUse]);
   useEffect(() => {
@@ -546,7 +548,7 @@ const VideoPlayer = ({
             value={[currentTime]}
             min={0}
             max={duration}
-            loadedTime={(loadedTime/player?.current?.getDuration())*100}
+            loadedTime={(loadedTime / player?.current?.getDuration()) * 100}
             onValueChange={(e) => handleSeek(e)}
             step={1}
             className="w-[90%]"
