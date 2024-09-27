@@ -60,7 +60,7 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
     };
     const [openEps, setOpenEps] = useState(true)
     return (
-        <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-12 lg:right-16 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-40 lg:hover:opacity-90")}>
+        <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-10 overflow-hidden lg:right-16 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-40 lg:hover:opacity-90")}>
             <div className="flex justify-between items-center z-20 mb-1">
                 <h2 className={cn("text-xl font-semibold mb-2 text-secondary", bakbak_one.className)}>Episodes</h2>
                 <Button onClick={() => { setOpenEps(!openEps) }} variant="outline"
@@ -69,7 +69,7 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
                     {!openEps && <ChevronDown className="h-5 w-5" />}
                 </Button>
             </div>
-            <ScrollArea scrollHideDelay={1000} className={cn("relative w-full rounded-sm border flex-1")}>
+            <ScrollArea scrollHideDelay={1000} className={cn("relative w-full rounded-sm border flex-1",!openEps &&"border-t-0")}>
                 {
                     !openEps &&
                     <div className='absolute hidden dark:block inset-0 bg-gradient-to-b from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-10'></div>
