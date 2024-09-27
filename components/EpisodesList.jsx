@@ -60,7 +60,7 @@ const EpisodesList = ({ episodes, currentEp, animeId }) => {
     };
     const [openEps, setOpenEps] = useState(true)
     return (
-        <div className={cn("mb-4 px-2 flex flex-col z-0", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-10 overflow-hidden lg:right-16 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-40 lg:hover:opacity-90")}>
+        <div className={cn("mb-4 px-2 flex flex-col z-0 w-auto", openEps && "h-[47vh] md:h-[90vh] overflow-y-scroll no-scrollbar", !openEps && "h-10 overflow-hidden lg:right-16 lg:top-1 lg:outline rounded-lg outline-secondary lg:absolute lg:w-48 lg:opacity-40 lg:hover:opacity-90")}>
             <div className="flex justify-between items-center z-20 mb-1">
                 <h2 className={cn("text-xl font-semibold mb-2 text-secondary", bakbak_one.className)}>Episodes</h2>
                 <Button onClick={() => { setOpenEps(!openEps) }} variant="outline"
