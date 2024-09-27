@@ -410,7 +410,7 @@ const VideoPlayer = ({
     setPlaybackRate(playbackSpeeds[currentSpeedIndex]);
   };
   return (
-    <div id="player" className={cn("z-0 relative w-full h-full flex-1")}>
+    <div id="player" className={cn("z-0 relative w-full h-full flex-1 aspect-video")}>
       <div id="playerAbsolute" className="z-10 absolute h-[85%] w-full"></div>
       <ReactPlayer
         ref={player}

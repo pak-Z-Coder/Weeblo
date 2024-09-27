@@ -287,7 +287,7 @@ export default function WatchPage({ params: { id } }) {
   const prevEp = () => {
     if (currentEp?.number > 1) {
       router.push(`${pathname}?ep=${currentEp?.number - 1}`);
-      setCurrentEp(episodesResults?.episodes[currentEp?.number-1]);
+      setCurrentEp(episodesResults?.episodes[currentEp?.number - 1]);
       setEpEnded(false);
     }
   };
@@ -385,13 +385,11 @@ export default function WatchPage({ params: { id } }) {
                 variant="none"
                 className="flex items-center space-x-1 p-0"
                 onClick={prevEp}
-                id="prev"
-              >
+                id="prev">
                 <StepBack className="w-4" />
                 <label
                   htmlFor="prev"
-                  className="cursor-pointer font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
+                  className="cursor-pointer font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Prev
                 </label>
               </Button>
@@ -399,12 +397,10 @@ export default function WatchPage({ params: { id } }) {
                 variant="none"
                 className="flex items-center space-x-1 p-0"
                 onClick={nextEp}
-                id="next"
-              >
+                id="next">
                 <label
                   htmlFor="next"
-                  className="cursor-pointer font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
+                  className="cursor-pointer font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Next
                 </label>
                 <StepForward className="w-4" />
@@ -420,8 +416,7 @@ export default function WatchPage({ params: { id } }) {
                 />
                 <label
                   htmlFor="autoPlay"
-                  className=" font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
+                  className=" font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Auto Play
                 </label>
               </div>
@@ -436,8 +431,7 @@ export default function WatchPage({ params: { id } }) {
                 />
                 <label
                   htmlFor="autoNext"
-                  className=" font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
+                  className=" font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Auto Next
                 </label>
               </div>
@@ -446,8 +440,7 @@ export default function WatchPage({ params: { id } }) {
               className={cn(
                 "text-2xl md:text-3xl font-bold",
                 bebas_nueue.className
-              )}
-            >
+              )}>
               {animeInfo?.anime?.info?.stats?.type != "TV"
                 ? animeInfo?.anime?.info?.name + " - " + currentEp?.title
                 : currentEp?.number + " - " + currentEp?.title}
@@ -471,7 +464,7 @@ export default function WatchPage({ params: { id } }) {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <TooltipProvider>
+                {/* <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
                       <Button variant="ghost">
@@ -482,7 +475,7 @@ export default function WatchPage({ params: { id } }) {
                       <p>Download</p>
                     </TooltipContent>
                   </Tooltip>
-                </TooltipProvider>
+                </TooltipProvider> */}
               </div>
               <div className="flex  items-center space-x-2">
                 <ToggleGroup
@@ -491,21 +484,18 @@ export default function WatchPage({ params: { id } }) {
                   value={currentServerType}
                   onValueChange={(e) => {
                     setCurrentServerType(e);
-                  }}
-                >
+                  }}>
                   <ToggleGroupItem
                     value="sub"
                     aria-label="Original"
-                    className="text-xs focus:bg-primary/50 data-[state=on]:bg-primary/50 rounded-sm"
-                  >
+                    className="text-xs focus:bg-primary/50 data-[state=on]:bg-primary/50 rounded-sm">
                     Original
                   </ToggleGroupItem>
                   {episodeServers?.dub?.length > 0 && (
                     <ToggleGroupItem
                       value="dub"
                       aria-label="Dubbed"
-                      className="text-xs focus:bg-primary/50 data-[state=on]:bg-primary/50 rounded-sm"
-                    >
+                      className="text-xs focus:bg-primary/50 data-[state=on]:bg-primary/50 rounded-sm">
                       Dubbed
                     </ToggleGroupItem>
                   )}
@@ -515,8 +505,7 @@ export default function WatchPage({ params: { id } }) {
             <div className="my-4">
               <Link
                 className="flex items-center space-x-2 my-2"
-                href={`/animeInfo/${encodeURIComponent(id)}`}
-              >
+                href={`/animeInfo/${encodeURIComponent(id)}`}>
                 <Avatar className="">
                   <AvatarImage
                     alt={animeInfo?.anime?.info?.name[0]}
