@@ -444,7 +444,7 @@ const VideoPlayer = ({
             },
           },
         }}
-        className={cn("md:w-full focus:outline-none max-h-full aspect-video object-center")}
+        className={cn("md:w-full focus:outline-none max-h-full object-center")}
         width={100}
         height={100}
       />
