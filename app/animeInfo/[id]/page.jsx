@@ -88,7 +88,7 @@ export default function DetailedInfoCard({ params: { id } }) {
         }
     }, [animeInfo])
     return (
-        (!fetchLoading ? <div className="px-1 grid grid-cols-1 mt-16 sm:mt-20 md:grid-cols-3 lg:grid-cols-4 items-start overflow-x-hidden min-h-screen">
+        (!fetchLoading ? <div className="px-1 grid grid-cols-1 mt-16 sm:mt-20 md:grid-cols-3 lg:grid-cols-4 items-start overflow-x-hidden no-scrollbar">
             <div className="col-span-1 md:col-span-2 lg:col-span-3 flex space-y-1 flex-col">
                 <div className="relative sm:max-w-[85%]">
                     <div className='absolute inset-0 bg-gradient-to-tl from-primary/10 via-gray-900/10 to-gray-950 hover:to-black z-10'></div>
