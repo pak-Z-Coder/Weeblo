@@ -346,7 +346,7 @@ export default function WatchPage({ params: { id } }) {
     <div className="lg:pl-1 flex-grow-0 flex flex-col mt-10 sm:mt-16">
       <div className="relative flex flex-col">
         <div className="flex gap-2 flex-col lg:flex-row">
-          <div className="flex-grow mb-2 lg:mb-0 max-h-[90vh] bg-black lg:min-w-[75vw] px-2 py-4 sm:p-0 flex-1">
+          <div className="flex-grow mb-2 lg:mb-0 max-h-[90vh] bg-black lg:min-w-[75vw] px-2 py-4 sm:p-0 aspect-video lg:aspect-auto flex-1">
             {serverLoading && (
               <Loader className="mx-auto relative top-1/2 h-8 w-8 animate-spin text-primary" />
             )}

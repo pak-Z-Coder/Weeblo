@@ -444,13 +444,13 @@ const VideoPlayer = ({
             },
           },
         }}
-        className={cn("md:w-full focus:outline-none max-h-full aspect-video object-center")}
+        className={cn("md:w-full focus:outline-none max-h-full object-center")}
         width="100%"
         height="100%"
       />
       <div
         className={cn(
-          "z-30 absolute top-2  right-2 w-fit ml-auto mr-2 opacity-100 flex items-center",
+          "z-30 absolute top-[0.7rem] right-2 w-fit ml-auto mr-2 opacity-100 flex items-center",
           !showControls &&
             !isOpen &&
             !isOpen1 &&
