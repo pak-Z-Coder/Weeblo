@@ -97,7 +97,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                         width={3360}
                         height={800}
                         src={animeExtraInfo?.coverImage ? animeExtraInfo.coverImage : animeInfo?.anime?.info?.poster} />
-                    {<div className="absolute w-fit right-1 top-1 sm:opacity-80 sm:hover:opacity-100 z-30">{animeInfo && <SaveAnimeButton animeId={animeId} name={animeInfo?.anime?.info?.name} poster={animeInfo?.anime?.info?.poster} />}</div>}
+                    {<div className="absolute w-fit right-1 top-1 sm:opacity-80 sm:hover:opacity-100 z-[25]">{animeInfo && <SaveAnimeButton animeId={animeId} name={animeInfo?.anime?.info?.name} poster={animeInfo?.anime?.info?.poster} />}</div>}
                     <div className="absolute w-full z-20 right-1 md:bottom-2 bottom-4 flex items-center space-x-1 justify-end">
                         {!fetchLoading2 && animeExtraInfo?.youtubeVideoId &&
                             <Dialog>
