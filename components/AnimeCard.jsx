@@ -21,7 +21,7 @@ const AnimeCard = ({ anime, type }) => {
       clearTimeout(hoverTimeOut);
       hoverTimeOut = setTimeout(async () => {
         setfetchLoading(true);
-        await getAnimeInfo(anime.id).then((res) => setAnimeInfo(res));
+        await getAnimeInfo(anime.id).then((res) =>setAnimeInfo(res));
         setfetchLoading(false);
       }, 1000);
     }
@@ -35,12 +35,10 @@ const AnimeCard = ({ anime, type }) => {
               ? `/animeInfo/${encodeURIComponent(id)}`
               : `/watch/${encodeURIComponent(id)}?ep=${anime.episodes.sub}`
           }
-          className="w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px]"
-        >
+          className="w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px]">
           <div
             onMouseEnter={handleHover}
-            className=" group rounded-sm ml-1 sm:mb-[0.50rem] mb-1 mt-1 sm:mt-2 cursor-pointer transition-all transform md:hover:scale-95 ease-in-out duration-200 hover:drop-shadow-lg flex items-center justify-center relative"
-          >
+            className=" group rounded-sm ml-1 sm:mb-[0.50rem] mb-1 mt-1 sm:mt-2 cursor-pointer transition-all transform md:hover:scale-95 ease-in-out duration-200 hover:drop-shadow-lg flex items-center justify-center relative">
             <div className="absolute h-auto rounded-sm inset-0 bg-gradient-to-b from-gray-200/0 via-gray-900/20 hover:via-gray-900/50 to-gray-950/70 hover:to-gray-950/90 z-20"></div>
             {type == "season" && (
               <div className="absolute h-auto rounded-sm inset-0 group-hover:backdrop-blur-0 backdrop-blur-sm z-10"></div>
@@ -60,21 +58,18 @@ const AnimeCard = ({ anime, type }) => {
                 <div className="opacity-0 sm:group-hover:opacity-100 space-x-1 absolute top-3 right-1 sm:right-3">
                   <Badge
                     variant="outline"
-                    className="bg-secondary bg-opacity-90 sm:text-sm text-white border-none"
-                  >
+                    className="bg-secondary bg-opacity-90 sm:text-sm text-white border-none">
                     {animeInfo?.anime?.info?.stats?.type}
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="bg-white bg-opacity-90 sm:text-sm text-black border-none"
-                  >
+                    className="bg-white bg-opacity-90 sm:text-sm text-black border-none">
                     {animeInfo?.anime?.info?.stats?.quality}
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="bg-white/50 sm:text-sm text-black border-none"
-                  >
-                    {anime.duration}
+                    className="bg-white/50 sm:text-sm text-black border-none">
+                    {animeInfo?.anime?.info?.stats?.duration}
                   </Badge>
                 </div>
               ) : (
@@ -86,8 +81,7 @@ const AnimeCard = ({ anime, type }) => {
                   type == "season"
                     ? "text-sm bottom-2 left-2 sm:left-3 "
                     : "md:text-lg text-xs max-w-full max-h-[80%] overflow-hidden bottom-2 left-2 sm:bottom-4 sm:left-3"
-                )}
-              >
+                )}>
                 {type !== "season"
                   ? name.length > 25
                     ? name.slice(0, 25) + "..."
