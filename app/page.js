@@ -20,7 +20,7 @@ export default function Page() {
     router.push(`/search/${values.searchPrompt}?type=search`);
   }
   return (
-    <main className="flex px-2 md:px-0 flex-col overflow-x-hidden w-screen no-scrollbar">
+    <main className="flex -mb-5 md:-mb-12 px-2 md:px-0 flex-col overflow-x-hidden w-screen no-scrollbar">
       <section className="w-full py-6 sm:py-12 md:py-24 lg:py-32 xl:py-48 bg-gray-100 dark:bg-background">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] ">

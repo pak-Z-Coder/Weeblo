@@ -7,7 +7,10 @@ import NextTopLoader from "nextjs-toploader";
 export const metadata = {
   title: "Weeblo",
   description:
-    "Modern Anime streaming application for Weebs - Ads free service",
+    "Weeblo - A Modern Anime streaming application for Weebs - Ads free service",
+  url: "https://www.weeblo.vercel.app",
+  siteName: "Weeblo",
+  name: "Weeblo",
 };
 
 export default async function RootLayout({ children }) {
@@ -20,8 +23,7 @@ export default async function RootLayout({ children }) {
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-            enableColorScheme={false}
-          >
+            enableColorScheme={false}>
             <NextTopLoader
               color="#0283ed"
               initialPosition={0.08}
@@ -34,9 +36,7 @@ export default async function RootLayout({ children }) {
               shadow="0 0 10px #2299DD,0 0 5px #2299DD"
             />
             <Header />
-            <div className="min-h-screen no-scrollbar">
-              {children}
-            </div>
+            <div className="min-h-screen no-scrollbar">{children}</div>
             <Footer />
           </ThemeProvider>
         </AppWrapper>
