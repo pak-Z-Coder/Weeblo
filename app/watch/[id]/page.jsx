@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { Download, Loader, Share2, StepBack, StepForward } from "lucide-react";
+import {  Loader, Share2, StepBack, StepForward } from "lucide-react";
 import { getAnimeEpisodes } from "@/app/api/getAnimeEpisodes";
 import { getAnimeInfo } from "@/app/api/getAnimeInfo";
 import { getEpisodeDetail } from "@/app/api/getEpisodeDetail";

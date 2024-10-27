@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Loader } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getAnimeInfo } from "@/app/api/getAnimeInfo";
 import MiniInfoCard from "./MiniInfoCard";
@@ -13,7 +12,7 @@ import Link from "next/link";
 
 const AnimeCard = ({ anime, type }) => {
   const { rank, name, id, poster } = anime;
-  const [animeInfo, setAnimeInfo] = useState({});
+  const [animeInfo, setAnimeInfo] = useState(null);
   const [fetchLoading, setfetchLoading] = useState(null);
   let hoverTimeOut;
   const handleHover = () => {
@@ -21,9 +20,9 @@ const AnimeCard = ({ anime, type }) => {
       clearTimeout(hoverTimeOut);
       hoverTimeOut = setTimeout(async () => {
         setfetchLoading(true);
-        await getAnimeInfo(anime.id).then((res) =>setAnimeInfo(res));
+        await getAnimeInfo(anime.id).then((res) => setAnimeInfo(res));
         setfetchLoading(false);
-      }, 1000);
+      }, 1400);
     }
   };
   return (
@@ -54,7 +53,7 @@ const AnimeCard = ({ anime, type }) => {
                   {rank}
                 </p>
               )}
-              {!fetchLoading && type !== "season" ? (
+              {!fetchLoading && animeInfo && type !== "season" ? (
                 <div className="opacity-0 sm:group-hover:opacity-100 space-x-1 absolute top-3 right-1 sm:right-3">
                   <Badge
                     variant="outline"
@@ -110,12 +109,8 @@ const AnimeCard = ({ anime, type }) => {
         </Link>
       </HoverCardTrigger>
       <HoverCardContent className="p-0 min-w-80">
-        {fetchLoading && !animeInfo?.anime ? (
-          <Loader className="z-20 hidden sm:inline-block w-4 h-4 mx-auto text-center animate-spin text-blue-500" />
-        ) : (
-          type != "season" && (
-            <MiniInfoCard anime={animeInfo?.anime} type={type} />
-          )
+        {type != "season" && animeInfo && (
+          <MiniInfoCard anime={animeInfo?.anime} type={type} />
         )}
       </HoverCardContent>
     </HoverCard>
