@@ -8,7 +8,7 @@ export const getAnimeInfo = async (id) => {
 
   try {
     const resp = await fetch(
-      `https://private-aniwatch-api.vercel.app/anime/info?id=${id}`,
+      `https://private-aniwatch-api.vercel.app/api/v2/hianime/anime/${id}`,
       {
         next: {
           revalidate: 60 * 60 * 24,
@@ -18,10 +18,10 @@ export const getAnimeInfo = async (id) => {
     );
     const data = await resp.json();
     if (data.relatedAnimes)
-      await filterAnimes(data.relatedAnimes).then(
-        (res) => (data.relatedAnimes = res)
+      await filterAnimes(data.data.relatedAnimes).then(
+        (res) => (data.data.relatedAnimes = res)
       );
-    return data;
+    return data.data;
   } catch (error) {
     if (error.name === "AbortError") {
       console.log("Request aborted");

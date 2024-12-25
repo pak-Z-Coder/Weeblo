@@ -1,6 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+Add a MONGODB_URI variable in your .env file:
+
+```bash
+MONGODB_URI= Your MongoDb URI
+```
 
 First, run the development server:
 

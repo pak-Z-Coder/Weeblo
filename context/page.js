@@ -8,18 +8,22 @@ export function AppWrapper({ children }) {
   const [homeScreenData, setHomeScreenData] = useState({});
   const [user, setUser] = useState(null);
   const fetchHomeScreenData = async () => {
-    const resp = await fetch("https://private-aniwatch-api.vercel.app/anime/home", {
+    const resp = await fetch("https://private-aniwatch-api.vercel.app/api/v2/hianime/home", {
+      headers:{
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin":"*"
+      },
       next: {
         revalidate: 60 * 60 * 24,
       },
     });
     const data = await resp.json();
     if (data.topAiringAnimes)
-      await filterAnimes(data.topAiringAnimes).then(
-        (res) => (data.topAiringAnimes = res)
+      await filterAnimes(data.data.topAiringAnimes).then(
+        (res) => (data.data.topAiringAnimes = res)
       );
 
-    setHomeScreenData(data);
+    setHomeScreenData(data.data);
   };
   useEffect(() => {
     fetchHomeScreenData();

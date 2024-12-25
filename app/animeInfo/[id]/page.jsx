@@ -85,6 +85,9 @@ export default function DetailedInfoCard({ params: { id } }) {
             });
             setRedFlag(redF)
             fetchExtraInfo()
+        if (animeInfo?.anime?.info?.name) {
+            window.document.title = "Weeblo -" + animeInfo?.anime?.info?.name;
+            }
         }
     }, [animeInfo])
     return (

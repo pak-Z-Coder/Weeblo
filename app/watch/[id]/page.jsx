@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import {  Loader, Share2, StepBack, StepForward } from "lucide-react";
+import { Loader, Share2, StepBack, StepForward } from "lucide-react";
 import { getAnimeEpisodes } from "@/app/api/getAnimeEpisodes";
 import { getAnimeInfo } from "@/app/api/getAnimeInfo";
 import { getEpisodeDetail } from "@/app/api/getEpisodeDetail";
@@ -249,6 +249,7 @@ export default function WatchPage({ params: { id } }) {
     );
   }, [episodeServers]);
   useEffect(() => {
+    if (!currentEp) return;
     fetchEpServerLink();
   }, [currentServerType, currentEp]);
   useEffect(() => {
@@ -277,6 +278,11 @@ export default function WatchPage({ params: { id } }) {
   useEffect(() => {
     setUserPreferencesToLocalStorage(userPreferences);
   }, [userPreferences]);
+  useEffect(() => {
+    if (animeInfo?.anime?.info?.name) {
+      window.document.title = "Weeblo - Watch " + animeInfo?.anime?.info?.name;
+    }
+  }, [animeInfo]);
   const nextEp = () => {
     if (currentEp?.number < episodesResults?.episodes.length) {
       router.push(`${pathname}?ep=${currentEp?.number + 1}`);

@@ -1,7 +1,7 @@
 "use server";
 export const getAnimeEpisodes = async (id) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/anime/episodes/${id}`,
+    `https://private-aniwatch-api.vercel.app/api/v2/hianime/anime/${id}/episodes`,
     {
       next: {
         revalidate: 60 * 60 * 1,
@@ -9,5 +9,5 @@ export const getAnimeEpisodes = async (id) => {
     }
   );
   const data = await resp.json();
-  return data;
+  return data.data;
 };

@@ -495,8 +495,8 @@ const VideoPlayer = ({
       </div>
       <div
         className={cn(
-          "absolute w-full bottom-5 sm:bottom-10 flex flex-col items-center",
-          showControls && "bottom-8 sm:bottom-20",
+          "absolute w-full bottom-5 sm:bottom-10 lg:bottom-14 flex flex-col items-center",
+          showControls && "bottom-8 sm:bottom-20 lg:bottom-24",
           kanit.className
         )}>
         {selectedTrack !== "off" && currentCaptions.length > 0 ? (
@@ -504,7 +504,7 @@ const VideoPlayer = ({
             return (
               <p
                 key={i}
-                className="sm:textStroke sm:font-semibold font-sans text-white bg-black/50 sm:bg-black/40 px-1 mx-auto mb-[3px] sm:mb-[5px] text-sm sm:text-lg md:text-xl lg:text-2xl text-center w-fit lg:max-w-[95%] max-w-[98%] ">
+                className="sm:textStroke sm:font-semibold font-sans text-white bg-black/50 sm:bg-black/40 px-1 mx-auto mb-[3px] sm:mb-[5px] text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-center w-fit lg:max-w-[95%] max-w-[98%] ">
                 {c}
               </p>
             );

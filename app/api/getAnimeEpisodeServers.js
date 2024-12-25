@@ -2,7 +2,7 @@
 
 export const getAnimeEpisodeServers = async (epId) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/anime/servers?episodeId=${epId}`,
+    `https://private-aniwatch-api.vercel.app/api/v2/hianime/episode/servers?animeEpisodeId=${epId}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -10,20 +10,15 @@ export const getAnimeEpisodeServers = async (epId) => {
     }
   );
   const data = await resp.json();
-  return data;
+  return data.data;
 };
 export const getAnimeEpisodeServerLink = async (
   epId,
-  server = "vidstreaming",
+  server = "hd-1",
   category = "sub"
 ) => {
-  if (server == "hd-1") {
-    server = "vidstreaming";
-  } else if (server == "hd-2") {
-    server = "vidcloud";
-  }
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/anime/episode-srcs?id=${epId}&server=${server}&category=${category}`,
+    `https://private-aniwatch-api.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=${epId}&server=${server}&category=${category}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -31,5 +26,6 @@ export const getAnimeEpisodeServerLink = async (
     }
   );
   const data = await resp.json();
-  return data;
+
+  return data.data;
 };

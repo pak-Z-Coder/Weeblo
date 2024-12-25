@@ -11,7 +11,6 @@ import ScheduledCard from "./ScheduledCard";
 import Autoplay from "embla-carousel-autoplay";
 import { Bakbak_One } from "next/font/google";
 import { cn } from "@/lib/utils";
-// import { Button } from "./ui/button";
 const bakbak_one = Bakbak_One({
   weight: ["400"],
   style: "normal",
@@ -19,8 +18,6 @@ const bakbak_one = Bakbak_One({
 });
 const Schedules = () => {
   const [animes, setAnimes] = useState(null);
-  // const [days, setDays] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null);
   const today = new Date().toISOString().split("T")[0];
   const getAnimes = async () => {
     await getScheduledAnimes(today).then((res) => {
@@ -30,11 +27,6 @@ const Schedules = () => {
   useEffect(() => {
     getAnimes();
   }, []);
-  useEffect(() => {
-    if (!animes) return;
-    // setDays(Object.keys(animes));
-    setSelectedDay(Object.keys(animes)[0]);
-  }, [animes]);
   return (
     <div className="mt-4 mb-4 sm:mb-8">
       <div className="mb-2">
@@ -42,8 +34,7 @@ const Schedules = () => {
           className={cn(
             "text-secondary ml-2 font-bold text-lg sm:text-xl lg:text-2xl",
             bakbak_one.className
-          )}
-        >
+          )}>
           Scheduled
         </p>
       </div>
@@ -81,23 +72,18 @@ const Schedules = () => {
       <Carousel
         className="w-[95%] sm:w-[90%] mx-auto "
         opts={{ align: "start", loop: true }}
-        plugins={[Autoplay({ delay: 4000 })]}
-      >
+        plugins={[Autoplay({ delay: 4000 })]}>
         <CarouselContent className="">
           {animes &&
-            selectedDay &&
-            animes[selectedDay].map((anime) => (
+            animes.map((anime) => (
               <CarouselItem
                 key={anime.id}
-                className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6"
-              >
+                className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
                 <ScheduledCard anime={anime} />
               </CarouselItem>
             ))}
-          {animes && selectedDay && animes[selectedDay].length == 0 && (
-            <p className="mx-auto opacity-85 text-sm">
-              No schedules for {selectedDay}
-            </p>
+          {animes && animes.length == 0 && (
+            <p className="mx-auto opacity-85 text-sm">No schedules</p>
           )}
         </CarouselContent>
         <CarouselPrevious />
