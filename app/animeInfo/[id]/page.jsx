@@ -183,7 +183,7 @@ export default function DetailedInfoCard({ params: { id } }) {
                                     <Film className="w-5 h-5" />
                                     {
                                         animeInfo?.anime?.moreInfo?.genres?.map((genre, i) =>
-                                            <Link key={i} href={`/search/${genre}?type=search`}>
+                                            <Link key={i} href={`/search/${genre}?type=genre`}>
                                                 <span className="cursor-pointer hover:text-secondary font-semibold">{genre + (i == animeInfo.anime?.moreInfo.genres.length - 1 ? "" : ",")}</span>
                                             </Link>
                                         )

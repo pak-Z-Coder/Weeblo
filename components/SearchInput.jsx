@@ -26,7 +26,6 @@ const SearchInput = () => {
   const handleFetch = async (value) => {
     clearTimeout(timeout);
     timeout=setTimeout(async () => {
-        console.log("triggerd")
       setfetchLoading(true);
       await getSearchSuggestions(value).then((res) =>
         setSearchSuggestions(res)

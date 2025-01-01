@@ -52,14 +52,24 @@ export const getGenreResults = async (prompt, page = 1) => {
 };
 export const getProducerResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/producer/${prompt}?page=${page}`
+    `https://private-aniwatch-api.vercel.app/api/v2/hianime/producer/${prompt}?page=${page}`,
+    {
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
+    }
   );
   const data = await resp.json();
   return data.data;
 };
 export const getCategoryResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/category/${prompt}?page=${page}`
+    `https://private-aniwatch-api.vercel.app/api/v2/hianime/category/${prompt}?page=${page}`,
+    {
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
+    }
   );
   const data = await resp.json();
   return data.data;

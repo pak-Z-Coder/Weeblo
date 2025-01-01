@@ -11,14 +11,6 @@ import {
   getSearchSuggestions,
 } from "@/app/api/getSearchResults";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -31,6 +23,14 @@ const AnimeGrid = dynamic(() => import("@/components/AnimeGrid"), {
 });
 const AnimeVerticalCarousel = dynamic(
   () => import("@/components/AnimeVerticalCarousel"),
+  {
+    loading: () => (
+      <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+    ),
+  }
+);
+const Pagination = dynamic(
+  () => import("@/components/SearchPagination"),
   {
     loading: () => (
       <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
@@ -123,7 +123,6 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
 
     setFilterdResults(filteredAnimeList);
   }, [typeFilter, durationFilter]);
-  const startPage = Math.max(1, currentPage - 1);
   return (
     <div className="px-2 min-h-screen md:space-x-2 grid grid-cols-1 mt-16 lg:grid-cols-4 items-start">
       <div className={cn("col-span-1 h-full lg:col-span-3 py-2")}>
@@ -132,8 +131,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
             className={cn(
               "text-secondary ml-2 font-bold text-lg sm:text-xl lg:text-2xl select-none",
               bakbak_one.className
-            )}
-          >
+            )}>
             Results for{" "}
           </p>
           <p className="text-lg font-semibold">"{termToUse}"</p>
@@ -148,44 +146,38 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className=" backdrop-blur-xl w-fit p-0 mr-5"
-            >
+              className=" backdrop-blur-xl w-fit p-0 mr-5">
               <DropdownMenuItem
                 className="cursor-pointer text-white ml-auto"
-                onClick={() => setTypeFilter("TV")}
-              >
+                onClick={() => setTypeFilter("TV")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   TV
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setTypeFilter("Movie")}
-              >
+                onClick={() => setTypeFilter("Movie")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   Movie
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setTypeFilter("Special")}
-              >
+                onClick={() => setTypeFilter("Special")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   Special
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setTypeFilter("OVA")}
-              >
+                onClick={() => setTypeFilter("OVA")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   OVA
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setTypeFilter("ONA")}
-              >
+                onClick={() => setTypeFilter("ONA")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   ONA
                 </Button>
@@ -201,44 +193,38 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="backdrop-blur-xl w-fit p-0 mr-5"
-            >
+              className="backdrop-blur-xl w-fit p-0 mr-5">
               <DropdownMenuItem
                 className="cursor-pointer text-white ml-auto"
-                onClick={() => setDurationFilter("0-10")}
-              >
+                onClick={() => setDurationFilter("0-10")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   0-10 min
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setDurationFilter("10-20")}
-              >
+                onClick={() => setDurationFilter("10-20")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   10-20 min
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setDurationFilter("20-30")}
-              >
+                onClick={() => setDurationFilter("20-30")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   20-30 min
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setDurationFilter("30-40")}
-              >
+                onClick={() => setDurationFilter("30-40")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   30-40 min
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer ml-auto text-white "
-                onClick={() => setDurationFilter("40+")}
-              >
+                onClick={() => setDurationFilter("40+")}>
                 <Button variant="ghost" className="w-full text-xs sm:text-sm">
                   40+ min
                 </Button>
@@ -256,8 +242,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
               className={cn(
                 "w-fit border-none bg-inherit ",
                 filterdResults && "bg-primary/90 hover:bg-primary"
-              )}
-            >
+              )}>
               <FilterX className="w-5" />
             </Button>
           }
@@ -266,60 +251,20 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
           className={cn(
             "min-h-[80%] sm:max-h-[110vh] border lg:border-r p-1 mb-1 overflow-y-scroll no-scrollbar",
             (type == "genre" || type == "category") && "md:h-screen"
-          )}
-        >
+          )}>
           <AnimeGrid
             animes={filterdResults ? filterdResults : searchResults?.animes}
             type={""}
           />
         </div>
         {searchResults && !filterdResults && (
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  disabled={fetchLoading}
-                  onClick={() =>
-                    currentPage != 1 && handlePagination(currentPage - 1)
-                  }
-                />
-              </PaginationItem>
-              {[...Array(3)].map((_, index) => {
-                const pageNumber = startPage + index;
-                return (
-                  <PaginationItem key={pageNumber}>
-                    <Button
-                      disabled={fetchLoading}
-                      onClick={() => {
-                        searchResults?.hasNextPage &&
-                          handlePagination(pageNumber);
-                      }}
-                      className={
-                        currentPage === pageNumber
-                          ? "bg-secondary text-white"
-                          : ""
-                      }
-                    >
-                      {fetchLoading && currentPage === pageNumber ? (
-                        <Loader className="mx-auto w-6 animate-spin text-white" />
-                      ) : (
-                        pageNumber
-                      )}
-                    </Button>
-                  </PaginationItem>
-                );
-              })}
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  disabled={!searchResults?.hasNextPage || fetchLoading}
-                  onClick={() => handlePagination(currentPage + 1)}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={searchResults.totalPages}
+            hasNextPage={searchResults.hasNextPage}
+            fetchLoading={fetchLoading}
+            handlePagination={handlePagination}
+          />
         )}
       </div>
       <div className="flex flex-col md:space-y-20 mt-10 sm:mt-20 lg:mt-10">
@@ -338,7 +283,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
           )}
         </div>
         <Separator />
-        <div className="border ">
+        <div className="border">
           {!fetchLoading2 && type == "search" && (
             <AnimeVerticalCarousel
               animes={searchSuggestions?.suggestions}

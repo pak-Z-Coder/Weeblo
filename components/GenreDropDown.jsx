@@ -16,7 +16,7 @@ const GenreDropDown = () => {
     const { genres } = useAppContext();
     return (
         <div className='w-full'><DropdownMenu>
-            <DropdownMenuTrigger className='flex focus:outline-none text-sm sm:text-[16px] text-white font-semibold'>Genres <ChevronDown /></DropdownMenuTrigger>
+            <DropdownMenuTrigger className='flex focus:outline-none text-sm text-white font-semibold'>Genres <ChevronDown /></DropdownMenuTrigger>
             <DropdownMenuContent className="min-w-2.5 flex justify-center pl-4 w-fit sm:min-w-80 max-h-80 no-scrollbar overflow-y-scroll">
                 {genres ?
                     <div className='rounded-sm grid sm:grid-cols-3 grid-cols-2 gap-2 w-fit'>

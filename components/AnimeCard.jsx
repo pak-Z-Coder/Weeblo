@@ -94,15 +94,13 @@ const AnimeCard = ({ anime, type }) => {
               placeholder="empty"
               key={id}
               className={cn(
-                "w-fit min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center rounded-sm",
+                "w-full h-full object-cover aspect-[300/400] min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center rounded-sm",
                 type == "season"
-                  ? "min-h-[50px] max-h-[50px] min-w-[150px] sm:max-h-[70px] sm:min-h-[70px] sm:min-w-[200px] object-center "
-                  : "w-fit min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center shadow-sm hover:shadow-md drop-shadow-md hover:shadow-gray-950"
+                  ? "w-full aspect-[100/200] min-h-[50px] max-h-[50px] min-w-[150px] sm:max-h-[70px] sm:min-h-[70px] sm:min-w-[200px] object-center "
+                  : "w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center shadow-sm hover:shadow-md drop-shadow-md hover:shadow-gray-950"
               )}
               name={`${name}`}
               title={`${name}`}
-              width={type == "season" ? 100 : 300}
-              height={type == "season" ? 200 : 400}
               layout="responsive"
               src={`${poster ? poster : ""}`}
             />
