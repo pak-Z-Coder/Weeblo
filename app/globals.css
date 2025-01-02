@@ -33,6 +33,8 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+    --primary-color: #8a2be2; /* Default primary color (blue-700) */
+    --secondary-color: #0283ed; /* Default secondary color (purple-600) */
   }
 
   .dark {
@@ -77,7 +79,6 @@
     /* Firefox */
     -ms-overflow-style: none;
     /* IE/Edge */
-
   }
 
   ::-webkit-scrollbar {
@@ -96,7 +97,6 @@
   ::-webkit-scrollbar-thumb:hover {
     background-color: #0283ed;
   }
-
 }
 
 @layer utilities {

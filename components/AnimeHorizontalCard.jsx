@@ -18,7 +18,7 @@ const AnimeHorizontalCard = ({ anime, type }) => {
             <Link href={`/animeInfo/${encodeURIComponent(anime.id)}`} >
                 <Card className="cursor-pointer border-none z-0">
                     <CardContent className="flex items-start p-2 space-x-2 z-0">
-                        <img className={cn("aspect-[100/200] rounded-sm min-h-[90px] max-h-[90px] max-w-[80px] sm:max-h-[100px] sm:min-h-[100px] sm:min-w-[70px] sm:max-w-[70px]  object-center ")} alt="poster" layout="responsive" src={`${anime.poster}`} />
+                        <img className={cn("aspect-[200/100] rounded-sm min-h-[90px] max-h-[90px] max-w-[80px] sm:max-h-[100px] sm:min-h-[100px] sm:min-w-[70px] sm:max-w-[70px]  object-center ")} alt="poster" layout="responsive" src={`${anime.poster}`} />
                         <div className='flex flex-col space-y-1 w-full'>
                             <div className={cn("grid grid-cols-4 space-x-2")}>
                                 <Badge variant="outline" className="text-center bg-secondary bg-opacity-70  text-white border-none">{type == "suggestions" ? anime?.moreInfo[2] : anime?.type?.split('(')[0]}</Badge>

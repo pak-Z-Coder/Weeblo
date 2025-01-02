@@ -78,14 +78,12 @@ const AnimeCard = ({ anime, type }) => {
                 className={cn(
                   "absolute z-20",
                   type == "season"
-                    ? "text-sm bottom-2 left-2 sm:left-3 "
-                    : "md:text-lg text-xs max-w-full max-h-[80%] overflow-hidden bottom-2 left-2 sm:bottom-4 sm:left-3"
+                    ? "text-xs bottom-2 left-2 sm:left-3 "
+                    : "md:text-lg max-w-full max-h-[80%] overflow-hidden bottom-2 left-2 sm:bottom-4 sm:left-3"
                 )}>
                 {type !== "season"
-                  ? name.length > 25
-                    ? name.slice(0, 25) + "..."
-                    : name
-                  : name.slice(0, 22) + "..."}
+                  ? name.length > 25? name.slice(0, 25) + "...": name
+                  : name.length > 40? name.slice(0, 40) + "...":name}
               </p>
             </div>
             <img
