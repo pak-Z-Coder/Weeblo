@@ -69,7 +69,7 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
         setSearchResults(res)
       );
     } else if (type == "producer") {
-      await getProducerResults(termToUse.toLowerCase(), currentPage).then(
+      await getProducerResults(termToUse.replace(" ","-").toLocaleLowerCase(), currentPage).then(
         (res) => setSearchResults(res)
       );
     } else {

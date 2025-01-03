@@ -76,14 +76,12 @@ const AnimeCard = ({ anime, type }) => {
               )}
               <p
                 className={cn(
-                  "absolute z-20",
+                  "absolute z-20 text-xs line-clamp-2",
                   type == "season"
-                    ? "text-xs bottom-2 left-2 sm:left-3 "
-                    : "md:text-lg max-w-full max-h-[80%] overflow-hidden bottom-2 left-2 sm:bottom-4 sm:left-3"
+                    ? "bottom-2 left-2 sm:left-3 "
+                    : "md:text-lg text-center w-full max-w-full max-h-[80%] overflow-hidden bottom-2 sm:bottom-4"
                 )}>
-                {type !== "season"
-                  ? name.length > 25? name.slice(0, 25) + "...": name
-                  : name.length > 40? name.slice(0, 40) + "...":name}
+                {name}
               </p>
             </div>
             <img

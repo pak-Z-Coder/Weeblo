@@ -424,8 +424,9 @@ export default function DetailedInfoCard({ params: { id } }) {
               />
             )}
           </div>
-          <div className="flex flex-col gap-2">
+          {animeInfo?.anime?.info?.promotionalVideos.length > 0 &&(<div className="flex flex-col gap-2">
             <h3 className={cn('text-secondary ml-2 font-bold text-sm sm:text-lg', bakbak_one.className)}>PVs</h3>
+            
           <div className="md:max-w-[85%] ml-2 flex items-center gap-1 overflow-x-scroll no-scrollbar">
             {animeInfo?.anime?.info.promotionalVideos.map((video, i) => {
               return (
@@ -456,7 +457,7 @@ export default function DetailedInfoCard({ params: { id } }) {
               );
             })}
           </div>
-          </div>
+          </div>)}
           {animeInfo?.anime?.info?.charactersVoiceActors.length > 0 && (
             <div className="md:max-w-[85%] flex flex-col">
               <h3 className={cn('text-secondary ml-2 font-bold text-sm sm:text-lg', bakbak_one.className)}>C&VA</h3>
