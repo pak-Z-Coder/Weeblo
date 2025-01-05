@@ -62,6 +62,18 @@ export const getProducerResults = async (prompt, page = 1) => {
   const data = await resp.json();
   return data.data;
 };
+export const getAnimeAZ = async (sortOption, page) => {
+  const resp = await fetch(
+    `https://private-aniwatch-api.vercel.app/api/v2/hianime/azlist/${sortOption}?page=${page}`,
+    {
+      next: {
+        revalidate: 60 * 60 * 1,
+      },
+    }
+  );
+  const data = await resp.json();
+  return data.data;
+};
 export const getCategoryResults = async (prompt, page = 1) => {
   const resp = await fetch(
     `https://private-aniwatch-api.vercel.app/api/v2/hianime/category/${prompt}?page=${page}`,

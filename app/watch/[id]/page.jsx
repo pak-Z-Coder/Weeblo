@@ -483,7 +483,7 @@ export default function WatchPage({ params: { id } }) {
                   </Tooltip>
                 </TooltipProvider> */}
               </div>
-              <div className="flex  items-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <ToggleGroup
                   defaultValue="sub"
                   type="single"
@@ -491,6 +491,14 @@ export default function WatchPage({ params: { id } }) {
                   onValueChange={(e) => {
                     setCurrentServerType(e);
                   }}>
+                  {episodeServers?.raw?.length > 0 && (
+                    <ToggleGroupItem
+                      value="raw"
+                      aria-label="Raw"
+                      className="text-xs focus:bg-primary/50 data-[state=on]:bg-primary/50 rounded-sm">
+                      Raw
+                    </ToggleGroupItem>
+                  )}
                   <ToggleGroupItem
                     value="sub"
                     aria-label="Original"

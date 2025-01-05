@@ -19,10 +19,10 @@ const Footer = () => {
                         </Link>
                     </div>
                     <div className="flex space-x-1">
-                        <Link href="/search/A-Z?type=search">
+                        <Link href="/search/all?type=az">
                             <Button variant="ghost" className="hover:bg-gray-400">All</Button>
                         </Link>
-                        <Link href="/search/0-9?type=search">
+                        <Link href="/search/0-9?type=az">
                             <Button variant="ghost" className="hover:bg-gray-400">0-9</Button>
                         </Link>
                     </div>

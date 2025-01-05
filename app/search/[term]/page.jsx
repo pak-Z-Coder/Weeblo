@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
+  getAnimeAZ,
   getCategoryResults,
   getGenreResults,
   getProducerResults,
@@ -29,14 +30,11 @@ const AnimeVerticalCarousel = dynamic(
     ),
   }
 );
-const Pagination = dynamic(
-  () => import("@/components/SearchPagination"),
-  {
-    loading: () => (
-      <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
-    ),
-  }
-);
+const Pagination = dynamic(() => import("@/components/SearchPagination"), {
+  loading: () => (
+    <Loader className="mx-auto relative bottom-0 w-6 animate-spin text-primary" />
+  ),
+});
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, FilterX, Loader } from "lucide-react";
@@ -69,9 +67,15 @@ const SearchPage = ({ params: { term }, searchParams: { type } }) => {
         setSearchResults(res)
       );
     } else if (type == "producer") {
-      await getProducerResults(termToUse.replace(" ","-").toLocaleLowerCase(), currentPage).then(
-        (res) => setSearchResults(res)
-      );
+      await getProducerResults(
+        termToUse.replace(" ", "-").toLowerCase(),
+        currentPage
+      ).then((res) => setSearchResults(res));
+    } else if (type == "az") {
+      await getAnimeAZ(
+        termToUse,
+        currentPage
+      ).then((res) => setSearchResults(res));
     } else {
       await getCategoryResults(termToUse.toLowerCase(), currentPage).then(
         (res) => setSearchResults(res)

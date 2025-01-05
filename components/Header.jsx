@@ -136,12 +136,12 @@ const Header = () => {
             </TooltipProvider>
           </div>
           {user && (
-            <div name="profileImg">
+            <div name="profileImg" className="">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                      <DropdownMenuTrigger asChild className="">
                         <Avatar className="w-6 h-6 lg:w-8 lg:h-8 cursor-pointer ring-1 ring-offset-1 ring-offset-transparent hover:ring-primary">
                           <AvatarImage
                             alt={user?.username[0]}
@@ -152,8 +152,7 @@ const Header = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-fit mr-2 p-0 text-white">
                         <DropdownMenuItem
-                          className="cursor-pointer font-semibold"
-                          onClick={() => {}}>
+                          className="cursor-pointer font-semibold">
                           {user && (
                             <Link href="/user">
                               <Button

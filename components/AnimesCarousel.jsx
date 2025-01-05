@@ -80,10 +80,10 @@ const AnimesCarousel = ({ animes, type, setTopTypeValue, topTypeValue }) => {
                 </div>
             }
             {showScrollButtons &&
-                <Button variant="" onClick={scrollLeft} className={cn("text-white opacity-0 hidden md:block  absolute bg-transparent hover:bg-primary/20 left-0 top-1/3 px-0 h-fit", type == "Seasons" && "top-1/4 hover:bg-primary/0", hover && "md:opacity-50 md:hover:opacity-100")}><ChevronsLeft className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} /></Button>
+                <Button variant="" onClick={scrollLeft} className={cn("z-10 text-white opacity-0 hidden md:block  absolute bg-transparent hover:bg-primary/20 left-0 top-1/3 px-0 h-fit", type == "Seasons" && "top-1/4 hover:bg-primary/0", hover && "md:opacity-50 md:hover:opacity-90")}><ChevronsLeft className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} /></Button>
             }
             {showScrollButtons &&
-                <Button variant="" onClick={scrollRight} className={cn("text-white opacity-0 hidden md:block  absolute bg-transparent hover:bg-primary/20  right-0 top-1/3 px-0 h-fit ", type == "Seasons" && "top-1/4 hover:bg-primary/0", hover && "md:opacity-50 md:hover:opacity-100")}><ChevronsRight className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} /></Button>
+                <Button variant="" onClick={scrollRight} className={cn("z-10 text-white opacity-0 hidden md:block  absolute bg-transparent hover:bg-primary/20  right-0 top-1/3 px-0 h-fit ", type == "Seasons" && "top-1/4 hover:bg-primary/0", hover && "md:opacity-50 md:hover:opacity-90")}><ChevronsRight className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} /></Button>
             }
         </div>
     )
