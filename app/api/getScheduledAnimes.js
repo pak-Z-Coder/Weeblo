@@ -3,10 +3,9 @@
 export const getScheduledAnimes = async (date) => {
   const controller = new AbortController();
   const signal = controller.signal;
-  // from anify
   try {
     const resp = await fetch(
-      `https://private-aniwatch-api.vercel.app/api/v2/hianime/schedule?date=${date}`,
+      `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/schedule?date=${date}`,
       {
         next: {
           revalidate: 60 * 60 * 1,

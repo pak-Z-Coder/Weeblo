@@ -10,7 +10,7 @@ export function AppWrapper({ children }) {
   const [user, setUser] = useState(null);
   const fetchMoviesData = async () => {
     const resp = await fetch(
-      `https://private-aniwatch-api.vercel.app/api/v2/hianime/category/movie?page=1`,
+      `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/category/movie?page=1`,
       {
         next: {
           revalidate: 60 * 60 * 24,
@@ -22,7 +22,7 @@ export function AppWrapper({ children }) {
   };
   const fetchHomeScreenData = async () => {
     const resp = await fetch(
-      "https://private-aniwatch-api.vercel.app/api/v2/hianime/home",
+      `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/home`,
       {
         headers: {
           "Content-Type": "application/json",

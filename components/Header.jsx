@@ -76,7 +76,7 @@ const Header = () => {
     !isHiddenRoute && (
       <div
         className={cn(
-          "fixed w-screen overflow-x-hidden overflow-y-hidden no-scrollbar top-0 z-30 flex items-center justify-between px-2 md:px-5 h-12 sm:h-16 bg-gradient-to-t from-primary/0 via-[#100b25]/15 to-[#100b25]/40",
+          "fixed w-screen overflow-x-hidden overflow-y-hidden no-scrollbar top-0 z-[60] flex items-center justify-between px-2 md:px-5 h-12 sm:h-16 bg-gradient-to-t from-primary/0 via-[#100b25]/15 to-[#100b25]/40",
           scrolled && "backdrop-blur-sm"
         )}>
         <div name="left" className="h-full">

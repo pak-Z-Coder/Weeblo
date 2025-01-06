@@ -6,6 +6,15 @@ Add a MONGODB_URI variable in your .env file:
 ```bash
 MONGODB_URI= Your MongoDb URI
 ```
+## References
+
+This project uses this package for getting anime data:
+
+- [aniwatch-api](https://github.com/ghoshRitesh12/aniwatch-api) - Please Deploy Your Own Backend for fetching data for better performance and set the url in the env file.
+```bash
+NEXT_PUBLIC_ANIWATCH_URL= Your Deployed Backend URL
+```
+
 
 First, run the development server:
 

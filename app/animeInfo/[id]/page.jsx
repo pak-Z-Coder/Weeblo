@@ -62,10 +62,10 @@ const bebas_nueue = Bebas_Neue({
   subsets: ["latin"],
 });
 const bakbak_one = Bakbak_One({
-    weight: ['400'],
-    style: 'normal',
-    subsets: ['latin'],
-})
+  weight: ["400"],
+  style: "normal",
+  subsets: ["latin"],
+});
 export default function DetailedInfoCard({ params: { id } }) {
   const animeId = decodeURI(id);
   const [animeInfo, setAnimeInfo] = useState({});
@@ -276,9 +276,10 @@ export default function DetailedInfoCard({ params: { id } }) {
                 seeMore && "hidden"
               )}></div>
             <p className="">
-              {seeMore
-                ? animeInfo?.anime?.info?.description
-                : animeInfo?.anime?.info?.description.slice(0, 300) + "..."}
+              {animeInfo?.anime?.info?.description &&
+                (seeMore
+                  ? animeInfo?.anime?.info?.description
+                  : animeInfo?.anime?.info?.description?.slice(0, 300) + "...")}
             </p>
             <p
               id="seeMoreBtn"
@@ -424,54 +425,70 @@ export default function DetailedInfoCard({ params: { id } }) {
               />
             )}
           </div>
-          {animeInfo?.anime?.info?.promotionalVideos.length > 0 &&(<div className="flex flex-col gap-2">
-            <h3 className={cn('text-secondary ml-2 font-bold text-sm sm:text-lg', bakbak_one.className)}>PVs</h3>
-            
-          <div className="md:max-w-[85%] ml-2 flex items-center gap-1 overflow-x-scroll no-scrollbar">
-            {animeInfo?.anime?.info.promotionalVideos.map((video, i) => {
-              return (
-                <Dialog key={i}>
-                  <DialogTrigger>
-                    <div className="relative w-[100px] h-[50px] md:w-[150px] md:h-[75px]">
-                      <div className="absolute text-red-400 bottom-1 right-0">
-                        <Youtube />
-                      </div>
-                      <img
-                        className="aspect-[200/100] w-full h-full object-cover"
-                        src={video.thumbnail}
-                        alt={video.title}
-                        name="Video"
-                      />
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent className="py-0 flex items-center justify-center bg-black">
-                    <ReactPlayer
-                      name="VideoPlayer"
-                      playing={true}
-                      url={video.source}
-                      controls={false}
-                      className="w-screen aspect-square  md:aspect-video"
-                    />
-                  </DialogContent>
-                </Dialog>
-              );
-            })}
-          </div>
-          </div>)}
+          {animeInfo?.anime?.info?.promotionalVideos.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <h3
+                className={cn(
+                  "text-secondary ml-2 font-bold text-sm sm:text-lg",
+                  bakbak_one.className
+                )}>
+                PVs
+              </h3>
+
+              <div className="md:max-w-[85%] ml-2 flex items-center gap-1 overflow-x-scroll no-scrollbar">
+                {animeInfo?.anime?.info.promotionalVideos.map((video, i) => {
+                  return (
+                    <Dialog key={i}>
+                      <DialogTrigger>
+                        <div className="relative w-[100px] h-[50px] md:w-[150px] md:h-[75px]">
+                          <div className="absolute text-red-400 bottom-1 right-0">
+                            <Youtube />
+                          </div>
+                          <img
+                            className="aspect-[200/100] w-full h-full object-cover"
+                            src={video.thumbnail}
+                            alt={video.title}
+                            name="Video"
+                          />
+                        </div>
+                      </DialogTrigger>
+                      <DialogContent className="py-0 flex items-center justify-center bg-black">
+                        <ReactPlayer
+                          name="VideoPlayer"
+                          playing={true}
+                          url={video.source}
+                          controls={false}
+                          className="w-screen aspect-square  md:aspect-video"
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {animeInfo?.anime?.info?.charactersVoiceActors.length > 0 && (
             <div className="md:max-w-[85%] flex flex-col">
-              <h3 className={cn('text-secondary ml-2 font-bold text-sm sm:text-lg', bakbak_one.className)}>C&VA</h3>
+              <h3
+                className={cn(
+                  "text-secondary ml-2 font-bold text-sm sm:text-lg",
+                  bakbak_one.className
+                )}>
+                C&VA
+              </h3>
               <div className="w-full flex gap-x-2 items-center no-scrollbar overflow-x-scroll">
                 {animeInfo?.anime?.info?.charactersVoiceActors?.map((cva) => {
                   return (
-                    <div key={cva.character.id} className="ml-2 bg-transparent flex items-center w-[200px] h-[150px] sm:w-[150px] sm:h-[120px]">
+                    <div
+                      key={cva.character.id}
+                      className="ml-2 bg-transparent flex items-center w-[200px] h-[150px] sm:w-[150px] sm:h-[120px]">
                       <div className="">
                         <div className="flex items-center">
                           <Avatar className="">
                             <AvatarImage
                               src={cva.character.poster}
-                              width={'40'}
-                              height={'20'}
+                              width={"40"}
+                              height={"20"}
                               alt={`${cva.character.name}`}
                               className="rounded-full"
                             />
@@ -479,8 +496,8 @@ export default function DetailedInfoCard({ params: { id } }) {
                           <Avatar className="">
                             <AvatarImage
                               src={cva.voiceActor.poster}
-                              width={'40'}
-                              height={'20'}
+                              width={"40"}
+                              height={"20"}
                               alt={`${cva.voiceActor.poster}`}
                               className="rounded-full object-cover object-center scale-95 -ml-1"
                             />

@@ -2,7 +2,7 @@
 
 export const getSearchResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/search?q=${prompt}&page=${page}`,
+    `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/search?q=${prompt}&page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -18,7 +18,7 @@ export const getSearchSuggestions = async (prompt) => {
 
   try {
     const resp = await fetch(
-      `https://private-aniwatch-api.vercel.app/api/v2/hianime/search/suggestion?q=${prompt}`,
+      `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/search/suggestion?q=${prompt}`,
       {
         next: {
           revalidate: 60 * 60 * 24,
@@ -40,7 +40,7 @@ export const getSearchSuggestions = async (prompt) => {
 
 export const getGenreResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/genre/${prompt}?page=${page}`,
+    `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/genre/${prompt}?page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -52,7 +52,7 @@ export const getGenreResults = async (prompt, page = 1) => {
 };
 export const getProducerResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/producer/${prompt}?page=${page}`,
+    `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/producer/${prompt}?page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
@@ -64,7 +64,7 @@ export const getProducerResults = async (prompt, page = 1) => {
 };
 export const getAnimeAZ = async (sortOption, page) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/azlist/${sortOption}?page=${page}`,
+    `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/azlist/${sortOption}?page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 1,
@@ -76,7 +76,7 @@ export const getAnimeAZ = async (sortOption, page) => {
 };
 export const getCategoryResults = async (prompt, page = 1) => {
   const resp = await fetch(
-    `https://private-aniwatch-api.vercel.app/api/v2/hianime/category/${prompt}?page=${page}`,
+    `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/category/${prompt}?page=${page}`,
     {
       next: {
         revalidate: 60 * 60 * 24,
