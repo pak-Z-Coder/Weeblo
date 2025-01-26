@@ -34,7 +34,7 @@ export async function GET(req) {
           controller.enqueue(
             `data: ${JSON.stringify({ ping: "keep-alive" })}\n\n`
           );
-        }, 10000); // Send a ping every 10 seconds
+        }, 5000); // Send a ping every 10 seconds
 
         changeStream.on("change", (change) => {
           controller.enqueue(`data: ${JSON.stringify(change)}\n\n`);
