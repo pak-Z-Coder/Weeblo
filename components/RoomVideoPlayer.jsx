@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import {
-  ChevronUp,
   Pause,
   Play,
   RedoDot,
@@ -9,16 +8,16 @@ import {
   UndoDot,
   Fullscreen,
   Minimize,
-  Loader2,
   Volume,
   Volume1,
   Volume2,
   SkipForward,
+  RefreshCcw,
 } from "lucide-react";
 import ReactPlayer from "react-player";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { debounce } from "lodash";
+import { debounce, throttle } from "lodash";
 import { Separator } from "./ui/separator";
 import { Kanit } from "next/font/google";
 const kanit = Kanit({
@@ -26,34 +25,28 @@ const kanit = Kanit({
   style: "normal",
   subsets: ["latin"],
 });
-const VideoPlayer = ({
+const RoomVideoPlayer = ({
   Url,
   tracks,
   type,
   intro,
   outro,
-  setEpEnded,
-  userPreferences,
-  setUserPreferences,
-  setPlayedTime,
-  setTotalTime,
   continueWatchTime,
+  roomPlaying,
+  isHost,
+  roomId,
+  chatOpen,
 }) => {
   const player = useRef();
   const [showControls, setShowControls] = useState(true);
   const [showCursor, setShowCursor] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [loadedTime, setLoadedTime] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [playing, setPlaying] = useState(userPreferences?.AutoPlay);
+  const [playing, setPlaying] = useState(roomPlaying);
+  const [lastUpdateTime, setLastUpdateTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [qualities, setQualities] = useState(null);
-  const [currentQuality, setCurrentQuality] = useState(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
   const [selectedTrack, setSelectedTrack] = useState(null);
-  const [volume, setVolume] = useState(
-    userPreferences?.volumeLevel ? userPreferences?.volumeLevel : 0.9
-  );
+  const [volume, setVolume] = useState(0.9);
   const progressIntervalRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -63,8 +56,7 @@ const VideoPlayer = ({
   const [captions, setCaptions] = useState(null);
   const [captionsToUse, setCaptionsToUse] = useState([]);
   const [currentCaptions, setCurrentCaptions] = useState([]);
-  const playbackSpeeds = [0.5, 1, 1.25, 2];
-  const [currentSpeedIndex, setCurrentSpeedIndex] = useState(1);
+
   useEffect(() => {
     const defaultTrackIndex = tracks?.findIndex((track) => track.default);
     setCaptions(
@@ -154,6 +146,49 @@ const VideoPlayer = ({
   const stripHtmlTags = (text) => {
     return text.replace(/<[^>]+>/g, ""); // Remove all HTML tags, keeping \n intact
   };
+  const updateRoom = async () => {
+    if (isHost) {
+      const response = await fetch("/api/room", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentTime: currentTime + 1, playing, roomId }),
+      });
+      const data = await response.json();
+      if (data.status != 201) {
+        console.log(data.body.message);
+      }
+    }
+  };
+  const SyncTime = async () => {
+    const response = await fetch("/api/room", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ roomId, isHost, currentTime }),
+    });
+    const data = await response.json();
+    if (data.status != 201) {
+      console.log(data.body.message);
+    } else {
+      if (!isHost) {
+        player.current.seekTo(data.body.newCurrentTime);
+        setCurrentTime(data.body.newCurrentTime);
+      }
+    }
+  };
+  useEffect(() => {
+    if (isHost) debouncedUpdateRoom();
+  }, [playing]);
+  useEffect(() => {
+    if (!isHost) {
+      setPlaying(roomPlaying);
+    }
+  }, [roomPlaying]);
+  useEffect(() => {
+    if (!isHost) {
+      player.current.seekTo(continueWatchTime);
+      setCurrentTime(continueWatchTime);
+    }
+  }, [continueWatchTime]);
   useEffect(() => {
     if (selectedTrack == "off") return;
     const caption = captionsToUse?.find(
@@ -177,8 +212,10 @@ const VideoPlayer = ({
   useEffect(() => {
     const p = document.querySelector("#player");
     const pA = document.querySelector("#playerAbsolute");
+
     if (!p) return;
     const handleKeyDown = (e) => {
+      if (!isHost || chatOpen) return;
       switch (e.key) {
         case " ":
           e.preventDefault();
@@ -237,7 +274,9 @@ const VideoPlayer = ({
         setShowCursor(false);
       }, 5000);
     };
-    document.body.addEventListener("keydown", handleKeyDown);
+    if (!chatOpen) {
+      document.body.addEventListener("keydown", handleKeyDown);
+    }
     pA.addEventListener("dblclick", handleDoubleClick);
     pA.addEventListener("click", handleClick);
     pA.addEventListener("touchend", handleTap);
@@ -262,6 +301,14 @@ const VideoPlayer = ({
         }, 1000);
       });
     };
+  }, [chatOpen]);
+  useEffect(() => {
+    const internalPlayer =
+      player.current && player.current.getInternalPlayer(type);
+    if (internalPlayer && internalPlayer.currentLevel !== undefined) {
+      internalPlayer.currentLevel = -1;
+    }
+    player?.current?.seekTo(continueWatchTime);
   }, []);
   useEffect(() => {
     const videoElement = document.querySelector("#player");
@@ -349,13 +396,20 @@ const VideoPlayer = ({
 
     return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
   }
-  const handleProgress = (progress) => {
-    setLoading(false);
+  const debouncedUpdateRoom = debounce(updateRoom, 500); // Adjust debounce time as needed
+  const seekdebouncedUpdateRoom = debounce(updateRoom, 1000); // Adjust debounce time as needed
+
+  const handleProgress = throttle((progress) => {
     setCurrentTime(progress.playedSeconds);
     setLoadedTime(progress.loadedSeconds);
-    setTotalTime(player?.current?.getDuration());
-    setPlayedTime(progress.playedSeconds);
-  };
+    setDuration(player?.current?.getDuration());
+    const newTime = progress.playedSeconds;
+    setCurrentTime(newTime);
+    if (isHost && Math.abs(newTime - lastUpdateTime) >= 30) {
+      setLastUpdateTime(newTime);
+      debouncedUpdateRoom();
+    }
+  }, 1000);
   const handleDuration = (duration) => {
     setDuration(duration);
     progressIntervalRef.current = setInterval(() => {
@@ -367,47 +421,10 @@ const VideoPlayer = ({
   const handleSeek = (value) => {
     value = value[0];
     if (player.current) {
-      player.current.seekTo(value / duration);
+      player.current.seekTo(value);
+      setCurrentTime(value);
+      seekdebouncedUpdateRoom();
     }
-  };
-  const getQuality = () => {
-    const internalPlayer = player.current?.getInternalPlayer(type);
-    setQualities(internalPlayer.levels.reverse());
-    if (userPreferences?.qualityLevel != -1) {
-      const existI = internalPlayer.levels.findIndex(
-        (l) => l.height == userPreferences.qualityLevel
-      );
-      if (existI != -1) {
-        internalPlayer.currentLevel = existI;
-        setCurrentQuality(existI);
-      } else {
-        setCurrentQuality(-1);
-      }
-    } else {
-      setCurrentQuality(-1);
-    }
-  };
-  const changeQuality = (qIndex) => {
-    const internalPlayer =
-      player.current && player.current.getInternalPlayer(type);
-    if (internalPlayer && internalPlayer.currentLevel !== undefined) {
-      internalPlayer.currentLevel = qIndex;
-      setUserPreferences((prevState) => ({
-        ...prevState,
-        qualityLevel: qualities[qIndex]?.height,
-      }));
-    }
-    setPlaying((prevPlaying) => {
-      return prevPlaying;
-    });
-  };
-  const changePlaybackSpeed = () => {
-    if (currentSpeedIndex < playbackSpeeds.length - 1) {
-      setCurrentSpeedIndex((prevSpeed) => prevSpeed + 1);
-    } else {
-      setCurrentSpeedIndex(0);
-    }
-    setPlaybackRate(playbackSpeeds[currentSpeedIndex]);
   };
   return (
     <div
@@ -418,19 +435,11 @@ const VideoPlayer = ({
         ref={player}
         volume={volume}
         playing={playing}
-        onBuffer={() => setLoading(true)}
-        onPlay={() => setLoading(false)}
         onProgress={handleProgress}
         onDuration={handleDuration}
-        playbackRate={playbackRate}
         onReady={() => {
-          getQuality();
-          setLoading(false);
           setTotalTime(player?.current.getDuration());
-          player?.current.seekTo(continueWatchTime ? continueWatchTime : 0);
-        }}
-        onEnded={() => {
-          userPreferences?.AutoNext && setEpEnded(true);
+          player.current.seekTo(continueWatchTime);
         }}
         url={Url}
         controls={false}
@@ -439,62 +448,49 @@ const VideoPlayer = ({
             attributes: { crossOrigin: "true" },
             forceHLS: true,
             hlsOptions: {
-              maxBufferLength: 30, // Adjust to reduce buffer size
-              maxMaxBufferLength: 60, // Cap maximum buffer length
-              liveSyncDuration: 10, // For live streams, reduces latency
-              liveMaxLatencyDuration: 30,
+              maxBufferSize: 50 * 1024 * 1024, // Larger buffer size
+              maxBufferLength: 60, // Buffer 60 seconds ahead
+              liveSyncDuration: 5, // Adjust for better live sync
+              startLevel: 0, // Automatically choose the best level
+              autoStartLoad: true, // Start loading immediately
+              enableWorker: true, // Enable HLS.js worker for performance
             },
           },
         }}
-        className={cn("md:w-full focus:outline-none max-h-full object-center")}
+        className={cn("md:w-full focus:outline-none max-h-full object-center ")}
         width="100%"
         height="100%"
       />
-      <div
-        className={cn(
-          "z-30 absolute top-[0.7rem] right-2 w-fit ml-auto mr-2 opacity-100 flex items-center",
-          !showControls &&
-            !isOpen &&
-            !isOpen1 &&
-            "hidden opacity-0 transition-opacity ease-out"
-        )}>
-        <Button
-          onClick={changePlaybackSpeed}
-          variant="outline"
-          className={cn(
-            "drop-shadow-lg px-2 py-1 text-xs shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white mb-1"
-          )}>
-          {playbackRate}x
-        </Button>
-      </div>
-      <div className="z-30 absolute bottom-20 right-2 w-fit ml-auto mr-2 ">
-        <Button
-          onClick={() => player.current.seekTo(intro.end)}
-          variant="outline"
-          className={cn(
-            "drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1",
-            currentTime >= intro?.start &&
-              currentTime <= intro?.end &&
-              currentTime != 0 &&
-              "flex"
-          )}>
-          Skip
-          <SkipForward />
-        </Button>
-        <Button
-          onClick={() => player.current.seekTo(outro.end)}
-          variant="outline"
-          className={cn(
-            "drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1",
-            currentTime >= outro?.start &&
-              currentTime <= outro?.end &&
-              currentTime != 0 &&
-              "flex"
-          )}>
-          Skip
-          <SkipForward />
-        </Button>
-      </div>
+      {isHost && (
+        <div className="z-30 absolute bottom-20 right-2 w-fit ml-auto mr-2 ">
+          <Button
+            onClick={() => player.current.seekTo(intro.end)}
+            variant="outline"
+            className={cn(
+              "drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1",
+              currentTime >= intro?.start &&
+                currentTime <= intro?.end &&
+                currentTime != 0 &&
+                "flex"
+            )}>
+            Skip
+            <SkipForward />
+          </Button>
+          <Button
+            onClick={() => player.current.seekTo(outro.end)}
+            variant="outline"
+            className={cn(
+              "drop-shadow-lg shadow-lg cursor-pointer hover:bg-transparent bg-secondary/20 border-white hidden  mb-1",
+              currentTime >= outro?.start &&
+                currentTime <= outro?.end &&
+                currentTime != 0 &&
+                "flex"
+            )}>
+            Skip
+            <SkipForward />
+          </Button>
+        </div>
+      )}
       <div
         className={cn(
           "absolute w-full bottom-5 sm:bottom-10 lg:bottom-14 flex flex-col items-center",
@@ -515,27 +511,26 @@ const VideoPlayer = ({
           <></>
         )}
       </div>
-      {loading && (
-        <Loader2 className="absolute h-8 w-8 animate-spin text-white left-[45%] top-[40%] sm:left-[49%] sm:top-[47%]" />
+      {isHost && (
+        <Button
+          onClick={() => setPlaying(!playing)}
+          className={cn(
+            "z-20 inset-x-1/3 inset-y-1/3 absolute inline-block opacity-100 text-white bg-black bg-opacity-50 rounded-full w-fit mx-auto my-auto py-1 px-4 sm:px-8 sm:py-2",
+            !showControls &&
+              !isOpen &&
+              !isOpen1 &&
+              "hidden opacity-0 transition-opacity ease-out"
+          )}
+          size="lg"
+          variant="ghost">
+          {playing ? (
+            <Pause className="max-w-6 max-h-6" />
+          ) : (
+            <Play className="w-6 h-6" />
+          )}
+        </Button>
       )}
-      <Button
-        onClick={() => setPlaying(!playing)}
-        className={cn(
-          "z-20 inset-x-1/3 inset-y-1/3 absolute inline-block opacity-100 text-white bg-black bg-opacity-50 rounded-full w-fit mx-auto my-auto py-1 px-4 sm:px-8 sm:py-2",
-          loading && "hidden",
-          !showControls &&
-            !isOpen &&
-            !isOpen1 &&
-            "hidden opacity-0 transition-opacity ease-out"
-        )}
-        size="lg"
-        variant="ghost">
-        {playing ? (
-          <Pause className="max-w-6 max-h-6" />
-        ) : (
-          <Play className="w-6 h-6" />
-        )}
-      </Button>
+
       <div
         className={cn(
           "w-full absolute opacity-100 block bottom-0 z-20 bg-black/20",
@@ -547,10 +542,11 @@ const VideoPlayer = ({
         <div className="mb-2 relative pb-1 flex items-center justify-around max-w-full font-semibold text-xs text-white textStrokeSmall pt-2 overflow-hidden">
           <p>{currentTime ? formatTime(currentTime) : "00:00:00"}</p>
           <Slider
-            value={[currentTime]}
+            value={isHost ? [currentTime] : [100]}
+            isHost={isHost}
+            disabled={!isHost}
             min={0}
-            max={duration}
-            isHost={true}
+            max={isHost ? duration : 100}
             loadedTime={(loadedTime / player?.current?.getDuration()) * 100}
             onValueChange={(e) => handleSeek(e)}
             step={1}
@@ -563,18 +559,20 @@ const VideoPlayer = ({
           </p>
         </div>
         <div className="flex items-center gap-0 lg:gap-2 ">
-          <div className="lg:ml-5 text-white">
-            <Button
-              onClick={() => setPlaying(!playing)}
-              className="hidden sm:inline-block p-2 bg-transparent border-none"
-              variant="outline">
-              {playing ? (
-                <Pause className="w-4 h-4" />
-              ) : (
-                <Play className="w-4 h-4" />
-              )}
-            </Button>
-          </div>
+          {isHost && (
+            <div className="lg:ml-5 text-white">
+              <Button
+                onClick={() => setPlaying(!playing)}
+                className="hidden sm:inline-block p-2 bg-transparent border-none"
+                variant="outline">
+                {playing ? (
+                  <Pause className="w-4 h-4" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+          )}
           <div className="relative ml-1 text-white flex items-center">
             {volume == 0 && <Volume />}
             {volume > 0 && volume <= 0.5 && <Volume1 />}
@@ -586,80 +584,39 @@ const VideoPlayer = ({
               max={1}
               onValueChange={(e) => {
                 setVolume(e);
-                setUserPreferences((prevState) => ({
-                  ...prevState,
-                  volumeLevel: e,
-                }));
               }}
               step={0.1}
               className="w-10 sm:w-20"
             />
           </div>
           <div className="flex text-white relative items-center ml-auto mr-4">
-            <Button
-              size="sm"
-              onClick={() => skipTime(-10)}
-              className="text-xs p-2 bg-transparent border-none"
-              variant="outline">
-              <UndoDot className="w-6 h-4" />
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => skipTime(10)}
-              className="text-xs p-2 bg-transparent border-none"
-              variant="outline">
-              <RedoDot className="w-6 h-4" />
-            </Button>
-            <Button
-              onClick={() => {
-                setIsOpen(!isOpen);
-                setIsOpen1(false);
-              }}
-              className="bg-transparent border-none p-0 sm:p-2"
-              size="sm"
-              variant="outline">
-              {currentQuality !== -1
-                ? qualities && qualities[currentQuality]?.height + "p"
-                : "Auto"}
-              <ChevronUp className="w-4 h-4 inline-block" />
-            </Button>
-            <div
-              className={cn(
-                "rounded-sm py-1 px-2 absolute ml-20 bottom-5 md:bottom-7 lg:bottom-18 bg-gray-900/70 text-white hidden",
-                isOpen && "flex flex-col items-center"
-              )}>
+            {isHost && (
               <Button
-                variant="outline"
-                onClick={() => {
-                  setCurrentQuality(-1);
-                  changeQuality(-1);
-                  setIsOpen(!isOpen);
-                }}
-                className={cn(
-                  "bg-transparent hover:bg-primary/10 w-full border-none leading-none text-xs",
-                  currentQuality == -1 && "bg-white text-secondary"
-                )}>
-                Auto
+                size="sm"
+                onClick={() => skipTime(-10)}
+                className="text-xs p-2 bg-transparent border-none"
+                variant="outline">
+                <UndoDot className="w-6 h-4" />
               </Button>
-              <Separator />
-              {qualities?.map((q, i) => (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setCurrentQuality(i);
-                    changeQuality(i);
-                    setIsOpen(!isOpen);
-                  }}
-                  key={i}
-                  className={cn(
-                    "bg-transparent hover:bg-primary/20 w-full border-none leading-none text-xs py-0",
-                    currentQuality == i && "bg-white text-secondary"
-                  )}>
-                  {q.height}p
-                </Button>
-              ))}
-            </div>
+            )}
+            {isHost && (
+              <Button
+                size="sm"
+                onClick={() => skipTime(10)}
+                className="text-xs p-2 bg-transparent border-none"
+                variant="outline">
+                <RedoDot className="w-6 h-4" />
+              </Button>
+            )}
+            {
+              <Button
+                size="sm"
+                onClick={() => SyncTime()}
+                className="text-xs p-2 bg-transparent border-none"
+                variant="outline">
+                <RefreshCcw className="w-6 h-6" />
+              </Button>
+            }
             {captions?.length > 0 && (
               <Button
                 size="sm"
@@ -675,7 +632,7 @@ const VideoPlayer = ({
             {captions?.length > 0 && (
               <div
                 className={cn(
-                  "w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-4 lg:bottom-16 bg-gray-900/70 text-white hidden",
+                  "w-fit h-36 overflow-y-scroll no-scrollbar rounded-sm px-2 py-1 absolute bottom-10 right-8 lg:bottom-16 bg-gray-900/70 text-white hidden",
                   isOpen1 && " flex flex-col items-center"
                 )}>
                 <Button
@@ -721,4 +678,4 @@ const VideoPlayer = ({
   );
 };
 
-export default VideoPlayer;
+export default RoomVideoPlayer;

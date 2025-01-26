@@ -17,6 +17,15 @@ module.exports = {
       },
     },
     extend: {
+      keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
+      },
+      animation: {
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
+      },
       flex: {
         full: "0 0 100%",
         half: "0 0 50%",
@@ -29,8 +38,8 @@ module.exports = {
         foreground: "hsl(var(--foreground))",
         // primary: "#8a2be2",
         // secondary: "#0283ed",
-        primary: '#8a2be2',
-        secondary: '#0283ed',
+        primary: "#8a2be2",
+        secondary: "#0283ed",
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

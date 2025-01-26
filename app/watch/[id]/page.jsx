@@ -58,6 +58,7 @@ const ScrollTopButton = React.lazy(() =>
   import("@/components/ScrollTopButton")
 );
 import { useAppContext } from "@/context/page";
+import GenerateRoom from "@/components/GenerateRoom";
 
 const bebas_nueue = Bebas_Neue({
   weight: ["400"],
@@ -333,20 +334,6 @@ export default function WatchPage({ params: { id } }) {
       }, 3000);
     });
   };
-  // const handleDownload = async () => {
-  //     try {
-  //         const response = await axios.get('/api/download', {
-  //             params: {
-  //                 m3u8Url: episodeServerLink?.sources[0]?.url,
-  //                 outputFileName: animeInfo?.anime?.info?.name,
-  //             },
-  //         });
-  //         alert(response.data.message);
-  //     } catch (error) {
-  //         console.error(error);
-  //         alert('Failed to download video');
-  //     }
-  // };
 
   return !fetchLoading ? (
     <div className="lg:pl-1 flex-grow-0 flex flex-col mt-10 sm:mt-16">
@@ -470,18 +457,25 @@ export default function WatchPage({ params: { id } }) {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                {/* <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Button variant="ghost">
-                        <Download className="hover:text-primary" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Download</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider> */}
+                {user && animeInfo && currentEp && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <GenerateRoom
+                          name={animeInfo?.anime?.info?.name}
+                          epNo={currentEp?.number}
+                          epId={currentEp?.episodeId}
+                          category={currentServerType}
+                          poster={animeInfo?.anime?.info?.poster}
+                          host={user?._id}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Cinema Room</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
               <div className="flex items-center space-x-2">
                 <ToggleGroup

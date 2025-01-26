@@ -62,10 +62,12 @@ const ScheduledCard = ({ anime }) => {
 
           <div className="grid grid-cols-2">
             <h4 className="text-xs font-semibold text-secondary text-opacity-80 tracking-tight">
-              {timeLeft > 0 ? <p>{formatTime(timeLeft)}</p>:"Aired"}
+              {timeLeft > 0 ? <p>{formatTime(timeLeft)}</p> : "Aired"}
             </h4>
             <p className="text-xs opacity-90 font-medium text-right ">
-              {new Date(airingTimestamp * 1000).toLocaleTimeString()}
+              {new Date(airingTimestamp * 1000).toLocaleTimeString(undefined, {
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+              })}
             </p>
           </div>
         </div>

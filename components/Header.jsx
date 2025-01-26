@@ -4,7 +4,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import titlePng from "../public/images/title.png";
 import logoPng from "../public/images/logo.png";
-
 import SearchInput from "./SearchInput";
 import GenreDropDown from "./GenreDropDown";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from "next/navigation";
 import { useAppContext } from "@/context/page";
 import { Button } from "./ui/button";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Popcorn } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import LoginSignUpCard from "./LoginSignUpCard";
 
@@ -100,9 +99,22 @@ const Header = () => {
         <div
           name="right"
           className="sm:w-[50%] justify-end flex items-center gap-1 sm:gap-2">
-          <div name="movies" title="movies" className="mr-1 flex focus:outline-none text-sm sm:text-[16px] text-white font-semibold">
-            <Link href={`/search/movie?type=category`} className="w-full flex items-center">
-              <Button 
+          <div
+            name="Cinema"
+            title="Cinema"
+            className="mr-1 flex focus:outline-none text-sm sm:text-[16px] text-white font-semibold">
+            <Link href={`/rooms`}>
+              <Popcorn className="w-[1.25rem] sm:w-6 hover:text-primary cursor-pointer" />
+            </Link>
+          </div>
+          <div
+            name="movies"
+            title="movies"
+            className="mr-1 flex focus:outline-none text-sm sm:text-[16px] text-white font-semibold">
+            <Link
+              href={`/search/movie?type=category`}
+              className="w-full flex items-center">
+              <Button
                 variant="ghost"
                 type="submit"
                 value={"movie"}
@@ -151,8 +163,7 @@ const Header = () => {
                         </Avatar>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-fit mr-2 p-0 text-white">
-                        <DropdownMenuItem
-                          className="cursor-pointer font-semibold">
+                        <DropdownMenuItem className="cursor-pointer font-semibold">
                           {user && (
                             <Link href="/user">
                               <Button
