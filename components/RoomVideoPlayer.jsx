@@ -409,6 +409,7 @@ const RoomVideoPlayer = ({
     if (isHost && Math.abs(newTime - lastUpdateTime) >= 30) {
       setLastUpdateTime(newTime);
       debouncedUpdateRoom();
+      // SyncTime();
     }
   }, 1000);
   const handleDuration = (duration) => {

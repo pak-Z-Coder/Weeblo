@@ -40,9 +40,10 @@ const Cinema = ({ params: { roomId } }) => {
         const storedRoomId = sessionStorage.getItem(roomId);
         if (storedRoomId) {
           return true;
+        } else {
+          return false;
         }
       }
-      return false;
     }
   };
   const addUserToRoom = async () => {
@@ -196,7 +197,7 @@ const Cinema = ({ params: { roomId } }) => {
     addUserToRoom();
   }, [user]);
   useEffect(() => {
-    if (host && user) {
+    if (host ) {
       const res = authenticateUser();
       if (!res) {
         return router.push("/home");
