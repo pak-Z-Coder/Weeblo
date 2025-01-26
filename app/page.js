@@ -83,7 +83,7 @@ export default function Page() {
               {spotlightAnimes.slice(0, 6).map((anime) => (
                 <div key={anime.id} className="flex flex-col gap-2">
                   <Link
-                    className="group grid grid-cols-2 rounded-lg overflow-hidden"
+                    className="group grid grid-cols-2 overflow-hidden"
                     href={`/animeInfo/${encodeURIComponent(anime?.id)}`}
                   >
                     <div className="relative">

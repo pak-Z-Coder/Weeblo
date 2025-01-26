@@ -8,7 +8,7 @@ import { useAppContext } from "@/context/page";
 import { cn } from "@/lib/utils";
 import { ArrowLeftFromLineIcon, Copy, Eye, Loader } from "lucide-react";
 import { Bebas_Neue, Oswald } from "next/font/google";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 const oswald = Oswald({
   weight: ["400"],
   style: "normal",
@@ -196,7 +196,7 @@ const Cinema = ({ params: { roomId } }) => {
     addUserToRoom();
   }, [user]);
   useEffect(() => {
-    if (host) {
+    if (host && user) {
       const res = authenticateUser();
       if (!res) {
         return router.push("/home");
