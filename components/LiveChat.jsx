@@ -53,8 +53,8 @@ const LiveChat = ({
     if (data.status != 201) {
       console.log(data.body.message);
     } else {
-      reset();
     }
+    reset();
   };
   const fetchUsername = async () => {
     if (!userChanged) return; // Ensure `userChanged` is valid

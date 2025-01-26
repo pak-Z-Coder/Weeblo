@@ -163,7 +163,7 @@ const RoomVideoPlayer = ({
     const response = await fetch("/api/room", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ roomId, isHost, currentTime }),
+      body: JSON.stringify({ roomId, isHost, currentTime, playing }),
     });
     const data = await response.json();
     if (data.status != 201) {
@@ -172,6 +172,7 @@ const RoomVideoPlayer = ({
       if (!isHost) {
         player.current.seekTo(data.body.newCurrentTime);
         setCurrentTime(data.body.newCurrentTime);
+        setPlaying(data.body.newPlaying);
       }
     }
   };

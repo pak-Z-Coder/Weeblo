@@ -3,7 +3,7 @@ import RoomCard from "@/components/RoomCard";
 import { useAppContext } from "@/context/page";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { cn } from "@/lib/utils";
+import { Loader } from "lucide-react";
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [page, setPage] = useState(1);
@@ -138,8 +138,7 @@ const Rooms = () => {
         </ul>
       </div>
       <div ref={observerRef} style={{ height: "1px" }} />
-      {loading && <p>Loading...</p>}
-      {!hasMore && <p>No more rooms available.</p>}
+      {loading && <Loader className="mx-auto relative top-48 h-12 w-12 animate-spin text-primary" />}
     </div>
   );
 };

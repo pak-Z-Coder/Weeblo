@@ -8,7 +8,7 @@ import { useAppContext } from "@/context/page";
 import { cn } from "@/lib/utils";
 import { ArrowLeftFromLineIcon, Copy, Eye, Loader } from "lucide-react";
 import { Bebas_Neue, Oswald } from "next/font/google";
-import { usePathname, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 const oswald = Oswald({
   weight: ["400"],
   style: "normal",
@@ -31,7 +31,7 @@ const Cinema = ({ params: { roomId } }) => {
   const [serverLoading, setServerLoading] = useState(null);
   const [episodeServerLink, setEpisodeServerLink] = useState(null);
   const [chatOpen, setChatOpen] = useState(true);
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const authenticateUser = () => {
     if (host?._id == user?._id || !roomData?.passkey) {
       return true;
@@ -196,9 +196,6 @@ const Cinema = ({ params: { roomId } }) => {
     addUserToRoom();
   }, [user]);
   useEffect(() => {
-    if (!user && roomData) {
-      return router.push("/home");
-    }
     if (host) {
       const res = authenticateUser();
       if (!res) {

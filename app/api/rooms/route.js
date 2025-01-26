@@ -34,7 +34,7 @@ export const GET = async (req) => {
       .populate({
         path: "host",
         select: "username",
-      });
+      }).lean();
 
     if (!rooms) {
       throw new Error("Rooms not found");

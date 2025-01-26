@@ -34,7 +34,7 @@ export async function GET(req) {
           controller.enqueue(
             `data: ${JSON.stringify({ ping: "keep-alive" })}\n\n`
           );
-        }, 20000); // Send a ping every 20 seconds
+        }, 10000); // Send a ping every 10 seconds
 
         changeStream.on("change", (change) => {
           controller.enqueue(`data: ${JSON.stringify(change)}\n\n`);
@@ -86,26 +86,29 @@ export async function POST(req) {
 export async function PUT(req) {
   await connectDB();
   try {
-    const { roomId, isHost, currentTime } = await req.json();
+    const { roomId, isHost, currentTime, playing } = await req.json();
     if (!roomId) {
       throw new Error("Invalid Request");
     }
 
     if (!isHost) {
-      const room = await Room.findOne({ _id: roomId }).select("currentTime");
+      const room = await Room.findOne({ _id: roomId }).select(
+        "currentTime playing"
+      );
       if (!room) {
         throw new Error("Room not found");
       } else {
         const newCurrentTime = room.currentTime;
+        const newPlaying = room.playing;
         return NextResponse.json({
           status: 201,
-          body: { newCurrentTime: newCurrentTime },
+          body: { newCurrentTime: newCurrentTime, newPlaying: newPlaying },
         });
       }
     } else {
       const room = await Room.findOneAndUpdate(
         { _id: roomId },
-        { currentTime: currentTime },
+        { currentTime: currentTime, playing: playing },
         { new: true }
       ).select("currentTime");
       if (!room) {
