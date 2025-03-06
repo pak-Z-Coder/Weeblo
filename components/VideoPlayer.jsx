@@ -367,7 +367,7 @@ const VideoPlayer = ({
   const handleSeek = (value) => {
     value = value[0];
     if (player.current) {
-      player.current.seekTo(value / duration);
+      player.current.seekTo(value);
     }
   };
   const getQuality = () => {
@@ -439,10 +439,12 @@ const VideoPlayer = ({
             attributes: { crossOrigin: "true" },
             forceHLS: true,
             hlsOptions: {
-              maxBufferLength: 30, // Adjust to reduce buffer size
-              maxMaxBufferLength: 60, // Cap maximum buffer length
+              maxBufferLength: 60, // Adjust to reduce buffer size
+              autoStartLoad: true,
+              enableWorker: true,
               liveSyncDuration: 10, // For live streams, reduces latency
               liveMaxLatencyDuration: 30,
+              defaultAudioCodec: "mp4a.40.2", // Helps with faster audio decoding
             },
           },
         }}
