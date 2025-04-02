@@ -125,7 +125,7 @@ export default function WatchPage({ params: { id } }) {
     setServerLoading(true);
     await getAnimeEpisodeServerLink(
       currentEp?.episodeId,
-      "hd-1",
+      "hd-2",
       currentServerType
     ).then((res) => setEpisodeServerLink(res));
     setServerLoading(false);

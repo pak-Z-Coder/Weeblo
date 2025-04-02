@@ -14,7 +14,7 @@ export const getAnimeEpisodeServers = async (epId) => {
 };
 export const getAnimeEpisodeServerLink = async (
   epId,
-  server = "hd-1",
+  server = "hd-2",
   category = "sub"
 ) => {
   try {
@@ -30,7 +30,7 @@ export const getAnimeEpisodeServerLink = async (
   
     return data.data;
   } catch (error) {
-    server="hd-2"
+    server="hd-1"
     const resp = await fetch(
       `${process.env.NEXT_PUBLIC_ANIWATCH_URL}/api/v2/hianime/episode/sources?animeEpisodeId=${epId}&server=${server}&category=${category}`,
       {
