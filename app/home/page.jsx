@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useAppContext } from "@/context/page";
 const CarouselBanner = dynamic(() => import("@/components/CarouselBanner"), {
@@ -52,6 +52,9 @@ export default function Home() {
     user,
   } = useAppContext();
   const [topTypeValue, setTopTypeValue] = useState("week");
+  useEffect(() => {
+    fetch("/api/get-ip");
+  }, []);
   return spotlightAnimes ? (
     <main className="relative flex flex-col overflow-x-hidden w-screen no-scrollbar">
       <CarouselBanner animes={spotlightAnimes} />
