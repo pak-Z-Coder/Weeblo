@@ -3,9 +3,9 @@ import Room from "@/models/room";
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 
-await connectDB();
 export const GET = async (req) => {
   try {
+    await connectDB();
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url?.searchParams);
     let page = parseInt(searchParams?.get("page") || "1", 10);
@@ -57,6 +57,7 @@ export const GET = async (req) => {
 };
 export const POST = async (req) => {
   try {
+    await connectDB();
     const { roomId } = await req.json();
     const room = await Room.findOne({ _id: roomId }).populate({
       path: "host",
@@ -81,6 +82,7 @@ export const POST = async (req) => {
 let isIndexCreated = false; // Tracks if the TTL index is created
 export const PUT = async (req) => {
   try {
+    await connectDB();
     const { host, anime, passkey } = await req.json();
     const roomId = nanoid(8); // Generate a unique room ID
     await Room.create({

@@ -436,7 +436,7 @@ const VideoPlayer = ({
         onEnded={() => {
           userPreferences?.AutoNext && setEpEnded(true);
         }}
-        url={`https://hls-proxy-m3u8.vercel.app/m3u8-proxy?url=${Url}`}
+        url={`/api/proxy-hls?url=${encodeURIComponent(Url)}`}
         controls={false}
         config={{
           file: {

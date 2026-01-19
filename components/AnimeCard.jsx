@@ -26,35 +26,35 @@ const AnimeCard = ({ anime, type }) => {
     }
   };
   return (
-    <HoverCard className="inline-block">
-      <HoverCardTrigger className="inline-block min-w-fit z-0">
+    <HoverCard className="w-full">
+      <HoverCardTrigger className="w-full z-0">
         <Link
           href={
             type != "Latest Episodes"
               ? `/animeInfo/${encodeURIComponent(id)}`
               : `/watch/${encodeURIComponent(id)}?ep=${anime.episodes.sub}`
           }
-          className="w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px]">
+          className="w-full block">
           <div
             onMouseEnter={handleHover}
-            className=" group rounded-sm ml-1 sm:mb-[0.50rem] mb-1 mt-1 sm:mt-2 cursor-pointer transition-all transform md:hover:scale-95 ease-in-out duration-200 hover:drop-shadow-lg flex items-center justify-center relative">
-            <div className="absolute h-auto rounded-sm inset-0 bg-gradient-to-b from-gray-200/0 via-gray-900/20 hover:via-gray-900/50 to-gray-950/70 hover:to-gray-950/90 z-20"></div>
+            className="group rounded-lg w-full cursor-pointer transition-all transform md:hover:scale-[0.97] ease-in-out duration-300 hover:drop-shadow-xl flex items-center justify-center relative overflow-hidden aspect-[2/3]">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/30 to-gray-950/80 group-hover:via-gray-900/50 group-hover:to-gray-950/95 z-20 transition-all duration-300"></div>
             {type == "season" && (
-              <div className="absolute h-auto rounded-sm inset-0 group-hover:backdrop-blur-0 backdrop-blur-sm z-10"></div>
+              <div className="absolute inset-0 group-hover:backdrop-blur-0 backdrop-blur-sm z-10 transition-all duration-300"></div>
             )}
-            <div className="text-white z-20 w-fit font-semibold">
+            <div className="absolute inset-0 flex flex-col justify-end items-center z-20 text-white font-semibold">
               {type == "Latest Episodes" && (
-                <div className="sm:text-lg text-white absolute top-1 left-2 font-semibold z-10 textStroke">
+                <div className="sm:text-lg text-white absolute top-1 left-2 font-semibold z-30 textStroke">
                   EP{anime.episodes.sub}
                 </div>
               )}
               {type == "Top 10" && (
-                <p className="md:text-lg rounded-br-lg text-sm px-1 sm:px-2 bg-secondary/80 absolute top-0 left-0">
+                <p className="md:text-lg rounded-br-lg text-sm px-1 sm:px-2 bg-secondary/80 absolute top-0 left-0 z-30">
                   {rank}
                 </p>
               )}
               {!fetchLoading && animeInfo && type !== "season" ? (
-                <div className="opacity-0 sm:group-hover:opacity-100 space-x-1 absolute top-3 right-1 sm:right-3">
+                <div className="opacity-0 sm:group-hover:opacity-100 space-x-1 absolute top-3 right-1 sm:right-3 z-30">
                   <Badge
                     variant="outline"
                     className="bg-secondary bg-opacity-90 sm:text-sm text-white border-none">
@@ -76,29 +76,28 @@ const AnimeCard = ({ anime, type }) => {
               )}
               <p
                 className={cn(
-                  "absolute z-20 text-xs line-clamp-2",
+                  "z-20 text-xs line-clamp-2 px-2",
                   type == "season"
-                    ? "bottom-2 left-2 sm:left-3 "
-                    : "md:text-lg text-center w-full max-w-full max-h-[80%] overflow-hidden bottom-2 sm:bottom-4"
+                    ? "text-left w-full bottom-2 sm:bottom-3"
+                    : type == "Top Airing"
+                    ? "md:text-sm text-center w-full max-w-full max-h-[80%] overflow-hidden mb-2 sm:mb-4"
+                    : "md:text-lg text-center w-full max-w-full max-h-[80%] overflow-hidden mb-2 sm:mb-4"
                 )}>
                 {name}
               </p>
             </div>
             <img
               loading="lazy"
-              quality={100}
-              placeholder="empty"
               key={id}
               className={cn(
-                "w-full h-full object-cover aspect-[300/400] min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center rounded-sm",
+                "absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500",
                 type == "season"
-                  ? "w-full aspect-[100/200] min-h-[50px] max-h-[50px] min-w-[150px] sm:max-h-[70px] sm:min-h-[70px] sm:min-w-[200px] object-center "
-                  : "w-full min-h-[120px] max-h-[120px] min-w-[90px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-center shadow-sm hover:shadow-md drop-shadow-md hover:shadow-gray-950"
+                  ? "aspect-[100/200]"
+                  : "aspect-[2/3] group-hover:scale-110"
               )}
-              name={`${name}`}
-              title={`${name}`}
-              layout="responsive"
-              src={`${poster ? poster : ""}`}
+              alt={name}
+              title={name}
+              src={poster || "/placeholder-cover.jpg"}
             />
           </div>
         </Link>

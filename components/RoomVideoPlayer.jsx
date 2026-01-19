@@ -443,7 +443,7 @@ const RoomVideoPlayer = ({
           setTotalTime(player?.current.getDuration());
           player.current.seekTo(continueWatchTime);
         }}
-        url={Url}
+        url={Url ? `/api/proxy-hls?url=${encodeURIComponent(Url)}` : Url}
         controls={false}
         config={{
           file: {

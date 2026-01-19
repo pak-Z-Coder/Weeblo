@@ -2,9 +2,9 @@ import connectDB from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
 
-await connectDB();
 export const POST = async (req) => {
   try {
+    await connectDB();
     const { email, password } = await req.json();
     const user = await User.findOne({ email });
     if (!user) {

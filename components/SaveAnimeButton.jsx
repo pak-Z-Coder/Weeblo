@@ -14,6 +14,7 @@ const SaveAnimeButton = ({ animeId, name, poster, type }) => {
   const [saved, setSaved] = useState(null);
   const [saveLoading, setSaveLoading] = useState(false);
   const [errorSaving, setErrorSaving] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const saveAnime = async () => {
     try {
       setSaveLoading(true);
@@ -62,8 +63,14 @@ const SaveAnimeButton = ({ animeId, name, poster, type }) => {
     }
   };
   useEffect(() => {
+    setMounted(true);
     checkIfSavedAnime();
   }, []);
+  
+  if (!mounted) {
+    return null;
+  }
+  
   return (
     <TooltipProvider>
       <Tooltip>

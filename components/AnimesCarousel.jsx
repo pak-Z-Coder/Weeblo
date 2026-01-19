@@ -21,12 +21,73 @@ const AnimesCarousel = ({ animes, type, setTopTypeValue, topTypeValue }) => {
     const containerRef = useRef(null);
     const [hover, setHover] = useState(false);
     const [showScrollButtons, setShowScrollButtons] = useState(false);
-    useEffect(() => {
+    
+    const checkOverflow = () => {
         const container = containerRef?.current;
         if (container) {
             const isOverflowing = container.scrollWidth > container.clientWidth;
             setShowScrollButtons(isOverflowing);
         }
+    };
+    
+    useEffect(() => {
+        // Initial check
+        const timeoutId = setTimeout(() => {
+            checkOverflow();
+        }, 100);
+        
+        // Check again after images load
+        const images = containerRef.current?.querySelectorAll('img');
+        let handleImageLoad;
+        
+        if (images && images.length > 0) {
+            let loadedCount = 0;
+            const totalImages = images.length;
+            
+            handleImageLoad = () => {
+                loadedCount++;
+                if (loadedCount === totalImages) {
+                    // All images loaded, check overflow
+                    setTimeout(checkOverflow, 100);
+                }
+            };
+            
+            images.forEach((img) => {
+                if (img.complete) {
+                    handleImageLoad();
+                } else {
+                    img.addEventListener('load', handleImageLoad);
+                    img.addEventListener('error', handleImageLoad);
+                }
+            });
+        }
+        
+        // Use ResizeObserver to check overflow when container size changes
+        const resizeObserver = new ResizeObserver(() => {
+            setTimeout(checkOverflow, 50);
+        });
+        
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current);
+        }
+        
+        // Also listen to window resize
+        const handleResize = () => {
+            setTimeout(checkOverflow, 100);
+        };
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+            clearTimeout(timeoutId);
+            resizeObserver.disconnect();
+            window.removeEventListener('resize', handleResize);
+            if (images && handleImageLoad) {
+                images.forEach((img) => {
+                    img.removeEventListener('load', handleImageLoad);
+                    img.removeEventListener('error', handleImageLoad);
+                });
+            }
+        };
     }, [animes]);
     const scrollLeft = () => {
         containerRef.current.scrollTo({
@@ -75,16 +136,54 @@ const AnimesCarousel = ({ animes, type, setTopTypeValue, topTypeValue }) => {
                 :
                 <div className='flex-shrink sm:pl-1 pb-1 overflow-hidden flex overflow-x-scroll no-scrollbar sm:gap-1' ref={containerRef}>
                     {
-                        animes?.map((anime) => type != "Continue Watching" ? <AnimeCard className="carousel-item" key={anime.id} anime={anime} type={type == "Seasons" ? "season" : type} /> : <CustomAnimeCard anime={anime} key={anime.animeId} />)
+                        animes?.map((anime) => type != "Continue Watching" ? (
+                            <div 
+                                key={anime.id} 
+                                className={cn(
+                                    "flex-shrink-0",
+                                    type == "Top Airing"
+                                        ? "w-[80px] sm:w-[120px] md:w-[140px] lg:w-[160px]"
+                                        : "w-[90px] sm:w-[140px] md:w-[160px] lg:w-[180px]"
+                                )}
+                            >
+                                <AnimeCard className="carousel-item" anime={anime} type={type == "Seasons" ? "season" : type} />
+                            </div>
+                        ) : (
+                            <div key={anime.animeId} className="flex-shrink-0 w-[90px] sm:w-[140px] md:w-[160px] lg:w-[180px]">
+                                <CustomAnimeCard anime={anime} />
+                            </div>
+                        ))
                     }
                 </div>
             }
-            {showScrollButtons &&
-                <Button variant="" onClick={scrollLeft} className={cn("z-10 text-white opacity-0 hidden md:block  absolute bg-transparent hover:bg-primary/20 left-0 top-1/3 px-0 h-fit", type == "Seasons" && "top-1/4 hover:bg-primary/0", hover && "md:opacity-50 md:hover:opacity-90")}><ChevronsLeft className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} /></Button>
-            }
-            {showScrollButtons &&
-                <Button variant="" onClick={scrollRight} className={cn("z-10 text-white opacity-0 hidden md:block  absolute bg-transparent hover:bg-primary/20  right-0 top-1/3 px-0 h-fit ", type == "Seasons" && "top-1/4 hover:bg-primary/0", hover && "md:opacity-50 md:hover:opacity-90")}><ChevronsRight className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} /></Button>
-            }
+            {showScrollButtons && (
+                <>
+                    <Button 
+                        variant="" 
+                        onClick={scrollLeft} 
+                        className={cn(
+                            "z-10 text-white absolute bg-transparent hover:bg-primary/20 left-0 top-1/3 px-0 h-fit transition-opacity duration-300",
+                            type == "Seasons" && "top-1/4 hover:bg-primary/0",
+                            "hidden md:block",
+                            hover ? "opacity-50 hover:opacity-90" : "opacity-0"
+                        )}
+                    >
+                        <ChevronsLeft className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} />
+                    </Button>
+                    <Button 
+                        variant="" 
+                        onClick={scrollRight} 
+                        className={cn(
+                            "z-10 text-white absolute bg-transparent hover:bg-primary/20 right-0 top-1/3 px-0 h-fit transition-opacity duration-300",
+                            type == "Seasons" && "top-1/4 hover:bg-primary/0",
+                            "hidden md:block",
+                            hover ? "opacity-50 hover:opacity-90" : "opacity-0"
+                        )}
+                    >
+                        <ChevronsRight className={cn('w-28 h-28', type == "Seasons" && " w-20 h-20")} />
+                    </Button>
+                </>
+            )}
         </div>
     )
 }

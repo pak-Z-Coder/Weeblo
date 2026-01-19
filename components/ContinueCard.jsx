@@ -22,22 +22,24 @@ export default function ContinueCard({ anime, user }) {
   }
 
   return (
-    (<Card className="w-full md:h-full rounded-lg overflow-hidden space-y-1">
-      <div style={{ backgroundImage: `url(${poster})` }} className={cn("relative bg-cover md:h-[50%] flex items-center justify-center z-0")}>
-        <div className="absolute inset-0 h-full rounded-lg bg-gradient-to-b from-gray-200/0 via-gray-900/20 hover:via-gray-900/50 to-gray-950/70 hover:to-gray-950/90 z-10"></div>
-        <div className="absolute inset-0 h-full backdrop-blur-sm z-10"></div>
+    (<Card className="w-full rounded-lg overflow-hidden">
+      <div className={cn("relative min-h-[200px] md:min-h-[300px] md:h-[50%] w-full flex items-center justify-center z-0 overflow-hidden rounded-t-lg")}>
         <img
           alt="Anime Poster"
-          className="bg-transparent z-20 rounded-sm drop-shadow-md max-h-[150px] min-w-[120px] sm:min-h-[200px] sm:max-h-[250px] sm:min-w-[190px] object-contain"
+          className="absolute inset-0 w-full h-full object-cover z-0"
           height="400"
-          src={poster}
+          src={poster || "/placeholder-cover.jpg"}
           width="300"
-          layout="responsive" />
-        <div
-          className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25 flex items-center justify-center">
-        </div>
+          loading="lazy"
+          onError={(e) => {
+            if (e.target.src !== "/placeholder-cover.jpg") {
+              e.target.src = "/placeholder-cover.jpg";
+            }
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/20 to-gray-950/70 z-10"></div>
       </div>
-      <CardContent className="p-4 md:h-[45%]  flex flex-col flex-grow justify-around">
+      <CardContent className="p-4 flex flex-col flex-grow justify-around">
         <div className="relative space-x-1 flex items-center justify-around max-w-full font-semibold text-xs overflow-hidden">
           <p>{continueTime ? formatTime(continueTime) : "00:00:00"}</p>
           <div className='flex-1 bg-slate-300'>

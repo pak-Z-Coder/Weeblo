@@ -2,9 +2,10 @@ import Room from "@/models/room";
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/user";
-await connectDB();
+
 export const GET = async (req) => {
   try {
+    await connectDB();
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
@@ -30,6 +31,7 @@ export const GET = async (req) => {
 };
 export const POST = async (req) => {
   try {
+    await connectDB();
     const { userId, roomId } = await req.json();
     if (!userId || !roomId) {
       throw new Error("Invalid Request");
@@ -62,6 +64,7 @@ export const POST = async (req) => {
 };
 export const PUT = async (req) => {
   try {
+    await connectDB();
     const { userId, roomId } = await req.json();
     if (!userId || !roomId) {
       throw new Error("Invalid Request");

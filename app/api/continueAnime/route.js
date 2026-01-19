@@ -2,10 +2,9 @@ import connectDB from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
 
-await connectDB();
-
 export const POST = async (req) => {
   try {
+    await connectDB();
     const { animeId, userEmail } = await req.json();
     const user = await User.findOne({ email: userEmail });
 
@@ -31,6 +30,7 @@ export const POST = async (req) => {
 };
 export const PUT = async (req) => {
   try {
+    await connectDB();
     const {
       animeId,
       continueTime,

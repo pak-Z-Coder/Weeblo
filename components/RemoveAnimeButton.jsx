@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from './ui/button'
 import { CircleX, Loader2 } from 'lucide-react'
 import { useAppContext } from '@/context/page';
@@ -13,6 +13,7 @@ const RemoveAnimeButton = ({ animeId }) => {
     let { user, setUser } = useAppContext();
     const [removeLoading, setRemoveLoading] = useState(false)
     const [errorRemoving, setErrorRemoving] = useState(false)
+    const [mounted, setMounted] = useState(false)
     const removeAnime = async () => {
         try {
             setRemoveLoading(true)
@@ -40,6 +41,15 @@ const RemoveAnimeButton = ({ animeId }) => {
             console.log(error.message);
         }
     }
+    
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    
+    if (!mounted) {
+        return null;
+    }
+    
     return (
         <TooltipProvider>
             <Tooltip>
